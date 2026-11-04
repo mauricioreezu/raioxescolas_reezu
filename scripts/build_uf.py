@@ -46,6 +46,9 @@ h=h.sort_values('NU_ANO_CENSO')
 import glob
 cat=pd.concat([pd.read_csv(f,dtype=str,encoding='utf-8-sig') for f in sorted(glob.glob('dados/catalogo_privadas_*.csv'))]); cat=cat[cat.UF==UF].drop_duplicates('Código INEP').set_index('Código INEP')
 geo=pd.read_csv('dados/geocode_google.csv',dtype={'code':str}).set_index('code')
+# posições pelo endereço (scripts/geocode_enderecos.py, OpenStreetMap)
+gend=pd.read_csv('dados/geocode_enderecos.csv',dtype={'code':str}) if os.path.exists('dados/geocode_enderecos.csv') else pd.DataFrame(columns=['code','lat','lon'])
+gend=gend.dropna(subset=['lat','lon']).drop_duplicates('code',keep='last').set_index('code')
 yrs=[str(y) for y in range(2019,2026)]; out=[]; fc={}
 for code,g in h.groupby('CO_ENTIDADE'):
     last=g.iloc[-1]; mun=int(last.CO_MUNICIPIO)
@@ -59,6 +62,8 @@ for code,g in h.groupby('CO_ENTIDADE'):
         if pd.notna(la) and mun in mc.index:
             m=mc.loc[mun]
             if m.x0-0.05<=lo<=m.x1+0.05 and m.y0-0.05<=la<=m.y1+0.05: lat,lon,f=la,lo,'i'
+    # 'c' = endereço conferido com o CEP; 'p' = centro do CEP (aproximada)
+    if not f and code in gend.index: lat,lon,f=float(gend.loc[code,'lat']),float(gend.loc[code,'lon']),('p' if gend.loc[code,'nivel']=='cep_vizinhos' else 'c')
     if code in cat.index:
         end=cat.loc[code,'Endereço']
         if not bairro:
@@ -73,5 +78,5 @@ json.dump(out,open(f'{OUT}/escolas.json','w'),separators=(',',':'),ensure_ascii=
 act=[o for o in out if o[7][-1]>0]
 top=max(act,key=lambda o:o[7][-1])
 bb=[float(st.x.min()),float(st.x.max()),float(st.y.min()),float(st.y.max())]
-json.dump({'uf':UF,'nome':NOME,'top':top[0],'bbox':bb,'n':len(act),'fontes':{k:sum(1 for o in act if o[6]==k) for k in 'iebm'}},open(f'{OUT}/meta.json','w'))
-print(UF,'setores',len(recs),round(os.path.getsize(f'{OUT}/setores.json')/1e6,2),'MB','| escolas',len(out),'ativas',len(act),{k:sum(1 for o in act if o[6]==k) for k in 'iebm'},'| maior',top[1],top[7][-1])
+json.dump({'uf':UF,'nome':NOME,'top':top[0],'bbox':bb,'n':len(act),'fontes':{k:sum(1 for o in act if o[6]==k) for k in 'iecpbm'}},open(f'{OUT}/meta.json','w'))
+print(UF,'setores',len(recs),round(os.path.getsize(f'{OUT}/setores.json')/1e6,2),'MB','| escolas',len(out),'ativas',len(act),{k:sum(1 for o in act if o[6]==k) for k in 'iecpbm'},'| maior',top[1],top[7][-1])

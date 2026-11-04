@@ -188,6 +188,7 @@ tbody tr{cursor:pointer} tbody tr:hover td,tr.hl td{background:var(--mist)}
 .segdots span{font-size:11px;font-weight:600;padding:2px 7px;background:var(--mist);color:var(--muted)}
 .segdots span.on{background:var(--navy);color:var(--white)}
 .approx{color:var(--steel);font-weight:700;margin-left:4px}
+.ptag{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-left:6px;white-space:nowrap}
 /* ---------- digital e fontes ---------- */
 .dig{display:grid;border-top:1px solid var(--rule)}
 .dig>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;padding:13px 0;border-bottom:1px solid var(--rule);align-items:center}
@@ -311,7 +312,7 @@ footer .logo img{width:110px}
       <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro.</p>
     </div>
     <div class="src">
-      <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP; o sinal <span class="approx">≈</span> marca escolas posicionadas pelo centro do bairro ou do município, que podem cair dentro ou fora do raio por engano.</p>
+      <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP. Quando o Catálogo não traz coordenada, a escola é localizada pelo endereço no OpenStreetMap, e o resultado só é aceito se cair a menos de 2 km do centro do CEP da escola (marca <span class="ptag" style="margin:0">pelo endereço</span>). Se nem isso der certo, ela vai para o centro do CEP, do bairro ou do município; o sinal <span class="approx">≈</span> marca essas posições aproximadas, que podem cair dentro ou fora do raio por engano.</p>
       <p><b>Concorrentes.</b> Entram só escolas com Educação Infantil, Fundamental ou Médio em 2025. Unidades que oferecem apenas curso técnico ou EJA ficam de fora, porque não disputam as mesmas famílias.</p>
       <p><b>População, idade e renda.</b> Censo Demográfico 2022 por setor censitário. Um setor entra no raio quando o seu ponto representativo está dentro do círculo. Renda é a média mensal do responsável pelo domicílio em valores de 2022 (salário mínimo de R$ 1.212). Idades dos segmentos estimadas pelos grupos de 5 anos do IBGE: Infantil = 0 a 4 anos + 20% de 5 a 9; Fund. I = 80% de 5 a 9 + 20% de 10 a 14; Fund. II = 80% de 10 a 14; Médio = 60% de 15 a 19.</p>
       <p><b>Limites.</b> O Censo Escolar não informa onde mora cada aluno. A população é de 2022 e as matrículas, de 2025.</p>
@@ -339,7 +340,9 @@ const NS='http://www.w3.org/2000/svg';function el(t,a,p){const e=document.create
 const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
 const km=(la1,lo1,la2,lo2)=>Math.hypot((la1-la2)*111.32,(lo1-lo2)*111.32*Math.cos(la1*Math.PI/180));
 function decode(enc){return enc.map(arr=>{const pts=[];let x=0,y=0;for(let i=0;i<arr.length;i+=2){x+=arr[i];y+=arr[i+1];pts.push([x/1e5,y/1e5])}return pts})}
-const isApprox=e=>e.fonte==='b'||e.fonte==='m';
+const isApprox=e=>e.fonte==='b'||e.fonte==='m'||e.fonte==='p';
+const POSN={b:'no centro do bairro',m:'no centro do município',p:'no centro do CEP'};
+const posTag=e=>isApprox(e)?'<span class="approx" title="Posição aproximada">≈</span>':e.fonte==='c'?'<span class="ptag" title="Posição encontrada pelo endereço no OpenStreetMap e conferida com o CEP">pelo endereço</span>':'';
 /* concorrente: tem aluno em 2025 e oferece segmento regular (sem unidades só técnicas ou EJA) */
 const isRegular=e=>e.lat!=null&&e.tot>0&&e.seg.some(x=>x>0);
 
@@ -352,9 +355,17 @@ function addEsc(uf,d){Object.assign(MUN,d.muns);d.e.forEach(r=>{const s=r[7],t=s
   const e={uf,code:r[0],nome:r[1],mun:r[2],mn,bairro:r[3],lat:r[4],lon:r[5],fonte:r[6],serie:s,seg:r[8],end:r[9],tot:t,
     v22:s[3]>0&&s[6]>=0?s[6]/s[3]-1:null,key:norm(r[1]+' '+mn+' '+r[3]+' '+r[0]+' '+uf+' '+UFN[uf])};ES.push(e);ESmap[e.code]=e})}
 /* setores: [mun,bairro,pop,dom,a0,a5,a10,a15,renda,ha,x,y,enc] */
-async function loadSet(uf){if(SSC[uf])return SSC[uf];showL('Carregando mapa de '+UFN[uf]+'…');
-  const d=await fetch('data/'+uf+'_setores.json').then(r=>{if(!r.ok)throw new Error('falha');return r.json()});
-  SSC[uf]=d.s.map(r=>{const s={m:r[0],b:r[1],p:r[2],d:r[3],a:[r[4],r[5],r[6],r[7]],r:r[8],ha:r[9],x:r[10],y:r[11],enc:r[12]};s.seg=[s.a[0]+.2*s.a[1],.8*s.a[1]+.2*s.a[2],.8*s.a[2],.6*s.a[3]];return s});showL('');return SSC[uf]}
+const mkS=r=>{const s={m:r[0],b:r[1],p:r[2],d:r[3],a:[r[4],r[5],r[6],r[7]],r:r[8],ha:r[9],x:r[10],y:r[11],enc:r[12]};s.seg=[s.a[0]+.2*s.a[1],.8*s.a[1]+.2*s.a[2],.8*s.a[2],.6*s.a[3]];return s};
+const getJ=u=>fetch(u).then(r=>{if(!r.ok)throw new Error('falha');return r.json()});
+const TC={};
+/* estados pequenos: um arquivo só; estados grandes (ex.: SP): quadrados de 0,1 grau, baixados só em volta do ponto */
+async function loadView(c,R){const S=STATES.find(s=>s.uf===c.uf),uf=c.uf;
+  if(!S.tiles){if(!SSC[uf]){showL('Carregando mapa de '+UFN[uf]+'…');try{SSC[uf]=(await getJ('data/'+uf+'_setores.json')).s.map(mkS)}finally{showL('')}}return SSC[uf]}
+  const T=S.tile,has=S.has||(S.has=new Set(S.tiles)),dy=(R*1.45+.5)/111,dx=dy/Math.cos(c.lat*Math.PI/180),keys=[];
+  [['b_',T],['s_',S.sub]].forEach(([p,t])=>{for(let i=Math.floor((c.lon-dx)/t);i<=Math.floor((c.lon+dx)/t);i++)for(let j=Math.floor((c.lat-dy)/t);j<=Math.floor((c.lat+dy)/t);j++){const k=p+i+'_'+j;if(has.has(k))keys.push(uf+'/'+k)}});
+  const miss=keys.filter(k=>!TC[k]);
+  if(miss.length){showL('Carregando mapa de '+UFN[uf]+'…');try{await Promise.all(miss.map(k=>getJ('data/'+uf+'_s/'+k.split('/')[1]+'.json').then(d=>{TC[k]=d.s.map(mkS)})))}finally{showL('')}}
+  return keys.flatMap(k=>TC[k])}
 let SS=[],active=[];
 
 const st={center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
@@ -423,7 +434,7 @@ function ageTxt(segs){const a=SEGAGE[Math.min(...segs)][0],b=SEGAGE[Math.max(...
 const BANDN=['Baixa','Moderada','Média','Alta','Muito alta'],HV=['--h1','--h2','--h3','--h4','--h5'];
 
 /* ---------- render ---------- */
-async function run(scroll){try{SS=await loadSet(st.center.uf)}catch(_){showL('');alert0();return}
+async function run(scroll){try{SS=await loadView(st.center,st.R)}catch(_){alert0();return}
   compute();renderAll();
   if(scroll)document.getElementById('rname').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
 function renderAll(){renderHead();buildMap();renderMap();renderGrow();renderStatements();renderHist();renderSegs();renderTable();renderDig()}
@@ -434,7 +445,7 @@ function renderHead(){
   else f.push(`<span>Ponto <b>${c.lat.toFixed(5)}, ${c.lon.toFixed(5)}</b></span>`);
   f.push(`<span>Raio de <b>${st.R} km</b></span>`);document.getElementById('rfacts').innerHTML=f.join('');
   const fl=document.getElementById('rflag');
-  if(e&&isApprox(e)){fl.hidden=false;fl.innerHTML=`<b>Posição aproximada.</b> O INEP não informa a coordenada desta escola; ela foi posicionada ${e.fonte==='b'?'no centro do bairro':'no centro do município'}. Para um raio exato, copie a coordenada da escola no Google Maps e use "Analisar ponto" no topo.`}
+  if(e&&isApprox(e)){fl.hidden=false;fl.innerHTML=`<b>Posição aproximada.</b> O INEP não informa a coordenada desta escola; ela foi posicionada ${POSN[e.fonte]}. Para um raio exato, copie a coordenada da escola no Google Maps e use "Analisar ponto" no topo.`}
   else if(!e){fl.hidden=false;fl.innerHTML=`<b>Análise por ponto.</b> Sem código INEP, não há histórico de matrículas desta escola. O mapa considera todos os segmentos; o resto da análise vale normalmente.`}
   else fl.hidden=true;
   document.querySelectorAll('#radSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===st.R?'true':'false'));
@@ -500,7 +511,7 @@ function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingCl
 function hide(){tip.hidden=true}
 const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN[+st.seg];
 function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b><br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
-function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025, a ${kmf(c.km)}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':''}`)}
+function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025, a ${kmf(c.km)}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
 function fill(s){
   if(st.layer==='opp')return s.band==null?css('--hnull'):css(HV[s.band]);
   if(st.layer==='renda'){if(!s.r)return css('--hnull');let i=0;while(i<4&&s.r>=RQ[i+1])i++;return css(BV[i])}
@@ -536,7 +547,7 @@ function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
   const bx=s.band==null?'':(s.band===0&&s.Dq===0?'Renda média abaixo do mínimo escolhido':BX[s.band]);
   const bd=s.band==null?'':`<span class="bd" style="background:${css(HV[s.band])};color:${s.band>=3?'#FFFFFF':css('--navy')}">${BANDN[s.band]}</span><div class="bx">${bx}</div>`;
   const segs=[0,1,2,3].map(i=>`<dt>${SEGN[i]}${OPP.segs.includes(i)?'':' <span style="font-size:12px">(fora da conta)</span>'}</dt><dd>${fmt(s.seg[i])}</dd>`).join('');
-  const nl=s.near.slice(0,4).map(x=>`<li><span>${esc(x.c.nome)}${isApprox(x.c)?'<span class="approx" title="Posição aproximada">≈</span>':''}</span><span>${fmt(x.c.tot)} alunos · ${Math.round(x.d*1000/10)*10} m</span></li>`).join('');
+  const nl=s.near.slice(0,4).map(x=>`<li><span>${esc(x.c.nome)}${posTag(x.c)}</span><span>${fmt(x.c.tot)} alunos · ${Math.round(x.d*1000/10)*10} m</span></li>`).join('');
   box.innerHTML=`<div class="hd"><div><span class="lab">Setor censitário${s.km>st.R?' · fora do raio':''}</span><h3 style="margin-top:6px">${esc(s.b||'Sem nome de bairro')}</h3><div class="muted" style="font-size:13.5px">${esc(MUN[s.m]||'')}</div>${bd}</div>
     <div class="ix">${s.idx==null?'—':fmt(s.idx)}<small>índice de 0 a 100</small></div></div>
     <dl class="kv">${segs}<dt>Renda média do responsável</dt><dd>${s.r?brl(s.r)+' ('+(s.r/SM).toLocaleString('pt-BR',{maximumFractionDigits:1})+' SM)':'sob sigilo do IBGE'}</dd><dt>Domicílios</dt><dd>${fmt(s.d)}</dd></dl>
@@ -557,14 +568,14 @@ const ready=()=>SS.length&&st.center;
 bind('layerSeg',v=>{st.layer=v;if(ready())renderMap()});
 bind('segSeg',v=>{st.seg=v;if(!ready())return;computeOpp();renderMap();renderGrow();renderTable()});
 bind('concFilter',v=>{st.flt=v;if(ready())renderTable()});
-bind('radSeg',v=>{st.R=+v;st.sel=null;st.selS=null;if(!ready())return;compute();renderAll()});
+bind('radSeg',v=>{st.R=+v;st.sel=null;st.selS=null;if(!st.center)return;run(false)});
 document.getElementById('rmin').addEventListener('input',e=>{st.rmin=+e.target.value*SM;if(!ready())return;computeOpp();renderMap();renderGrow()});
 document.querySelectorAll('#concTbl th button').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;if(st.sk===k)st.sd=-st.sd;else{st.sk=k;st.sd=k==='nome'||k==='km'?1:-1}document.querySelectorAll('#concTbl th button').forEach(x=>x.dataset.on=x===b?'1':'0');if(ready())renderTable()}));
 function renderTable(){let r=COMP.slice();if(st.flt==='200')r=r.filter(c=>c.tot>200);if(st.flt==='seg'&&st.seg!=='all')r=r.filter(c=>c.seg[+st.seg]>0);
   r.sort((a,b)=>{const x=a[st.sk],y=b[st.sk];if(x==null)return 1;if(y==null)return -1;return(typeof x==='string'?x.localeCompare(y):x-y)*st.sd});
   document.getElementById('concCount').textContent=`${r.length} de ${COMP.length} escolas com Infantil, Fundamental ou Médio e alunos em 2025, somando ${fmt(sum(r,c=>c.tot))} alunos. A variação compara com 2022, ano do Censo do IBGE. Toque numa linha para destacá-la no mapa.`;
   document.querySelector('#concTbl tbody').innerHTML=r.map(c=>{const v=c.v22,cl=v==null?'c-mute':v>=.05?'c-up':v<=-.05?'c-down':'c-hold';
-    return `<tr tabindex="0" data-c="${c.code}" class="${c.code===st.sel?'hl':''}"><td class="name">${esc(c.nome)}${isApprox(c)?'<span class="approx" title="Posição aproximada">≈</span>':''}</td><td class="r">${kmf(c.km)}</td><td class="r">${fmt(c.tot)}</td><td class="r ${cl}" style="font-weight:600">${trendTxt(v)}</td><td>${spark(c)}</td><td><span class="segdots">${c.seg.map((x,i)=>`<span class="${x>0?'on':''}">${['Inf','F.I','F.II','EM'][i]}</span>`).join('')}</span></td></tr>`}).join('')}
+    return `<tr tabindex="0" data-c="${c.code}" class="${c.code===st.sel?'hl':''}"><td class="name">${esc(c.nome)}${posTag(c)}</td><td class="r">${kmf(c.km)}</td><td class="r">${fmt(c.tot)}</td><td class="r ${cl}" style="font-weight:600">${trendTxt(v)}</td><td>${spark(c)}</td><td><span class="segdots">${c.seg.map((x,i)=>`<span class="${x>0?'on':''}">${['Inf','F.I','F.II','EM'][i]}</span>`).join('')}</span></td></tr>`}).join('')}
 const tb=document.querySelector('#concTbl tbody');tb.addEventListener('click',e=>{const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)});tb.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)}});
 function clean(n){return n.replace(/\b(Ltda|Me|Eireli|Ss|S\/S|Sc)\b\.?/gi,'').replace(/\s+-\s+.*/,'').replace(/\s{2,}/g,' ').trim()}
 function renderDig(){const list=[];if(st.center.school||st.center.name!=='Ponto escolhido')list.push({nome:st.center.name,mn:st.center.school?st.center.school.mn:'',me:true});
