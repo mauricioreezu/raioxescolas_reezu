@@ -3,7 +3,15 @@ UF, GPKG, NOME = sys.argv[1], sys.argv[2], sys.argv[3]
 OUT=f'uf/{UF}'; os.makedirs(OUT,exist_ok=True)
 def norm(s): return unicodedata.normalize('NFKD',str(s)).encode('ascii','ignore').decode().upper().strip() if isinstance(s,str) else ''
 # ---------- setores ----------
-s=gpd.read_file(GPKG)[['CD_SETOR','CD_MUN','NM_MUN','NM_BAIRRO','v0001','v0007','geometry']].drop_duplicates('CD_SETOR')
+s=gpd.read_file(GPKG)
+# a malha "com atributos" traz v0001 (moradores) e v0007 (domicílios); a malha simples não traz, e aí usamos os agregados (abaixo)
+for c in ('v0001','v0007'):
+    if c not in s.columns: s[c]=np.nan
+# sem bairro (ex.: capital paulista), usa o distrito quando ele não é o próprio município
+if 'NM_DIST' in s.columns:
+    d=s.NM_DIST.where(s.NM_DIST.notna()&(s.NM_DIST!=s.NM_MUN))
+    s['NM_BAIRRO']=s.NM_BAIRRO.where(s.NM_BAIRRO.notna()&(s.NM_BAIRRO.astype(str).str.strip()!=''),d)
+s=s[['CD_SETOR','CD_MUN','NM_MUN','NM_BAIRRO','v0001','v0007','geometry']].drop_duplicates('CD_SETOR')
 cuf=s.CD_SETOR.iloc[0][:2]
 s=s.to_crs(5880); s['ha']=s.area/1e4; s=s.to_crs(4326)
 dem=pd.read_csv('dados/ibge/Agregados_por_setores_demografia_BR.csv',sep=';',dtype=str,encoding='latin1')
@@ -14,7 +22,8 @@ ren=pd.read_csv('dados/ibge/Agregados_por_setores_renda_responsavel_BR.csv',sep=
 ren=ren[ren.index.str.startswith(cuf)]; ren=ren[~ren.index.duplicated()]
 s=s.set_index('CD_SETOR'); A4=A.iloc[:,:4].reindex(s.index).fillna(0)
 s['renda']=pd.to_numeric(ren.V06004,errors='coerce').reindex(s.index)
-s['pop']=pd.to_numeric(s.v0001,errors='coerce').fillna(0); s['dom']=pd.to_numeric(s.v0007,errors='coerce').fillna(0)
+s['pop']=pd.to_numeric(s.v0001,errors='coerce').fillna(tot.reindex(s.index)).fillna(0)
+s['dom']=pd.to_numeric(s.v0007,errors='coerce').fillna(pd.to_numeric(ren.V06001,errors='coerce').reindex(s.index)).fillna(0)
 s['geometry']=[g.simplify(0.00012 if ha<300 else (0.0008 if ha<5000 else 0.004),preserve_topology=True) for g,ha in zip(s.geometry,s.ha)]; s=gpd.GeoDataFrame(s,geometry='geometry',crs=4326); rp=s.geometry.representative_point()
 muns={}; recs=[]
 for cd,r in s.iterrows():
