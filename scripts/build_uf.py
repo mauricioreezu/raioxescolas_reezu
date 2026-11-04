@@ -34,7 +34,8 @@ h=pd.read_parquet('dados/censo_privadas_BR_2019_2025.parquet'); h=h[h.SG_UF==UF]
 num=['QT_MAT_INF','QT_MAT_FUND_AI','QT_MAT_FUND_AF','QT_MAT_MED','QT_MAT_BAS']
 for c in num: h[c]=pd.to_numeric(h[c],errors='coerce').fillna(0).astype(int)
 h=h.sort_values('NU_ANO_CENSO')
-cat=pd.read_csv('dados/catalogo_privadas_N_NE.csv',dtype=str); cat=cat[cat.UF==UF].set_index('Código INEP')
+import glob
+cat=pd.concat([pd.read_csv(f,dtype=str,encoding='utf-8-sig') for f in sorted(glob.glob('dados/catalogo_privadas_*.csv'))]); cat=cat[cat.UF==UF].drop_duplicates('Código INEP').set_index('Código INEP')
 geo=pd.read_csv('dados/geocode_google.csv',dtype={'code':str}).set_index('code')
 yrs=[str(y) for y in range(2019,2026)]; out=[]; fc={}
 for code,g in h.groupby('CO_ENTIDADE'):

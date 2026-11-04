@@ -41,7 +41,7 @@ python3 scripts/build_uf.py PE caminho/PE_setores_CD2022.gpkg "Pernambuco"
 python3 scripts/make_platform.py
 ```
 
-Para estados do Sudeste, Sul e Centro-Oeste também é preciso exportar o Catálogo de Escolas do INEP dessas regiões. Ele traz a latitude e longitude das escolas. Junte esse arquivo com `dados/catalogo_privadas_N_NE.csv`.
+O `build_uf.py` lê todos os arquivos `dados/catalogo_privadas_*.csv` (Catálogo de Escolas do INEP, com latitude e longitude). Já estão lá Norte e Nordeste (`_N_NE`) e São Paulo (`_SP`). Para outro estado do Sudeste, Sul ou Centro-Oeste, exporte o catálogo das escolas privadas dele e salve como `dados/catalogo_privadas_{UF}.csv`.
 
 ## Regras de dados
 
