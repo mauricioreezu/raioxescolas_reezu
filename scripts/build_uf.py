@@ -80,3 +80,5 @@ top=max(act,key=lambda o:o[7][-1])
 bb=[float(st.x.min()),float(st.x.max()),float(st.y.min()),float(st.y.max())]
 json.dump({'uf':UF,'nome':NOME,'top':top[0],'bbox':bb,'n':len(act),'fontes':{k:sum(1 for o in act if o[6]==k) for k in 'iecpbm'}},open(f'{OUT}/meta.json','w'))
 print(UF,'setores',len(recs),round(os.path.getsize(f'{OUT}/setores.json')/1e6,2),'MB','| escolas',len(out),'ativas',len(act),{k:sum(1 for o in act if o[6]==k) for k in 'iecpbm'},'| maior',top[1],top[7][-1])
+# setores sem nome de bairro na malha recebem o bairro da escola mais próxima (nome aproximado)
+import subprocess; subprocess.run([sys.executable, 'scripts/nomear_bairros.py', UF], check=True)

@@ -18,6 +18,7 @@ Hoje ela tem Ceará, Amazonas e São Paulo. Cada estado novo precisa da malha de
 | `scripts/make_platform.py` | Junta todos os estados de `uf/` e gera `plataforma/index.html` e `plataforma/data/` a partir de `template/tool.html`. Injeta a lista de estados e embute os logotipos de `assets/`. Para se o template tiver "lead", "funil", "alavancar" ou "urgente". |
 | `template/tool.html` | Interface (multi-estado) com a identidade visual do Manual da Marca. Toda mudança visual é feita aqui e depois `python3 scripts/make_platform.py`. Não edite `plataforma/index.html` à mão. |
 | `scripts/geocode_enderecos.py` | Localiza pelo endereço (OpenStreetMap) as escolas que o Catálogo traz sem coordenada, conferindo com o CEP. Grava `dados/geocode_enderecos.csv`, que o `build_uf.py` lê. |
+| `scripts/nomear_bairros.py` | Dá nome aos setores que a malha do IBGE traz sem bairro (ex.: Cotia, Sorocaba), usando o bairro da escola privada mais próxima, do mesmo município e a até 1,5 km. O nome fica marcado como aproximado. O `build_uf.py` chama este script no fim. |
 | `uf/` | Estados já processados (CE, AM, SP). |
 | `dados/` | Bases: Censo Escolar de todas as escolas privadas do Brasil de 2019 a 2025 (`.parquet`), Catálogo de Escolas do INEP do Norte e Nordeste (latitude e longitude) e as coordenadas corrigidas à mão (`geocode_google.csv`). |
 | `assets/` | Logotipo da Reezu em vetor, para fundo escuro e fundo claro. |
@@ -60,6 +61,7 @@ O `build_uf.py` lê todos os arquivos `dados/catalogo_privadas_*.csv` (Catálogo
   - Fundamental II: 80% de 10–14 anos.
   - Médio: 60% de 15–19 anos.
 - **Escolas sem coordenada no Catálogo:** primeiro são localizadas pelo endereço (OpenStreetMap), aceitando só resultados a menos de 2 km do centro do CEP de 5 dígitos (mediana das escolas do Catálogo com coordenada naquele CEP). Sem isso, vão para o centro do CEP, ou do bairro ponderado pela população, ou do município. O mapa marca essas três últimas como posição aproximada (≈).
+- **Cores:** a interface usa só as cores da marca. Exceções: o mapa de oportunidade (escala quente) e a queda de alunos de concorrentes na tabela de concorrência (vermelho #B8231F).
 - **Avaliações do Google Maps:** não entram nos arquivos, por causa dos termos de uso do Google.
 
 ## Índice de oportunidade (camada padrão do mapa)

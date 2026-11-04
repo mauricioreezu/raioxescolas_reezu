@@ -16,6 +16,7 @@
   /* mapa de calor: frio -> quente */
   --h1:#FFF3C4; --h2:#FDD27A; --h3:#F9A23F; --h4:#E8642C; --h5:#B8231F; --hnull:rgba(220,227,238,.55);
   /* camadas secundárias, na rampa da marca */
+  --down:#B8231F; /* exceção: perda de alunos na tabela de concorrência */
   --b1:#E6ECF6; --b2:#9DB5DB; --b3:#5B79AD; --b4:#0B2350; --b5:#011636;
   --title:"Poppins","Arial",sans-serif; --text:"Inter","Arial",system-ui,sans-serif;
   --gut:max(16px,env(safe-area-inset-left,0px));
@@ -161,7 +162,7 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .st .fig small{display:block;font-family:var(--text);font-size:13.5px;font-weight:500;color:var(--muted);margin-top:8px}
 .chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:var(--navy)}
 .chip::before{content:"";width:8px;height:8px;background:currentColor}
-.c-up{color:var(--steel)} .c-down{color:var(--navy)} .c-hold{color:var(--muted)} .c-blue{color:var(--steel)} .c-mute{color:var(--muted)}
+.c-up{color:var(--steel)} .c-down{color:var(--navy)} .c-red{color:var(--down)} .c-hold{color:var(--muted)} .c-blue{color:var(--steel)} .c-mute{color:var(--muted)}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start}
 @media (max-width:820px){.two{grid-template-columns:1fr}}
 .paper{background:var(--white);border:1px solid var(--rule);padding:20px;min-width:0}
@@ -195,6 +196,7 @@ tbody tr{cursor:pointer} tbody tr:hover td,tr.hl td{background:var(--mist)}
 .dig .links{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14.5px}
 .dig .nm{font-weight:600}.dig .nm small{display:block;font-weight:400;color:var(--muted);font-size:13px}
 @media (max-width:640px){.dig>div{grid-template-columns:1fr}}
+.howto{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px;color:var(--muted);max-width:80ch}.howto b{color:var(--navy)}
 .src{font-size:14.5px;color:var(--muted);display:grid;gap:12px;max-width:80ch}
 .src b{color:var(--navy)}
 .method{background:var(--white);border:1px solid var(--rule);border-left:4px solid var(--steel);padding:18px 20px;display:grid;gap:10px;color:var(--navy);font-size:14.5px}
@@ -297,7 +299,12 @@ footer .logo img{width:110px}
       <th>2019 a 2025</th><th>Segmentos</th></tr></thead><tbody></tbody></table></div></section>
 
   <section aria-labelledby="h-dig"><div class="lede"><span class="lab">Presença digital</span><h2 id="h-dig">Onde conferir a comunicação de cada escola</h2>
-    <p>Atalhos para ver anúncios ativos, perfil no Google Maps e Instagram da escola e dos maiores concorrentes do raio. A Meta e o Google não liberam esses dados para consulta automática, então a checagem é feita nos links. Nada disso entra nos números desta página.</p></div>
+    <p>Atalhos para ver anúncios ativos, perfil no Google Maps e Instagram da escola e dos maiores concorrentes do raio. No Brasil, a Meta e o Google não liberam anúncios comerciais para consulta automática, então a checagem é feita nos links. Nada disso entra nos números desta página.</p>
+    <ol class="howto">
+      <li><b>Anúncios na Meta</b> (Facebook e Instagram): abre a Biblioteca de Anúncios já filtrada por anúncios ativos no Brasil. Em cada anúncio aparece <i>"Veiculação iniciada em [data]"</i>: a diferença até hoje é há quanto tempo ele está no ar. Confira se a página do anúncio é mesmo a da escola.</li>
+      <li><b>Anúncios no Google</b> (busca, YouTube, Display): no Centro de Transparência, digite o nome da escola ou o site. Cada anúncio mostra a <i>última exibição</i> e, ao abrir, o período em que foi exibido.</li>
+      <li>Escola com anúncio ativo há meses está investindo de forma contínua; anúncios que aparecem só perto da época de matrícula indicam campanha sazonal.</li>
+    </ol></div>
     <div class="dig" id="dig"></div></section>
 
   <section aria-labelledby="h-met"><div class="lede"><span class="lab">Método</span><h2 id="h-met">Como o índice de oportunidade é calculado</h2></div>
@@ -309,7 +316,7 @@ footer .logo img{width:110px}
         <li><b>Concorrência.</b> Alunos de 2025 das escolas concorrentes a até 1 km do setor, nos mesmos segmentos. Cada escola pesa pela distância: colada no setor vale 100% dos alunos, a 500 m vale 50%, a 1 km ou mais não entra. Essa pressão é medida em relação à média do raio.</li>
         <li><b>Índice.</b> Demanda qualificada ÷ (1 + pressão da concorrência ÷ pressão média do raio). Um setor com concorrência igual à média do raio tem a oportunidade cortada pela metade.</li>
       </ol>
-      <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro.</p>
+      <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro. Onde o IBGE não tem bairros oficiais (por exemplo Cotia e Sorocaba), o setor recebe o bairro da escola privada mais próxima, a até 1,5 km, e o nome aparece como aproximado.</p>
     </div>
     <div class="src">
       <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP. Quando o Catálogo não traz coordenada, a escola é localizada pelo endereço no OpenStreetMap, e o resultado só é aceito se cair a menos de 2 km do centro do CEP da escola (marca <span class="ptag" style="margin:0">pelo endereço</span>). Se nem isso der certo, ela vai para o centro do CEP, do bairro ou do município; o sinal <span class="approx">≈</span> marca essas posições aproximadas, que podem cair dentro ou fora do raio por engano.</p>
@@ -355,7 +362,7 @@ function addEsc(uf,d){Object.assign(MUN,d.muns);d.e.forEach(r=>{const s=r[7],t=s
   const e={uf,code:r[0],nome:r[1],mun:r[2],mn,bairro:r[3],lat:r[4],lon:r[5],fonte:r[6],serie:s,seg:r[8],end:r[9],tot:t,
     v22:s[3]>0&&s[6]>=0?s[6]/s[3]-1:null,key:norm(r[1]+' '+mn+' '+r[3]+' '+r[0]+' '+uf+' '+UFN[uf])};ES.push(e);ESmap[e.code]=e})}
 /* setores: [mun,bairro,pop,dom,a0,a5,a10,a15,renda,ha,x,y,enc] */
-const mkS=r=>{const s={m:r[0],b:r[1],p:r[2],d:r[3],a:[r[4],r[5],r[6],r[7]],r:r[8],ha:r[9],x:r[10],y:r[11],enc:r[12]};s.seg=[s.a[0]+.2*s.a[1],.8*s.a[1]+.2*s.a[2],.8*s.a[2],.6*s.a[3]];return s};
+const mkS=r=>{const s={m:r[0],b:r[1],p:r[2],d:r[3],a:[r[4],r[5],r[6],r[7]],r:r[8],ha:r[9],x:r[10],y:r[11],enc:r[12],bx:r[13]===1};s.seg=[s.a[0]+.2*s.a[1],.8*s.a[1]+.2*s.a[2],.8*s.a[2],.6*s.a[3]];return s};
 const getJ=u=>fetch(u).then(r=>{if(!r.ok)throw new Error('falha');return r.json()});
 const TC={};
 /* estados pequenos: um arquivo só; estados grandes (ex.: SP): quadrados de 0,1 grau, baixados só em volta do ponto */
@@ -423,7 +430,7 @@ function computeOpp(){
   computeGrow();
 }
 function computeGrow(){
-  const g={};IN.forEach(s=>{if(!s.b||s.nd)return;const k=s.m+'|'+s.b;const o=g[k]=g[k]||{b:s.b,m:s.m,raw:0,D:0,Dq:0,rw:0,dw:0,x:0,y:0,w:0,best:null};
+  const g={};IN.forEach(s=>{if(!s.b||s.nd)return;const k=s.m+'|'+s.b;const o=g[k]=g[k]||{b:s.b,m:s.m,raw:0,D:0,Dq:0,rw:0,dw:0,x:0,y:0,w:0,best:null,n:0,nx:0};o.n++;o.nx+=s.bx?1:0;
     o.raw+=s.raw;o.D+=s.D;o.Dq+=s.Dq;if(s.r){o.rw+=s.r*s.d;o.dw+=s.d}const w=s.D+1;o.x+=s.x*w;o.y+=s.y*w;o.w+=w;if(!o.best||s.raw>o.best.raw)o.best=s});
   GROW=Object.values(g).filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,3);
   const top=GROW.length?GROW[0].raw:1;
@@ -510,7 +517,7 @@ function buildMap(){
 function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingClientRect();let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x+260>b.width)x-=280;if(y+140>b.height)y-=150;tip.style.left=Math.max(4,x)+'px';tip.style.top=Math.max(4,y)+'px'}
 function hide(){tip.hidden=true}
 const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN[+st.seg];
-function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b><br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
+function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b>${s.bx?' <span style="opacity:.75">(nome aproximado)</span>':''}<br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
 function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025, a ${kmf(c.km)}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
 function fill(s){
   if(st.layer==='opp')return s.band==null?css('--hnull'):css(HV[s.band]);
@@ -521,8 +528,9 @@ function legendHTML(){
   const sw=`<div class="sw">${BV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div>`;
   if(st.layer==='renda')return `<span class="lab">Renda média do responsável</span>${sw}<div class="sl"><span>até 1 SM</span><span>2 SM</span><span>5 SM ou mais</span></div><div class="nd"><i></i>Renda sob sigilo do IBGE</div>`;
   const k=st.seg==='all'&&OPP.segs.length>1?1:.33;return `<span class="lab">Crianças por hectare</span>${sw}<div class="sl"><span>menos de ${Math.round(DQ[1]*k)}</span><span>${Math.round(DQ[4]*k)} ou mais</span></div>`}
-function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math.max(...v,1),sx=i=>3+(W-8)*i/6,sy=x=>H-4-(H-8)*x/mx,col=light?css('--sky'):css('--steel');
-  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><rect x="${sx(6)-2.6}" y="${sy(v[6])-2.6}" width="5.2" height="5.2" fill="${light?'#FFFFFF':css('--navy')}"/></svg>`}
+const falling=c=>c.v22!=null&&c.v22<=-.05;
+function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math.max(...v,1),sx=i=>3+(W-8)*i/6,sy=x=>H-4-(H-8)*x/mx,col=light?css('--sky'):falling(c)?css('--down'):css('--steel');
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><rect x="${sx(6)-2.6}" y="${sy(v[6])-2.6}" width="5.2" height="5.2" fill="${light?'#FFFFFF':falling(c)?css('--down'):css('--navy')}"/></svg>`}
 const trendTxt=v=>v==null?'nova':(v>=0?'▲ +':'▼ −')+pct(Math.abs(v));
 function renderMap(){
   VIEW.forEach(s=>s.el&&s.el.setAttribute('fill',fill(s)));
@@ -548,7 +556,7 @@ function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
   const bd=s.band==null?'':`<span class="bd" style="background:${css(HV[s.band])};color:${s.band>=3?'#FFFFFF':css('--navy')}">${BANDN[s.band]}</span><div class="bx">${bx}</div>`;
   const segs=[0,1,2,3].map(i=>`<dt>${SEGN[i]}${OPP.segs.includes(i)?'':' <span style="font-size:12px">(fora da conta)</span>'}</dt><dd>${fmt(s.seg[i])}</dd>`).join('');
   const nl=s.near.slice(0,4).map(x=>`<li><span>${esc(x.c.nome)}${posTag(x.c)}</span><span>${fmt(x.c.tot)} alunos · ${Math.round(x.d*1000/10)*10} m</span></li>`).join('');
-  box.innerHTML=`<div class="hd"><div><span class="lab">Setor censitário${s.km>st.R?' · fora do raio':''}</span><h3 style="margin-top:6px">${esc(s.b||'Sem nome de bairro')}</h3><div class="muted" style="font-size:13.5px">${esc(MUN[s.m]||'')}</div>${bd}</div>
+  box.innerHTML=`<div class="hd"><div><span class="lab">Setor censitário${s.km>st.R?' · fora do raio':''}</span><h3 style="margin-top:6px">${esc(s.b||'Sem nome de bairro')}</h3><div class="muted" style="font-size:13.5px">${esc(MUN[s.m]||'')}${s.bx?' · nome aproximado, pelo bairro da escola mais próxima':''}</div>${bd}</div>
     <div class="ix">${s.idx==null?'—':fmt(s.idx)}<small>índice de 0 a 100</small></div></div>
     <dl class="kv">${segs}<dt>Renda média do responsável</dt><dd>${s.r?brl(s.r)+' ('+(s.r/SM).toLocaleString('pt-BR',{maximumFractionDigits:1})+' SM)':'sob sigilo do IBGE'}</dd><dt>Domicílios</dt><dd>${fmt(s.d)}</dd></dl>
     <div><span class="lab">Escolas concorrentes a menos de 1 km: ${s.near.length}</span>${nl?`<ul style="margin-top:8px">${nl}</ul>`:'<p class="muted" style="font-size:13.5px;margin-top:6px">Nenhuma escola privada regular a menos de 1 km.</p>'}${s.near.length>4?`<p class="muted" style="font-size:13px;margin-top:4px">e mais ${s.near.length-4}.</p>`:''}</div>
@@ -559,7 +567,7 @@ function renderGrow(){const g=document.getElementById('grow'),nm=ageTxt(OPP.segs
   if(!GROW.length){g.innerHTML=`<div class="empty">Nenhum bairro do raio tem setores com renda acima do mínimo escolhido. Baixe a renda mínima no mapa para ver onde está a demanda.</div>`;return}
   g.innerHTML=GROW.map((o,i)=>{const nc=o.nc===0?'nenhuma escola concorrente a menos de 1 km':(o.nc<=2?'só ':'')+o.nc+(o.nc===1?' escola concorrente':' escolas concorrentes')+' a menos de 1 km';
     return `<button type="button" class="grow-c" data-i="${i}"><div class="rk"><b>${i+1}</b><span>${fmt(100*o.rel)} pontos</span></div>
-    <p><b style="font-family:var(--title);font-weight:600">${esc(o.b)}:</b> ${fmt(o.Dq)} ${nm} em setores com renda de ${brl(st.rmin)} ou mais (de ${fmt(o.D)} no bairro), renda média ${o.ren?brl(o.ren):'sob sigilo'} e ${nc}.</p>
+    <p><b style="font-family:var(--title);font-weight:600">${esc(o.b)}${o.nx>o.n/2?'<span class="ptag" title="O IBGE não tem bairros oficiais aqui; o nome vem do endereço da escola mais próxima">nome aproximado</span>':''}:</b> ${fmt(o.Dq)} ${nm} em setores com renda de ${brl(st.rmin)} ou mais (de ${fmt(o.D)} no bairro), renda média ${o.ren?brl(o.ren):'sob sigilo'} e ${nc}.</p>
     <div class="ib"><i style="width:${Math.max(4,100*o.rel)}%;background:${css(HV[4-Math.min(i,2)])}"></i></div><span class="go">Ver no mapa</span></button>`}).join('');
   g.querySelectorAll('.grow-c').forEach(b=>b.onclick=()=>{const o=GROW[+b.dataset.i];selectSector(o.best);document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}
 function pick(code,fromMap){st.sel=st.sel===code?null:code;renderMap();renderTable();if(!fromMap&&st.sel)document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
@@ -574,7 +582,7 @@ document.querySelectorAll('#concTbl th button').forEach(b=>b.addEventListener('c
 function renderTable(){let r=COMP.slice();if(st.flt==='200')r=r.filter(c=>c.tot>200);if(st.flt==='seg'&&st.seg!=='all')r=r.filter(c=>c.seg[+st.seg]>0);
   r.sort((a,b)=>{const x=a[st.sk],y=b[st.sk];if(x==null)return 1;if(y==null)return -1;return(typeof x==='string'?x.localeCompare(y):x-y)*st.sd});
   document.getElementById('concCount').textContent=`${r.length} de ${COMP.length} escolas com Infantil, Fundamental ou Médio e alunos em 2025, somando ${fmt(sum(r,c=>c.tot))} alunos. A variação compara com 2022, ano do Censo do IBGE. Toque numa linha para destacá-la no mapa.`;
-  document.querySelector('#concTbl tbody').innerHTML=r.map(c=>{const v=c.v22,cl=v==null?'c-mute':v>=.05?'c-up':v<=-.05?'c-down':'c-hold';
+  document.querySelector('#concTbl tbody').innerHTML=r.map(c=>{const v=c.v22,cl=v==null?'c-mute':v>=.05?'c-up':v<=-.05?'c-red':'c-hold';
     return `<tr tabindex="0" data-c="${c.code}" class="${c.code===st.sel?'hl':''}"><td class="name">${esc(c.nome)}${posTag(c)}</td><td class="r">${kmf(c.km)}</td><td class="r">${fmt(c.tot)}</td><td class="r ${cl}" style="font-weight:600">${trendTxt(v)}</td><td>${spark(c)}</td><td><span class="segdots">${c.seg.map((x,i)=>`<span class="${x>0?'on':''}">${['Inf','F.I','F.II','EM'][i]}</span>`).join('')}</span></td></tr>`}).join('')}
 const tb=document.querySelector('#concTbl tbody');tb.addEventListener('click',e=>{const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)});tb.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)}});
 function clean(n){return n.replace(/\b(Ltda|Me|Eireli|Ss|S\/S|Sc)\b\.?/gi,'').replace(/\s+-\s+.*/,'').replace(/\s{2,}/g,' ').trim()}
@@ -582,7 +590,7 @@ function renderDig(){const list=[];if(st.center.school||st.center.name!=='Ponto 
   COMP.slice().sort((a,b)=>b.tot-a.tot).slice(0,8).forEach(c=>list.push(c));
   document.getElementById('dig').innerHTML=list.map(c=>{const n=clean(c.nome),m=c.mn||UFN[st.center.uf],E=encodeURIComponent;
     return `<div><span class="nm">${esc(c.nome)}<small>${c.me?'escola analisada':fmt(c.tot)+' alunos, '+kmf(c.km)}</small></span><span class="links">
-    <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=BR&media_type=all&q=${E(n)}&search_type=keyword_unordered" target="_blank" rel="noopener">Anúncios na Meta</a>
+    <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=BR&media_type=all&q=${E(n)}&search_type=keyword_unordered" target="_blank" rel="noopener">Anúncios ativos na Meta</a>
     <a href="https://www.google.com/maps/search/?api=1&query=${E(n+' '+m+' '+st.center.uf)}" target="_blank" rel="noopener">Google Maps</a>
     <a href="https://www.google.com/search?q=${E(n+' '+m+' instagram')}" target="_blank" rel="noopener">Instagram</a>
     <a href="https://adstransparency.google.com/?region=BR" target="_blank" rel="noopener">Anúncios no Google</a></span></div>`}).join('')}
