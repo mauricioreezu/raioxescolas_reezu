@@ -1,269 +1,371 @@
-<title>Raio-X Escolar</title>
-<meta name="claude:viewport-fit-sides" content="cover">
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Raio-X Escolar · Reezu</title>
+<meta name="description" content="Raio-X Escolar da Reezu: famílias, renda e concorrência no raio de uma escola privada.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap">
 <style>
-/* Layout: ferramenta de consulta. Barra de busca no topo, resultado em coluna de 1080px; o mapa é a placa azul-marinho (peça ousada única); resto quieto no cinza Reezu */
+/* Identidade Reezu (Manual da Marca 1.0). Interface só com as cores da marca; as cores quentes ficam restritas ao mapa de oportunidade. */
 :root{
-  --bg:#EEF1F5; --paper:#FFFFFF; --ink:#0E2240; --navy:#1B3D6B; --blue:#3B76C4; --sky:#A9C9EC; --mist:#E2EAF5;
-  --muted:#56657A; --rule:#D3DBE6; --up:#1E7A52; --down:#B0463A; --hold:#9A6A14;
-  --r2:#93B7E2; --r3:#5F92CE; --r5:#1B3D6B;
-  --plate:#0E2240; --plate-2:#15305A; --plate-ink:#EAF2FC; --plate-dim:#8FA9CC;
-  --p0:#1A3560; --p1:#24497F; --p2:#2F63A6; --p3:#4D86CC; --p4:#86B3E6; --p5:#CFE3F8; --pq:#14294A;
-  --font:"Schibsted Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;
+  --navy:#011636; --navy2:#0B2350; --steel:#5B79AD; --sky:#9DB5DB; --mist:#E6ECF6; --white:#FFFFFF;
+  --bg:#F5F7FB; --muted:#4A5872; --rule:#DCE3EE;
+  /* mapa de calor: frio -> quente */
+  --h1:#FFF3C4; --h2:#FDD27A; --h3:#F9A23F; --h4:#E8642C; --h5:#B8231F; --hnull:rgba(220,227,238,.55);
+  /* camadas secundárias, na rampa da marca */
+  --b1:#E6ECF6; --b2:#9DB5DB; --b3:#5B79AD; --b4:#0B2350; --b5:#011636;
+  --title:"Poppins","Arial",sans-serif; --text:"Inter","Arial",system-ui,sans-serif;
+  --gut:max(16px,env(safe-area-inset-left,0px));
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#09121F; --paper:#101C2E; --ink:#E7EEF7; --navy:#BCD2EE; --blue:#79A8E3; --sky:#2C4F7C; --mist:#14263D;
-  --muted:#93A3B8; --rule:#21344D; --up:#52C28F; --down:#E9826F; --hold:#E1AA4E; --r2:#285488; --r3:#3B73B8; --r5:#B3D1F3;
-  --plate:#06101E; --plate-2:#0D1D33; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#09121F; --paper:#101C2E; --ink:#E7EEF7; --navy:#BCD2EE; --blue:#79A8E3; --sky:#2C4F7C; --mist:#14263D;
-  --muted:#93A3B8; --rule:#21344D; --up:#52C28F; --down:#E9826F; --hold:#E1AA4E; --r2:#285488; --r3:#3B73B8; --r5:#B3D1F3;
-  --plate:#06101E; --plate-2:#0D1D33; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 72px}
-.wrap{max-width:1080px;margin:0 auto;display:grid;gap:56px}
-h1,h2,h3{margin:0;line-height:1.08;text-wrap:balance;color:var(--ink)}
-h1{font-size:clamp(34px,5.6vw,62px);font-weight:850;letter-spacing:-.035em}
-h2{font-size:clamp(24px,3.2vw,32px);font-weight:800;letter-spacing:-.02em}
-h3{font-size:18px;font-weight:750}
-p{margin:0;max-width:66ch}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:var(--text);font-size:16px;line-height:1.55}
+.in{max-width:1080px;margin:0 auto;padding-left:var(--gut);padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{margin:0;font-family:var(--title);color:var(--navy);text-wrap:balance}
+h1{font-size:clamp(30px,5.2vw,52px);font-weight:700;line-height:1.08;letter-spacing:-.02em}
+h2{font-size:clamp(23px,3.2vw,32px);font-weight:700;line-height:1.15;letter-spacing:-.01em}
+h3{font-size:18px;font-weight:600;line-height:1.25}
+p{margin:0;max-width:68ch}
 .muted{color:var(--muted)} .num{font-variant-numeric:tabular-nums}
-a{color:var(--blue);text-underline-offset:3px}
+a{color:var(--navy);text-decoration-color:var(--steel);text-underline-offset:3px;text-decoration-thickness:2px}
+button{font-family:inherit}
+/* rótulo da marca: Inter semibold, caixa alta, espaçado, com o ponto quadrado */
+.lab{display:inline-flex;align-items:center;gap:8px;font-family:var(--text);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lab::before{content:"";width:8px;height:8px;background:var(--steel);flex:none}
+.dark .lab{color:var(--sky)} .dark .lab::before{background:var(--sky)}
+.dark .legend .lab,.dark .scard .lab{color:var(--muted)} .dark .legend .lab::before,.dark .scard .lab::before{background:var(--steel)}
+/* barra de destaque atrás da parte de baixo da palavra-chave */
+.hl{background:linear-gradient(transparent 56%,var(--steel) 56%,var(--steel) 94%,transparent 94%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em}
 section{display:grid;gap:20px}
-.lede{display:grid;gap:8px} .lede p{color:var(--muted)}
-/* top */
-.top{display:grid;gap:18px}
-.brandrow{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
-.brand{font-weight:850;font-size:21px;letter-spacing:-.03em;color:var(--ink)}
-.brand i{display:inline-block;width:.3em;height:.3em;background:var(--blue);margin-left:1px}
-.search{position:relative;display:grid;gap:8px}
-.search label{font-size:14px;color:var(--muted)}
-.sbox{display:flex;gap:8px;flex-wrap:wrap}
-.sbox input{flex:1 1 320px;min-width:0;font:inherit;font-size:18px;padding:14px 16px;border:2px solid var(--ink);border-radius:10px;background:var(--paper);color:var(--ink)}
-.sbox input:focus-visible{outline:3px solid var(--sky);outline-offset:1px}
-.sugg{position:absolute;top:100%;left:0;right:0;margin-top:4px;background:var(--paper);border:1px solid var(--rule);border-radius:10px;box-shadow:0 12px 30px rgba(14,34,64,.18);z-index:20;max-height:420px;overflow:auto;padding:4px}
-.sugg button{all:unset;display:grid;grid-template-columns:1fr auto;gap:2px 12px;width:100%;box-sizing:border-box;padding:10px 12px;border-radius:7px;cursor:pointer}
+.lede{display:grid;gap:10px} .lede p{color:var(--muted)}
+main.in{display:grid;gap:64px;padding-top:40px;padding-bottom:72px}
+
+/* ---------- topo ---------- */
+.band{background:var(--navy);color:var(--sky)}
+.band .in{display:grid;gap:26px;padding-top:max(22px,env(safe-area-inset-top,0px));padding-bottom:30px}
+.brandrow{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap}
+.logo{display:inline-grid;gap:7px;text-decoration:none}
+.logo img{display:block;width:150px;height:auto}
+.logo span{font-family:var(--title);font-weight:600;font-size:9.4px;letter-spacing:.43em;color:var(--sky);white-space:nowrap}
+.prod{font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sky);padding-top:4px}
+.search{position:relative;display:grid;gap:10px}
+.search label{font-size:15px;color:var(--sky)}
+.sbox input{width:100%;font:inherit;font-size:18px;padding:15px 16px;border:0;border-radius:0;background:var(--white);color:var(--navy);-webkit-appearance:none;appearance:none}
+.sbox input::placeholder{color:var(--muted)}
+.sbox input:focus-visible{outline:3px solid var(--steel);outline-offset:0}
+.sugg{position:absolute;top:100%;left:0;right:0;margin-top:2px;background:var(--white);border:1px solid var(--rule);box-shadow:0 14px 30px rgba(1,22,54,.22);z-index:30;max-height:420px;overflow:auto}
+.sugg button{all:unset;display:grid;grid-template-columns:1fr auto;gap:2px 12px;width:100%;box-sizing:border-box;padding:11px 14px;cursor:pointer;border-bottom:1px solid var(--rule)}
 .sugg button[aria-selected="true"],.sugg button:hover{background:var(--mist)}
-.sugg .n{font-weight:600} .sugg .m{font-size:13px;color:var(--muted);grid-column:1} .sugg .t{grid-row:1/3;grid-column:2;align-self:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
-.alt{font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-.alt input{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper);color:var(--ink);width:230px;max-width:100%}
-.btn{all:unset;cursor:pointer;font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;background:var(--ink);color:var(--paper)}
-.btn:focus-visible,.cbtn:focus-visible,.toggle button:focus-visible,th button:focus-visible,tbody tr:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
-.err{color:var(--down);font-size:14px}
-.ufs{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14px;color:var(--muted);align-items:center}
-.ufs b{color:var(--ink);font-weight:600}
-.ufs .soon{opacity:.75}
-.loading{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:999px;font-size:14px;z-index:50}
-/* hero of result */
-.res-head{display:grid;gap:14px;padding-bottom:18px;border-bottom:2px solid var(--ink)}
+.sugg .n{font-weight:600;color:var(--navy)} .sugg .m{font-size:13px;color:var(--muted);grid-column:1} .sugg .t{grid-row:1/3;grid-column:2;align-self:center;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.sugg .none{padding:12px 14px;color:var(--muted);font-size:14px}
+.ufs{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13.5px;color:var(--sky);align-items:center}
+.ufs b{color:var(--white);font-weight:600}
+.alt{font-size:13.5px;color:var(--sky);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.alt input{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--navy2);border-radius:0;background:var(--navy2);color:var(--white);width:220px;max-width:100%}
+.alt input::placeholder{color:var(--sky)}
+.btn{all:unset;cursor:pointer;font-size:14px;font-weight:600;padding:9px 16px;background:var(--sky);color:var(--navy)}
+.btn:hover{background:var(--white)}
+.btn.ink{background:var(--navy);color:var(--white)} .btn.ink:hover{background:var(--navy2)}
+.btn:focus-visible,.cbtn:focus-visible,.toggle button:focus-visible,th button:focus-visible,tbody tr:focus-visible,.grow-c:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
+.err{color:var(--white);font-size:13.5px;font-weight:600}
+
+/* ---------- cabeçalho do resultado ---------- */
+.res-head{display:grid;gap:16px;padding-bottom:22px;border-bottom:2px solid var(--navy)}
 .facts{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:14px;color:var(--muted)}
-.facts b{color:var(--ink);font-weight:600}
-.radius{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;color:var(--muted)}
-.cbtn{all:unset;cursor:pointer;font-size:14px;font-weight:500;padding:6px 12px;border-radius:999px;border:1px solid var(--rule);background:var(--paper);color:var(--ink)}
-.cbtn[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.flag{font-size:14px;background:var(--paper);border:1px solid var(--rule);border-left:4px solid var(--hold);padding:12px 16px;max-width:820px}
-/* statements */
+.facts b{color:var(--navy);font-weight:600}
+.radius{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.filters{display:flex;flex-wrap:wrap;gap:6px}
+.cbtn{all:unset;cursor:pointer;font-size:14px;font-weight:500;padding:7px 14px;border:1px solid var(--rule);background:var(--white);color:var(--navy)}
+.cbtn[aria-pressed="true"]{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.flag{font-size:14px;background:var(--white);border:1px solid var(--rule);border-left:4px solid var(--steel);padding:12px 16px;max-width:820px}
+
+/* ---------- mapa ---------- */
+.plate{background:var(--navy);color:var(--sky);display:grid;grid-template-columns:minmax(0,1fr) 300px}
+@media (max-width:880px){.plate{grid-template-columns:1fr}}
+.plate-tools{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px 28px;align-items:end;padding:18px 20px;border-bottom:1px solid var(--navy2)}
+.tool{display:grid;gap:8px}
+.tool label{font-size:13.5px;color:var(--sky)} .tool label b{color:var(--white);font-weight:600}
+.toggle{display:inline-flex;flex-wrap:wrap;background:var(--navy2);padding:3px;gap:2px}
+.toggle button{all:unset;cursor:pointer;padding:7px 12px;font-size:14px;font-weight:500;color:var(--sky)}
+.toggle button[aria-pressed="true"]{background:var(--white);color:var(--navy)}
+input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
+@media (max-width:640px){.plate-tools{gap:12px;padding:14px 14px}.tool{min-width:0;max-width:100%}.toggle{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none}.toggle::-webkit-scrollbar{display:none}.toggle button{padding:6px 10px;font-size:13.5px;white-space:nowrap}.tool .lab{font-size:11px}}
+.mapcol{min-width:0;background:var(--mist);display:grid}
+.map{position:relative;min-width:0;touch-action:manipulation}
+.map svg{display:block;width:100%;height:auto}
+.map path.sp{stroke:var(--white);stroke-width:.5;vector-effect:non-scaling-stroke;cursor:pointer}
+.map path.sp.out{opacity:.38}
+@media (hover:hover){.map path.sp:hover{stroke:var(--navy);stroke-width:1.4}}
+.map path.sp.on{stroke:var(--navy);stroke-width:3}
+.map .ring{fill:none;stroke:var(--navy);stroke-width:1.6;stroke-dasharray:6 6;vector-effect:non-scaling-stroke}
+.map .lbl{fill:var(--navy);opacity:.72;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--text);paint-order:stroke;stroke:rgba(255,255,255,.75);stroke-linejoin:round}
+.map circle.sc{fill:var(--navy);stroke:var(--white);cursor:pointer}
+.map circle.sc.sel{fill:var(--steel);stroke:var(--navy)}
+.tip{position:absolute;pointer-events:none;background:var(--navy);color:var(--white);font-size:13px;padding:9px 11px;max-width:250px;line-height:1.45;z-index:3;box-shadow:0 6px 18px rgba(1,22,54,.3)}
+.tip b{font-family:var(--title);font-weight:600}
+.legend{position:absolute;left:12px;bottom:12px;background:rgba(255,255,255,.95);border:1px solid var(--rule);padding:10px 12px;display:grid;gap:7px;max-width:290px;color:var(--navy);font-size:12.5px;line-height:1.4}
+.legend .sw{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
+.legend .sw i{height:12px;display:block}
+.legend .sl{display:flex;justify-content:space-between;color:var(--muted);font-size:11.5px}
+.legend .nd{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:11.5px}
+.legend .nd i{width:12px;height:12px;background:var(--hnull);border:1px solid var(--rule)}
+.legend p{font-weight:500}
+@media (max-width:640px){.legend{position:static;max-width:none;border:0;border-top:1px solid var(--rule);background:var(--white)}}
+.scard{background:var(--white);border-top:1px solid var(--rule);padding:16px 18px;display:grid;gap:12px;color:var(--navy)}
+.scard[hidden]{display:none}
+.scard .hd{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.scard .ix{font-family:var(--title);font-weight:700;font-size:34px;line-height:1;font-variant-numeric:tabular-nums;text-align:right}
+.scard .ix small{display:block;font-family:var(--text);font-size:12px;font-weight:600;color:var(--muted);margin-top:4px}
+.scard .bd{display:inline-block;padding:2px 8px;font-size:12px;font-weight:600;margin-top:6px}
+.scard .bx{font-size:13px;color:var(--muted);margin-top:6px}
+.scard .x{all:unset;cursor:pointer;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:5px 14px;font-size:14px;margin:0}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+.scard ul{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:13.5px}
+.scard li{display:flex;justify-content:space-between;gap:10px}
+.scard li span:last-child{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.side{padding:20px;display:grid;gap:18px;align-content:start;border-left:1px solid var(--navy2);min-width:0}
+@media (max-width:880px){.side{border-left:0;border-top:1px solid var(--navy2)}}
+.side .k{font-family:var(--title);font-size:38px;font-weight:700;line-height:1;color:var(--white);font-variant-numeric:tabular-nums}
+.side .s{font-size:13.5px;color:var(--sky);margin-top:6px}
+.side .kv dt{color:var(--sky)} .side .kv dd{color:var(--white)}
+.side h3{color:var(--white)}
+.side .note{font-size:12.5px;color:var(--sky);display:grid;gap:6px}
+.side .note span{display:flex;align-items:center;gap:8px}
+.side .note i{display:inline-block;flex:none}
+.selbox{border-top:1px solid var(--navy2);padding-top:16px;display:grid;gap:10px}
+.selbox .btn{justify-self:start}
+
+/* ---------- onde crescer ---------- */
+.grow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:820px){.grow{grid-template-columns:1fr}}
+.grow-c{background:var(--white);border:1px solid var(--rule);padding:20px;display:grid;gap:12px;align-content:start;cursor:pointer;text-align:left}
+.grow-c:hover{border-color:var(--steel)}
+.grow-c .rk{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.grow-c .rk b{font-family:var(--title);font-weight:700;font-size:40px;line-height:1;color:var(--steel)}
+.grow-c .rk span{font-size:12.5px;font-weight:600;color:var(--muted);font-variant-numeric:tabular-nums}
+.grow-c p{font-size:15px}
+.grow-c .ib{height:6px;background:var(--mist)} .grow-c .ib i{display:block;height:100%}
+.grow-c .go{font-size:13px;font-weight:600;color:var(--navy);text-decoration:underline;text-decoration-color:var(--steel);text-underline-offset:3px;text-decoration-thickness:2px}
+.empty{background:var(--white);border:1px solid var(--rule);padding:18px 20px;color:var(--muted)}
+
+/* ---------- frases ---------- */
 .statements{display:grid;border-top:1px solid var(--rule)}
-.st{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr) auto;gap:8px 28px;padding:18px 0;border-bottom:1px solid var(--rule);align-items:baseline}
+.st{display:grid;grid-template-columns:minmax(150px,230px) minmax(0,1fr) auto;gap:8px 28px;padding:20px 0;border-bottom:1px solid var(--rule);align-items:baseline}
 @media (max-width:640px){.st{grid-template-columns:1fr}}
-.st .fig{font-size:clamp(30px,4.2vw,44px);font-weight:850;letter-spacing:-.03em;line-height:1;color:var(--navy);font-variant-numeric:tabular-nums}
-.st .fig small{display:block;font-size:13.5px;font-weight:500;letter-spacing:0;color:var(--muted);margin-top:6px}
-.chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;white-space:nowrap}
-.chip::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
-.c-up{color:var(--up)} .c-down{color:var(--down)} .c-hold{color:var(--hold)} .c-blue{color:var(--blue)} .c-mute{color:var(--muted)}
+.st .fig{font-family:var(--title);font-size:clamp(30px,4.2vw,42px);font-weight:700;line-height:1;color:var(--navy);font-variant-numeric:tabular-nums}
+.st .fig small{display:block;font-family:var(--text);font-size:13.5px;font-weight:500;color:var(--muted);margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;white-space:nowrap;color:var(--navy)}
+.chip::before{content:"";width:8px;height:8px;background:currentColor}
+.c-up{color:var(--steel)} .c-down{color:var(--navy)} .c-hold{color:var(--muted)} .c-blue{color:var(--steel)} .c-mute{color:var(--muted)}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:28px;align-items:start}
 @media (max-width:820px){.two{grid-template-columns:1fr}}
-.paper{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:20px;min-width:0}
-svg text{fill:var(--muted);font-family:var(--font);font-size:12px}
-.legend-row{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted)}
-.legend-row i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:6px;vertical-align:-1px}
-.segs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.paper{background:var(--white);border:1px solid var(--rule);padding:20px;min-width:0}
+svg text{fill:var(--muted);font-family:var(--text);font-size:12px}
+.segs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--white);border:1px solid var(--rule)}
 @media (max-width:820px){.segs{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.seg-c{padding:16px;display:grid;gap:6px;border-right:1px solid var(--rule);min-width:0}
+.seg-c{padding:18px;display:grid;gap:8px;border-right:1px solid var(--rule);min-width:0}
 .seg-c:last-child{border-right:0}
 @media (max-width:820px){.seg-c:nth-child(2){border-right:0}.seg-c:nth-child(-n+2){border-bottom:1px solid var(--rule)}}
-.seg-c .v{font-size:26px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.seg-c .v{font-family:var(--title);font-size:28px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
 .seg-c .s{font-size:13.5px;color:var(--muted)}
-.bar{height:6px;background:var(--mist);border-radius:3px;overflow:hidden}.bar span{display:block;height:100%;background:var(--blue)}
-/* plate */
-.plate{background:var(--plate);color:var(--plate-ink);border-radius:14px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) 290px}
-@media (max-width:880px){.plate{grid-template-columns:1fr}}
-.plate-tools{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:14px 26px;align-items:end;padding:16px 20px;border-bottom:1px solid var(--plate-2)}
-.tool{display:grid;gap:7px}.tool .lab,.tool label{font-size:13px;color:var(--plate-dim)}
-.toggle{display:inline-flex;flex-wrap:wrap;background:var(--plate-2);border-radius:8px;padding:3px;gap:2px}
-.toggle button{all:unset;cursor:pointer;padding:7px 12px;border-radius:6px;font-size:14px;font-weight:500;color:var(--plate-dim)}
-.toggle button[aria-pressed="true"]{background:var(--plate-ink);color:var(--plate)}
-input[type=range]{width:220px;max-width:100%;accent-color:var(--p4)}
-.map{position:relative;min-width:0}
-.map svg{display:block;width:100%;height:auto}
-.map path.sp{stroke:var(--plate);stroke-width:.4;vector-effect:non-scaling-stroke}
-.map path.sp:hover{stroke:var(--plate-ink);stroke-width:1.4}
-.map .ring{fill:none;stroke:var(--plate-ink);stroke-width:1.4;stroke-dasharray:5 6;vector-effect:non-scaling-stroke;opacity:.85}
-.map .lbl{fill:var(--plate-ink);opacity:.6;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--font)}
-.map circle.sc{stroke:var(--plate);cursor:pointer}
-.map circle.sc.sel{stroke:var(--plate-ink)}
-.tip{position:absolute;pointer-events:none;background:var(--plate-ink);color:var(--plate);font-size:13px;padding:9px 11px;border-radius:6px;max-width:250px;line-height:1.4;z-index:3;box-shadow:0 6px 18px rgba(0,0,0,.3)}
-.side{padding:20px;display:grid;gap:16px;align-content:start;border-left:1px solid var(--plate-2);min-width:0}
-@media (max-width:880px){.side{border-left:0;border-top:1px solid var(--plate-2)}}
-.side .k{font-size:40px;font-weight:850;letter-spacing:-.03em;line-height:1;font-variant-numeric:tabular-nums}
-.side .k.hi{color:var(--p5)} .side .s{font-size:13.5px;color:var(--plate-dim)} .side h3{color:var(--plate-ink)}
-.ramp{display:flex;height:10px;border-radius:3px;overflow:hidden}.ramp span{flex:1}
-.ramp-lab{display:flex;justify-content:space-between;font-size:12px;color:var(--plate-dim)}
-.side .dots{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--plate-dim)}
-.side .dots i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
-.kv{display:grid;grid-template-columns:1fr auto;gap:6px 14px;font-size:14px;margin:0}
-.kv dt{color:var(--plate-dim)} .kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
-.selbox{border-top:1px solid var(--plate-2);padding-top:14px;display:grid;gap:10px}
-.selbox .btn{background:var(--plate-ink);color:var(--plate);justify-self:start}
-/* table */
-.filters{display:flex;flex-wrap:wrap;gap:8px}
-.tbl-wrap{overflow-x:auto;background:var(--paper);border:1px solid var(--rule);border-radius:10px;max-height:640px;overflow-y:auto}
+.bar{height:6px;background:var(--mist)}.bar span{display:block;height:100%;background:var(--steel)}
+
+/* ---------- tabela ---------- */
+.tbl-wrap{overflow-x:auto;background:var(--white);border:1px solid var(--rule);max-height:640px;overflow-y:auto}
 table{border-collapse:collapse;width:100%;font-size:14.5px;min-width:760px}
-th,td{padding:10px 14px;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap}
-td.name{white-space:normal;min-width:210px;font-weight:550}
-th{font-weight:600;font-size:13px;color:var(--muted);background:var(--paper);position:sticky;top:0;z-index:1}
-th button{all:unset;cursor:pointer} th button[data-on="1"]{color:var(--ink)}
+th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--rule);white-space:nowrap}
+td.name{white-space:normal;min-width:210px;font-weight:500}
+th{font-weight:600;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--white);position:sticky;top:0;z-index:1}
+th button{all:unset;cursor:pointer} th button[data-on="1"]{color:var(--navy)}
 td.r,th.r{text-align:right;font-variant-numeric:tabular-nums}
 tbody tr{cursor:pointer} tbody tr:hover td,tr.hl td{background:var(--mist)}
-.segdots{display:inline-flex;gap:4px}
-.segdots span{font-size:11.5px;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--mist);color:var(--muted)}
-.segdots span.on{background:var(--navy);color:var(--paper)}
-.approx{color:var(--hold);font-weight:700;margin-left:4px}
-/* digital */
+.segdots{display:inline-flex;gap:3px}
+.segdots span{font-size:11px;font-weight:600;padding:2px 7px;background:var(--mist);color:var(--muted)}
+.segdots span.on{background:var(--navy);color:var(--white)}
+.approx{color:var(--steel);font-weight:700;margin-left:4px}
+/* ---------- digital e fontes ---------- */
 .dig{display:grid;border-top:1px solid var(--rule)}
-.dig div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;padding:12px 0;border-bottom:1px solid var(--rule);align-items:center}
+.dig>div{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 20px;padding:13px 0;border-bottom:1px solid var(--rule);align-items:center}
 .dig .links{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14.5px}
 .dig .nm{font-weight:600}.dig .nm small{display:block;font-weight:400;color:var(--muted);font-size:13px}
-@media (max-width:640px){.dig div{grid-template-columns:1fr}}
-.src{font-size:14px;color:var(--muted);display:grid;gap:10px;max-width:80ch}
-footer{border-top:2px solid var(--ink);padding-top:16px;font-size:13.5px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
-@media (prefers-reduced-motion:no-preference){.map path.sp{transition:fill .3s}}
+@media (max-width:640px){.dig>div{grid-template-columns:1fr}}
+.src{font-size:14.5px;color:var(--muted);display:grid;gap:12px;max-width:80ch}
+.src b{color:var(--navy)}
+.method{background:var(--white);border:1px solid var(--rule);border-left:4px solid var(--steel);padding:18px 20px;display:grid;gap:10px;color:var(--navy);font-size:14.5px}
+.method ol{margin:0;padding-left:20px;display:grid;gap:6px}
+footer.foot{background:var(--white);border-top:1px solid var(--rule);color:var(--muted)}
+footer.foot .logo span{color:var(--steel)}
+footer.foot .in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;padding-top:26px;padding-bottom:max(26px,env(safe-area-inset-bottom,0px));font-size:13px}
+footer .logo img{width:110px}
+.loading{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--navy);color:var(--white);padding:11px 18px;font-size:14px;z-index:50;box-shadow:0 8px 24px rgba(1,22,54,.3)}
+@media (prefers-reduced-motion:no-preference){.map path.sp{transition:fill .25s}}
 </style>
-
-<div class="wrap">
-  <header class="top">
-    <div class="brandrow"><span class="brand">reezu<i></i></span><span>Raio-X de mercado escolar</span></div>
+</head>
+<body>
+<header class="band dark">
+  <div class="in">
+    <div class="brandrow">
+      <a class="logo" href="./" aria-label="Reezu Marketing Educacional"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjIzMiAzNTAgNDc3IDk2IiB3aWR0aD0iNDc3IiBoZWlnaHQ9Ijk2Ij48ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwLTAiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjIwIDM0MCBMIDc0MCAzNDAgTCA3NDAgNDUyIEwgMjIwIDQ1MiBaIE0gMjIwIDM0MCAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTEiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjMwIDM1MC41IEwgNDI4IDM1MC41IEwgNDI4IDQ0NS43NSBMIDIzMCA0NDUuNzUgWiBNIDIzMCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTIiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjMwIDM1MC41IEwgNTE5IDM1MC41IEwgNTE5IDQ0NS43NSBMIDIzMCA0NDUuNzUgWiBNIDIzMCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTMiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjY3IDM1MC41IEwgNjExIDM1MC41IEwgNjExIDQ0NS43NSBMIDI2NyA0NDUuNzUgWiBNIDI2NyAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTQiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gNDU4IDM1MC41IEwgNzEwIDM1MC41IEwgNzEwIDQ0NS43NSBMIDQ1OCA0NDUuNzUgWiBNIDQ1OCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC0xKSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMTMiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iNCIgZD0iTSA2LjUwMDAwNiA0OS4wMDAwMDkgTCA2LjUwMDAwNiAyNC41MDAwMDggQyA2LjUwMDAwNiAyMy45MTA0MjUgNi41MjkxNzIgMjMuMzIyOTI1IDYuNTg3NTA2IDIyLjczNTQyNSBDIDYuNjQzNzU2IDIyLjE1MDAwOCA2LjczMTI1NiAyMS41NjY2NzUgNi44NDU4MzkgMjAuOTg3NTA4IEMgNi45NjA0MjIgMjAuNDEwNDI1IDcuMTA0MTcyIDE5LjgzOTU5MSA3LjI3NTAwNiAxOS4yNzUwMDggQyA3LjQ0NTgzOSAxOC43MTA0MjUgNy42NDM3NTYgMTguMTU2MjU4IDcuODcwODM5IDE3LjYxMjUwOCBDIDguMDk1ODM5IDE3LjA2NjY3NSA4LjM0NzkyMiAxNi41MzU0MjUgOC42MjUwMDYgMTYuMDE0NTkxIEMgOC45MDQxNzIgMTUuNDk1ODQxIDkuMjA2MjU2IDE0Ljk4OTU5MSA5LjUzMzMzOSAxNC41MDAwMDggQyA5Ljg2MDQyMiAxNC4wMTA0MjUgMTAuMjEyNTA2IDEzLjUzNzUwOCAxMC41ODU0MjIgMTMuMDgxMjU4IEMgMTAuOTYwNDIyIDEyLjYyNTAwOCAxMS4zNTYyNTYgMTIuMTg5NTkxIDExLjc3MjkyMyAxMS43NzI5MjQgQyAxMi4xODk1ODkgMTEuMzU2MjU4IDEyLjYyNTAwNiAxMC45NjA0MjQgMTMuMDgxMjU2IDEwLjU4NTQyNCBDIDEzLjUzNzUwNiAxMC4yMTI1MDggMTQuMDEwNDIzIDkuODYwNDI0IDE0LjUwMDAwNiA5LjUzMzM0MSBDIDE0Ljk4OTU4OSA5LjIwNjI1OCAxNS40OTU4MzkgOC45MDQxNzQgMTYuMDE0NTg5IDguNjI1MDA4IEMgMTYuNTM1NDIzIDguMzQ3OTI0IDE3LjA2NjY3MyA4LjA5NTg0MSAxNy42MTI1MDYgNy44NzA4NDEgQyAxOC4xNTYyNTYgNy42NDM3NTggMTguNzEwNDIzIDcuNDQ1ODQxIDE5LjI3NTAwNiA3LjI3NTAwOCBDIDE5LjgzOTU5IDcuMTA0MTc0IDIwLjQxMDQyMyA2Ljk2MDQyNCAyMC45ODc1MDYgNi44NDU4NDEgQyAyMS41NjY2NzMgNi43MzEyNTggMjIuMTUwMDA2IDYuNjQzNzU4IDIyLjczNTQyMyA2LjU4NzUwOCBDIDIzLjMyMjkyMyA2LjUyOTE3NCAyMy45MTA0MjMgNi41MDAwMDggMjQuNTAwMDA2IDYuNTAwMDA4IEwgMzEuMDAwMDA3IDYuNTAwMDA4ICIgdHJhbnNmb3JtPSJtYXRyaXgoMS44NzUsIDAsIDAsIDEuODc1LCAyMzEuODc0OTksIDM1Mi4zNzQ5ODYpIi8+CjwvZz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMikiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEzIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlPSIjNUI3OUFEIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjQiIGQ9Ik0gNDMuNTAwMDA3IDI0LjUwMDAwOCBDIDQzLjUwMDAwNyAyNC4xNTIwOTIgNDMuNTEwNDI0IDIzLjgwNjI1OCA0My41MjkxNzQgMjMuNDYwNDI1IEMgNDMuNTUwMDA3IDIzLjExMjUwOCA0My41NzkxNzQgMjIuNzY4NzU4IDQzLjYyMDg0MSAyMi40MjI5MjUgQyA0My42NjA0MjQgMjIuMDc5MTc1IDQzLjcxMDQyNCAyMS43MzU0MjUgNDMuNzcwODQxIDIxLjM5Mzc1OCBDIDQzLjgyOTE3NCAyMS4wNTIwOTEgNDMuOTAwMDA3IDIwLjcxMjUwOCA0My45NzkxNzQgMjAuMzc1MDA4IEMgNDQuMDU4MzQxIDIwLjAzNTQyNSA0NC4xNDc5MjQgMTkuNzAyMDkxIDQ0LjI0NTg0MSAxOS4zNjg3NTggQyA0NC4zNDU4NDEgMTkuMDM1NDI1IDQ0LjQ1NDE3NCAxOC43MDYyNTggNDQuNTcyOTI0IDE4LjM3OTE3NSBDIDQ0LjY4OTU5MSAxOC4wNTQxNzUgNDQuODE2Njc0IDE3LjczMTI1OCA0NC45NTQxNzQgMTcuNDEyNTA4IEMgNDUuMDg5NTkxIDE3LjA5Mzc1OCA0NS4yMzU0MjQgMTYuNzc5MTc1IDQ1LjM5MTY3NCAxNi40Njg3NTggQyA0NS41NDU4NDEgMTYuMTU4MzQxIDQ1LjcxMDQyNCAxNS44NTIwOTEgNDUuODgxMjU3IDE1LjU1MDAwOCBDIDQ2LjA1NDE3NCAxNS4yNTAwMDggNDYuMjM1NDI0IDE0Ljk1NDE3NSA0Ni40MjUwMDcgMTQuNjYyNTA4IEMgNDYuNjE0NTkxIDE0LjM3MjkyNSA0Ni44MTI1MDcgMTQuMDg3NTA4IDQ3LjAxODc1NyAxMy44MDgzNDEgQyA0Ny4yMjUwMDcgMTMuNTI5MTc1IDQ3LjQzOTU5MSAxMy4yNTYyNTggNDcuNjYwNDI0IDEyLjk4OTU5MSBDIDQ3Ljg4MzM0MSAxMi43MjI5MjQgNDguMTEyNTA3IDEyLjQ2MjUwOCA0OC4zNTAwMDcgMTIuMjA4MzQxIEMgNDguNTg1NDI0IDExLjk1NjI1OCA0OC44MjkxNzQgMTEuNzA4MzQxIDQ5LjA4MTI1NyAxMS40Njg3NTggQyA0OS4zMzMzNDEgMTEuMjI5MTc0IDQ5LjU4OTU5MSAxMC45OTc5MjQgNDkuODU0MTc0IDEwLjc3MjkyNCBDIDUwLjExODc1NyAxMC41NTAwMDggNTAuMzg5NTkxIDEwLjMzMzM0MSA1MC42NjY2NzQgMTAuMTIyOTI0IEMgNTAuOTQzNzU3IDkuOTE0NTkxIDUxLjIyNzA5MSA5LjcxNDU5MSA1MS41MTY2NzQgOS41MjA4NDEgQyA1MS44MDQxNzQgOS4zMjkxNzQgNTIuMTAwMDA4IDkuMTQ1ODQxIDUyLjM5NzkyNCA4Ljk3MDg0MSBDIDUyLjY5NzkyNCA4Ljc5Mzc1OCA1My4wMDIwOTEgOC42MjcwOTEgNTMuMzEwNDI0IDguNDcwODQxIEMgNTMuNjIwODQxIDguMzEyNTA4IDUzLjkzMzM0MSA4LjE2MjUwOCA1NC4yNTIwOTEgOC4wMjI5MjQgQyA1NC41Njg3NTggNy44ODMzNDEgNTQuODg5NTkxIDcuNzU0MTc0IDU1LjIxNDU5MSA3LjYzMTI1OCBDIDU1LjUzOTU5MSA3LjUxMDQyNCA1NS44Njg3NTggNy40MDAwMDggNTYuMjAwMDA4IDcuMjk3OTI0IEMgNTYuNTMxMjU4IDcuMTk1ODQxIDU2Ljg2NjY3NCA3LjEwMjA5MSA1Ny4yMDQxNzQgNy4wMTg3NTggQyA1Ny41Mzk1OTEgNi45Mzc1MDggNTcuODc5MTc0IDYuODY0NTkxIDU4LjIyMDg0MSA2LjgwMDAwOCBDIDU4LjU2MjUwOCA2LjczNzUwOCA1OC45MDQxNzQgNi42ODMzNDEgNTkuMjQ3OTI1IDYuNjQxNjc0IEMgNTkuNTkzNzU4IDYuNTk3OTI0IDU5LjkzNzUwOCA2LjU2NDU5MSA2MC4yODU0MjUgNi41Mzk1OTEgQyA2MC42MzEyNTggNi41MTY2NzQgNjAuOTc3MDkxIDYuNTA0MTc0IDYxLjMyNTAwOCA2LjUwMDAwOCBDIDYxLjY3MDg0MSA2LjQ5NzkyNCA2Mi4wMTg3NTggNi41MDQxNzQgNjIuMzY0NTkxIDYuNTIwODQxIEMgNjIuNzEwNDI1IDYuNTM3NTA4IDYzLjA1NjI1OCA2LjU2MjUwOCA2My40MDIwOTEgNi42MDAwMDggQyA2My43NDc5MjUgNi42Mzc1MDggNjQuMDkxNjc1IDYuNjgzMzQxIDY0LjQzMzM0MSA2LjczOTU5MSBDIDY0Ljc3NTAwOCA2Ljc5NTg0MSA2NS4xMTY2NzUgNi44NjI1MDggNjUuNDU0MTc1IDYuOTM5NTkxIEMgNjUuNzkzNzU4IDcuMDE0NTkxIDY2LjEyOTE3NSA3LjEwMjA5MSA2Ni40NjI1MDggNy4xOTc5MjQgQyA2Ni43OTU4NDEgNy4yOTM3NTggNjcuMTI3MDkyIDcuMzk3OTI0IDY3LjQ1NDE3NSA3LjUxMjUwOCBDIDY3Ljc4MTI1OCA3LjYyNzA5MSA2OC4xMDYyNTggNy43NTIwOTEgNjguNDI1MDA4IDcuODg1NDI0IEMgNjguNzQ1ODQyIDguMDE4NzU4IDY5LjA2MjUwOCA4LjE2MDQyNCA2OS4zNzUwMDggOC4zMTI1MDggQyA2OS42ODU0MjUgOC40NjQ1OTEgNjkuOTkzNzU4IDguNjI1MDA4IDcwLjI5NTg0MiA4Ljc5NTg0MSBDIDcwLjYwMDAwOCA4Ljk2NDU5MSA3MC44OTU4NDIgOS4xNDM3NTggNzEuMTg5NTkyIDkuMzI5MTc0IEMgNzEuNDgxMjU4IDkuNTE2Njc0IDcxLjc2ODc1OCA5LjcxMjUwOCA3Mi4wNTAwMDggOS45MTQ1OTEgQyA3Mi4zMzEyNTggMTAuMTE4NzU4IDcyLjYwNjI1OCAxMC4zMjkxNzQgNzIuODc1MDA4IDEwLjU1MDAwOCBDIDczLjE0Mzc1OCAxMC43Njg3NTggNzMuNDA2MjU4IDEwLjk5NTg0MSA3My42NjI1MDggMTEuMjI5MTc0IEMgNzMuOTE4NzU4IDExLjQ2NDU5MSA3NC4xNjY2NzUgMTEuNzA2MjU4IDc0LjQwODM0MiAxMS45NTQxNzQgQyA3NC42NTAwMDggMTIuMjA0MTc0IDc0Ljg4NTQyNSAxMi40NTgzNDEgNzUuMTEyNTA5IDEyLjcyMDg0MSBDIDc1LjMzOTU5MiAxMi45ODMzNDEgNzUuNTU4MzQyIDEzLjI1MjA5MSA3NS43Njg3NTkgMTMuNTI3MDkxIEMgNzUuOTgxMjU5IDEzLjgwMjA5MSA3Ni4xODU0MjUgMTQuMDgzMzQxIDc2LjM3OTE3NSAxNC4zNzA4NDEgQyA3Ni41NzUwMDkgMTQuNjU4MzQxIDc2Ljc2MjUwOSAxNC45NTAwMDggNzYuOTM5NTkyIDE1LjI0NzkyNSBDIDc3LjExODc1OSAxNS41NDU4NDEgNzcuMjg3NTA5IDE1Ljg0NzkyNSA3Ny40NTAwMDkgMTYuMTU0MTc1IEMgNzcuNjEwNDI1IDE2LjQ2MjUwOCA3Ny43NjI1MDkgMTYuNzc1MDA4IDc3LjkwNDE3NSAxNy4wODk1OTEgQyA3OC4wNDc5MjUgMTcuNDA2MjU4IDc4LjE4MTI1OSAxNy43MjcwOTEgNzguMzA2MjU5IDE4LjA1MDAwOCBDIDc4LjQyOTE3NSAxOC4zNzUwMDggNzguNTQzNzU5IDE4LjcwMjA5MSA3OC42NTAwMDkgMTkuMDMzMzQxIEMgNzguNzU0MTc1IDE5LjM2MjUwOCA3OC44NTAwMDkgMTkuNjk1ODQxIDc4LjkzNzUwOSAyMC4wMzMzNDEgQyA3OS4wMjI5MjUgMjAuMzY4NzU4IDc5LjEwMDAwOSAyMC43MDgzNDEgNzkuMTY2Njc1IDIxLjA0NzkyNSBDIDc5LjIzMzM0MiAyMS4zODc1MDggNzkuMjg5NTkyIDIxLjczMTI1OCA3OS4zMzU0MjUgMjIuMDc1MDA4IEMgNzkuMzgzMzQyIDIyLjQxODc1OCA3OS40MTg3NTkgMjIuNzYyNTA4IDc5LjQ0NTg0MiAyMy4xMDgzNDIgQyA3OS40NzI5MjUgMjMuNDU2MjU4IDc5LjQ4OTU5MiAyMy44MDIwOTIgNzkuNDk1ODQyIDI0LjE0NzkyNSBDIDc5LjUwNDE3NSAyNC40OTU4NDIgNzkuNTAwMDA5IDI0Ljg0MTY3NSA3OS40ODc1MDkgMjUuMTg5NTkyIEMgNzkuNDcyOTI1IDI1LjUzNTQyNSA3OS40NTAwMDkgMjUuODgxMjU4IDc5LjQxNjY3NSAyNi4yMjcwOTIgQyA3OS4zODMzNDIgMjYuNTcyOTI1IDc5LjMzOTU5MiAyNi45MTY2NzUgNzkuMjg3NTA5IDI3LjI2MDQyNSBDIDc5LjIzMzM0MiAyNy42MDIwOTIgNzkuMTcwODQyIDI3Ljk0Mzc1OCA3OS4wOTc5MjUgMjguMjgzMzQyIEMgNzkuMDI1MDA5IDI4LjYyMjkyNSA3OC45NDE2NzUgMjguOTU4MzQyIDc4Ljg1MDAwOSAyOS4yOTM3NTggQyA3OC43NTgzNDIgMjkuNjI3MDkyIDc4LjY1NjI1OSAyOS45NjA0MjUgNzguNTQzNzU5IDMwLjI4NzUwOSBDIDc4LjQzMTI1OSAzMC42MTY2NzUgNzguMzEwNDI1IDMwLjk0MTY3NSA3OC4xODEyNTkgMzEuMjYyNTA5IEMgNzguMDUwMDA5IDMxLjU4NTQyNSA3Ny45MTA0MjUgMzEuOTAyMDkyIDc3Ljc2MjUwOSAzMi4yMTY2NzUgQyA3Ny42MTI1MDkgMzIuNTI5MTc1IDc3LjQ1NjI1OSAzMi44Mzc1MDkgNzcuMjg5NTkyIDMzLjE0Mzc1OSBDIDc3LjEyMjkyNSAzMy40NDc5MjUgNzYuOTQ3OTI1IDMzLjc0NTg0MiA3Ni43NjI1MDkgMzQuMDQxNjc1IEMgNzYuNTc5MTc1IDM0LjMzNTQyNSA3Ni4zODc1MDkgMzQuNjIyOTI1IDc2LjE4NTQyNSAzNC45MDYyNTkgQyA3NS45ODU0MjUgMzUuMTg5NTkyIDc1Ljc3NzA5MiAzNS40NjY2NzUgNzUuNTYwNDI1IDM1LjczNzUwOSBDIDc1LjM0Mzc1OSAzNi4wMDgzNDIgNzUuMTE4NzU5IDM2LjI3MjkyNSA3NC44ODc1MDggMzYuNTMxMjU5IEMgNzQuNjU2MjU4IDM2Ljc4OTU5MiA3NC40MTY2NzUgMzcuMDQxNjc1IDc0LjE3MDg0MiAzNy4yODU0MjUgQyA3My45MjI5MjUgMzcuNTI5MTc2IDczLjY3MDg0MiAzNy43NjY2NzYgNzMuNDEwNDI1IDM3Ljk5NTg0MiBDIDczLjE1MDAwOCAzOC4yMjUwMDkgNzIuODgzMzQyIDM4LjQ0NzkyNiA3Mi42MTA0MjUgMzguNjYyNTA5IEMgNzIuMzM3NTA4IDM4Ljg3NTAwOSA3Mi4wNTgzNDIgMzkuMDgxMjU5IDcxLjc3MjkyNSAzOS4yNzkxNzYgQyA3MS40ODc1MDggMzkuNDc3MDkyIDcxLjE5NzkyNSAzOS42NjY2NzYgNzAuOTAyMDkyIDM5Ljg0NzkyNiBDIDcwLjYwNjI1OCA0MC4wMjkxNzYgNzAuMzA0MTc1IDQwLjIwMjA5MiA3MC4wMDAwMDggNDAuMzY2Njc2IEMgNjkuNjkzNzU4IDQwLjUzMTI1OSA2OS4zODMzNDIgNDAuNjg1NDI2IDY5LjA2ODc1OCA0MC44MzEyNTkgQyA2OC43NTQxNzUgNDAuOTc3MDkyIDY4LjQzNTQyNSA0MS4xMTQ1OTIgNjguMTEyNTA4IDQxLjI0MTY3NiBDIDY3Ljc4OTU5MiA0MS4zNjg3NTkgNjcuNDYyNTA4IDQxLjQ4NzUwOSA2Ny4xMzMzNDIgNDEuNTk1ODQyIEMgNjYuODA0MTc1IDQxLjcwNDE3NiA2Ni40NzA4NDEgNDEuODAyMDkyIDY2LjEzNTQyNSA0MS44OTE2NzYgQyA2NS44MDAwMDggNDEuOTgxMjU5IDY1LjQ2MjUwOCA0Mi4wNjA0MjYgNjUuMTIyOTI1IDQyLjEzMTI1OSBDIDY0Ljc4MzM0MSA0Mi4yMDAwMDkgNjQuNDQxNjc1IDQyLjI2MDQyNiA2NC4wOTc5MjUgNDIuMzEwNDI2IEMgNjMuNzU0MTc1IDQyLjM2MDQyNiA2My40MTA0MjUgNDIuNDAyMDkyIDYzLjA2NDU5MSA0Mi40MzEyNTkgQyA2Mi43MTg3NTggNDIuNDYwNDI2IDYyLjM3MjkyNSA0Mi40ODEyNTkgNjIuMDI1MDA4IDQyLjQ5MTY3NiBDIDYxLjY3OTE3NSA0Mi41MDIwOTIgNjEuMzMxMjU4IDQyLjUwMjA5MiA2MC45ODU0MjUgNDIuNDkxNjc2IEMgNjAuNjM3NTA4IDQyLjQ4MTI1OSA2MC4yOTE2NzUgNDIuNDYyNTA5IDU5Ljk0NTg0MSA0Mi40MzEyNTkgQyA1OS42MDAwMDggNDIuNDAyMDkyIDU5LjI1NjI1OCA0Mi4zNjI1MDkgNTguOTEyNTA4IDQyLjMxMjUwOSBDIDU4LjU2ODc1OCA0Mi4yNjI1MDkgNTguMjI3MDkxIDQyLjIwMjA5MiA1Ny44ODc1MDggNDIuMTMzMzQyIEMgNTcuNTQ3OTI0IDQyLjA2NDU5MiA1Ny4yMTA0MjQgNDEuOTgzMzQyIDU2Ljg3NTAwOCA0MS44OTU4NDIgQyA1Ni41Mzk1OTEgNDEuODA2MjU5IDU2LjIwNjI1OCA0MS43MDYyNTkgNTUuODc3MDkxIDQxLjU5NzkyNiBDIDU1LjU0NzkyNCA0MS40ODk1OTIgNTUuMjIwODQxIDQxLjM3MjkyNiA1NC44OTc5MjQgNDEuMjQ1ODQyIEMgNTQuNTc1MDA4IDQxLjExODc1OSA1NC4yNTYyNTggNDAuOTgxMjU5IDUzLjk0MTY3NCA0MC44MzU0MjYgQyA1My42MjcwOTEgNDAuNjg5NTkyIDUzLjMxNjY3NCA0MC41MzU0MjYgNTMuMDEwNDI0IDQwLjM3MDg0MiBDIDUyLjcwNDE3NCA0MC4yMDgzNDIgNTIuNDA0MTc0IDQwLjAzNTQyNiA1Mi4xMDgzNDEgMzkuODU0MTc2IEMgNTEuODEyNTA4IDM5LjY3MjkyNiA1MS41MjA4NDEgMzkuNDgzMzQyIDUxLjIzNTQyNCAzOS4yODU0MjYgQyA1MC45NTAwMDcgMzkuMDg3NTA5IDUwLjY3MjkyNCAzOC44ODMzNDIgNTAuMzk3OTI0IDM4LjY2ODc1OSBDIDUwLjEyNTAwNyAzOC40NTQxNzYgNDkuODU4MzQxIDM4LjIzMzM0MiA0OS41OTc5MjQgMzguMDA0MTc2IEMgNDkuMzM3NTA3IDM3Ljc3MjkyNiA0OS4wODU0MjQgMzcuNTM3NTA5IDQ4LjgzNzUwNyAzNy4yOTM3NTkgQyA0OC41OTE2NzQgMzcuMDQ3OTI1IDQ4LjM1MjA5MSAzNi43OTc5MjUgNDguMTIwODQxIDM2LjUzOTU5MiAiIHRyYW5zZm9ybT0ibWF0cml4KDEuODc1LCAwLCAwLCAxLjg3NSwgMjMxLjg3NDk5LCAzNTIuMzc0OTg2KSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0ibm9uemVybyIgZmlsbD0iIzVCNzlBRCIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDMwMS4yNSAzODYuMTI1IEwgMzkzLjEyNSAzODYuMTI1IEwgMzkzLjEyNSA0MTAuNSBMIDMwMS4yNSA0MTAuNSBaIE0gMzAxLjI1IDM4Ni4xMjUgIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwLTMpIj4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxMyIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiIHN0cm9rZT0iI0ZGRkZGRiIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSI0IiBkPSJNIDEyOC41MDAwMTEgMjQuNTAwMDA4IEMgMTI4LjUwMDAxMSAyNC4xNTIwOTIgMTI4LjQ4OTU5NCAyMy44MDYyNTggMTI4LjQ3MDg0NCAyMy40NjA0MjUgQyAxMjguNDUwMDExIDIzLjExMjUwOCAxMjguNDIwODQ0IDIyLjc2ODc1OCAxMjguMzc5MTc3IDIyLjQyMjkyNSBDIDEyOC4zMzk1OTQgMjIuMDc5MTc1IDEyOC4yODk1OTQgMjEuNzM1NDI1IDEyOC4yMjkxNzcgMjEuMzkzNzU4IEMgMTI4LjE3MDg0NCAyMS4wNTIwOTEgMTI4LjEwMDAxMSAyMC43MTI1MDggMTI4LjAyMDg0NCAyMC4zNzUwMDggQyAxMjcuOTQxNjc3IDIwLjAzNTQyNSAxMjcuODUyMDk0IDE5LjcwMjA5MSAxMjcuNzU0MTc3IDE5LjM2ODc1OCBDIDEyNy42NTQxNzcgMTkuMDM1NDI1IDEyNy41NDU4NDQgMTguNzA2MjU4IDEyNy40MjcwOTQgMTguMzc5MTc1IEMgMTI3LjMxMDQyNyAxOC4wNTQxNzUgMTI3LjE4MzM0NCAxNy43MzEyNTggMTI3LjA0NTg0NCAxNy40MTI1MDggQyAxMjYuOTEwNDI3IDE3LjA5Mzc1OCAxMjYuNzY0NTk0IDE2Ljc3OTE3NSAxMjYuNjA4MzQ0IDE2LjQ2ODc1OCBDIDEyNi40NTQxNzcgMTYuMTU4MzQxIDEyNi4yODk1OTQgMTUuODUyMDkxIDEyNi4xMTg3NjEgMTUuNTUwMDA4IEMgMTI1Ljk0NTg0NCAxNS4yNTAwMDggMTI1Ljc2NDU5NCAxNC45NTQxNzUgMTI1LjU3NTAxMSAxNC42NjI1MDggQyAxMjUuMzg1NDI3IDE0LjM3MjkyNSAxMjUuMTg3NTExIDE0LjA4NzUwOCAxMjQuOTgxMjYxIDEzLjgwODM0MSBDIDEyNC43NzUwMTEgMTMuNTI5MTc1IDEyNC41NjA0MjcgMTMuMjU2MjU4IDEyNC4zMzk1OTQgMTIuOTg5NTkxIEMgMTI0LjExNjY3NyAxMi43MjI5MjQgMTIzLjg4NzUxMSAxMi40NjI1MDggMTIzLjY1MDAxMSAxMi4yMDgzNDEgQyAxMjMuNDE0NTk0IDExLjk1NjI1OCAxMjMuMTcwODQ0IDExLjcwODM0MSAxMjIuOTE4NzYgMTEuNDY4NzU4IEMgMTIyLjY2NjY3NyAxMS4yMjkxNzQgMTIyLjQxMDQyNyAxMC45OTc5MjQgMTIyLjE0NTg0NCAxMC43NzI5MjQgQyAxMjEuODgxMjYgMTAuNTUwMDA4IDEyMS42MTA0MjcgMTAuMzMzMzQxIDEyMS4zMzMzNDQgMTAuMTIyOTI0IEMgMTIxLjA1NjI2IDkuOTE0NTkxIDEyMC43NzI5MjcgOS43MTQ1OTEgMTIwLjQ4MzM0NCA5LjUyMDg0MSBDIDEyMC4xOTU4NDQgOS4zMjkxNzQgMTE5LjkwMDAxIDkuMTQ1ODQxIDExOS42MDIwOTQgOC45NzA4NDEgQyAxMTkuMzAyMDk0IDguNzkzNzU4IDExOC45OTc5MjcgOC42MjcwOTEgMTE4LjY4OTU5NCA4LjQ3MDg0MSBDIDExOC4zNzkxNzcgOC4zMTI1MDggMTE4LjA2NjY3NyA4LjE2MjUwOCAxMTcuNzQ3OTI3IDguMDIyOTI0IEMgMTE3LjQzMTI2IDcuODgzMzQxIDExNy4xMTA0MjcgNy43NTQxNzQgMTE2Ljc4NTQyNyA3LjYzMTI1OCBDIDExNi40NjA0MjcgNy41MTA0MjQgMTE2LjEzMTI2IDcuNDAwMDA4IDExNS44MDAwMSA3LjI5NzkyNCBDIDExNS40Njg3NiA3LjE5NTg0MSAxMTUuMTMzMzQ0IDcuMTAyMDkxIDExNC43OTU4NDMgNy4wMTg3NTggQyAxMTQuNDYwNDI3IDYuOTM3NTA4IDExNC4xMjA4NDMgNi44NjQ1OTEgMTEzLjc3OTE3NyA2LjgwMDAwOCBDIDExMy40Mzc1MSA2LjczNzUwOCAxMTMuMDk1ODQzIDYuNjgzMzQxIDExMi43NTIwOTMgNi42NDE2NzQgQyAxMTIuNDA2MjYgNi41OTc5MjQgMTEyLjA2MjUxIDYuNTY0NTkxIDExMS43MTQ1OTMgNi41Mzk1OTEgQyAxMTEuMzY4NzYgNi41MTY2NzQgMTExLjAyMjkyNyA2LjUwNDE3NCAxMTAuNjc1MDEgNi41MDAwMDggQyAxMTAuMzI5MTc3IDYuNDk3OTI0IDEwOS45ODEyNiA2LjUwNDE3NCAxMDkuNjM1NDI3IDYuNTIwODQxIEMgMTA5LjI4OTU5MyA2LjUzNzUwOCAxMDguOTQzNzYgNi41NjI1MDggMTA4LjU5NzkyNyA2LjYwMDAwOCBDIDEwOC4yNTIwOTMgNi42Mzc1MDggMTA3LjkwODM0MyA2LjY4MzM0MSAxMDcuNTY2Njc3IDYuNzM5NTkxIEMgMTA3LjIyNTAxIDYuNzk1ODQxIDEwNi44ODMzNDMgNi44NjI1MDggMTA2LjU0NTg0MyA2LjkzOTU5MSBDIDEwNi4yMDYyNiA3LjAxNDU5MSAxMDUuODcwODQzIDcuMTAyMDkxIDEwNS41Mzc1MSA3LjE5NzkyNCBDIDEwNS4yMDQxNzYgNy4yOTM3NTggMTA0Ljg3MjkyNiA3LjM5NzkyNCAxMDQuNTQ1ODQzIDcuNTEyNTA4IEMgMTA0LjIxODc2IDcuNjI3MDkxIDEwMy44OTM3NiA3Ljc1MjA5MSAxMDMuNTc1MDEgNy44ODU0MjQgQyAxMDMuMjU0MTc2IDguMDE4NzU4IDEwMi45Mzc1MSA4LjE2MDQyNCAxMDIuNjI1MDEgOC4zMTI1MDggQyAxMDIuMzE0NTkzIDguNDY0NTkxIDEwMi4wMDYyNiA4LjYyNTAwOCAxMDEuNzA0MTc2IDguNzk1ODQxIEMgMTAxLjQwMDAxIDguOTY0NTkxIDEwMS4xMDIwOTMgOS4xNDM3NTggMTAwLjgxMDQyNiA5LjMyOTE3NCBDIDEwMC41MTg3NiA5LjUxNjY3NCAxMDAuMjMxMjYgOS43MTI1MDggOTkuOTUwMDEgOS45MTQ1OTEgQyA5OS42Njg3NiAxMC4xMTg3NTggOTkuMzkzNzYgMTAuMzI5MTc0IDk5LjEyNTAxIDEwLjU1MDAwOCBDIDk4Ljg1NjI1OSAxMC43Njg3NTggOTguNTkzNzU5IDEwLjk5NTg0MSA5OC4zMzc1MDkgMTEuMjI5MTc0IEMgOTguMDgxMjU5IDExLjQ2NDU5MSA5Ny44MzMzNDMgMTEuNzA2MjU4IDk3LjU5MTY3NiAxMS45NTQxNzQgQyA5Ny4zNTAwMDkgMTIuMjA0MTc0IDk3LjExNDU5MyAxMi40NTgzNDEgOTYuODg3NTA5IDEyLjcyMDg0MSBDIDk2LjY2MDQyNiAxMi45ODMzNDEgOTYuNDQxNjc2IDEzLjI1MjA5MSA5Ni4yMzEyNTkgMTMuNTI3MDkxIEMgOTYuMDE4NzU5IDEzLjgwMjA5MSA5NS44MTQ1OTMgMTQuMDgzMzQxIDk1LjYyMDg0MyAxNC4zNzA4NDEgQyA5NS40MjUwMDkgMTQuNjU4MzQxIDk1LjIzNzUwOSAxNC45NTAwMDggOTUuMDYwNDI2IDE1LjI0NzkyNSBDIDk0Ljg4MTI1OSAxNS41NDU4NDEgOTQuNzEyNTA5IDE1Ljg0NzkyNSA5NC41NTAwMDkgMTYuMTU0MTc1IEMgOTQuMzg5NTkzIDE2LjQ2MjUwOCA5NC4yMzc1MDkgMTYuNzc1MDA4IDk0LjA5NTg0MyAxNy4wODk1OTEgQyA5My45NTIwOTMgMTcuNDA2MjU4IDkzLjgxODc1OSAxNy43MjcwOTEgOTMuNjkzNzU5IDE4LjA1MDAwOCBDIDkzLjU3MDg0MyAxOC4zNzUwMDggOTMuNDU2MjU5IDE4LjcwMjA5MSA5My4zNTAwMDkgMTkuMDMzMzQxIEMgOTMuMjQzNzU5IDE5LjM2MjUwOCA5My4xNTAwMDkgMTkuNjk1ODQxIDkzLjA2MjUwOSAyMC4wMzMzNDEgQyA5Mi45NzcwOTMgMjAuMzY4NzU4IDkyLjkwMDAwOSAyMC43MDgzNDEgOTIuODMzMzQzIDIxLjA0NzkyNSBDIDkyLjc2NjY3NiAyMS4zODc1MDggOTIuNzEwNDI2IDIxLjczMTI1OCA5Mi42NjQ1OTMgMjIuMDc1MDA4IEMgOTIuNjE2Njc2IDIyLjQxODc1OCA5Mi41ODEyNTkgMjIuNzYyNTA4IDkyLjU1NDE3NiAyMy4xMDgzNDIgQyA5Mi41MjcwOTMgMjMuNDU2MjU4IDkyLjUxMDQyNiAyMy44MDIwOTIgOTIuNTA0MTc2IDI0LjE0NzkyNSBDIDkyLjQ5NTg0MyAyNC40OTU4NDIgOTIuNTAwMDA5IDI0Ljg0MTY3NSA5Mi41MTI1MDkgMjUuMTg5NTkyIEMgOTIuNTI3MDkzIDI1LjUzNTQyNSA5Mi41NTAwMDkgMjUuODgxMjU4IDkyLjU4MzM0MyAyNi4yMjcwOTIgQyA5Mi42MTY2NzYgMjYuNTcyOTI1IDkyLjY2MDQyNiAyNi45MTY2NzUgOTIuNzEyNTA5IDI3LjI2MDQyNSBDIDkyLjc2NjY3NiAyNy42MDIwOTIgOTIuODI5MTc2IDI3Ljk0Mzc1OCA5Mi45MDIwOTMgMjguMjgzMzQyIEMgOTIuOTc1MDA5IDI4LjYyMjkyNSA5My4wNTgzNDMgMjguOTU4MzQyIDkzLjE1MDAwOSAyOS4yOTM3NTggQyA5My4yNDE2NzYgMjkuNjI3MDkyIDkzLjM0Mzc1OSAyOS45NjA0MjUgOTMuNDU2MjU5IDMwLjI4NzUwOSBDIDkzLjU2ODc1OSAzMC42MTY2NzUgOTMuNjg5NTkzIDMwLjk0MTY3NSA5My44MTg3NTkgMzEuMjYyNTA5IEMgOTMuOTUwMDA5IDMxLjU4NTQyNSA5NC4wODk1OTMgMzEuOTAyMDkyIDk0LjIzNzUwOSAzMi4yMTY2NzUgQyA5NC4zODc1MDkgMzIuNTI5MTc1IDk0LjU0Mzc1OSAzMi44Mzc1MDkgOTQuNzEwNDI2IDMzLjE0Mzc1OSBDIDk0Ljg3NzA5MyAzMy40NDc5MjUgOTUuMDUyMDkzIDMzLjc0NTg0MiA5NS4yMzc1MDkgMzQuMDQxNjc1IEMgOTUuNDIwODQzIDM0LjMzNTQyNSA5NS42MTI1MDkgMzQuNjIyOTI1IDk1LjgxNDU5MyAzNC45MDYyNTkgQyA5Ni4wMTQ1OTMgMzUuMTg5NTkyIDk2LjIyMjkyNiAzNS40NjY2NzUgOTYuNDM5NTkzIDM1LjczNzUwOSBDIDk2LjY1NjI1OSAzNi4wMDgzNDIgOTYuODgxMjU5IDM2LjI3MjkyNSA5Ny4xMTI1MDkgMzYuNTMxMjU5IEMgOTcuMzQzNzU5IDM2Ljc4OTU5MiA5Ny41ODMzNDMgMzcuMDQxNjc1IDk3LjgyOTE3NiAzNy4yODU0MjUgQyA5OC4wNzcwOTMgMzcuNTI5MTc2IDk4LjMyOTE3NiAzNy43NjY2NzYgOTguNTg5NTkzIDM3Ljk5NTg0MiBDIDk4Ljg1MDAwOSAzOC4yMjUwMDkgOTkuMTE2Njc2IDM4LjQ0NzkyNiA5OS4zODk1OTMgMzguNjYyNTA5IEMgOTkuNjYyNTEgMzguODc1MDA5IDk5Ljk0MTY3NiAzOS4wODEyNTkgMTAwLjIyNzA5MyAzOS4yNzkxNzYgQyAxMDAuNTEyNTEgMzkuNDc3MDkyIDEwMC44MDIwOTMgMzkuNjY2Njc2IDEwMS4wOTc5MjYgMzkuODQ3OTI2IEMgMTAxLjM5Mzc2IDQwLjAyOTE3NiAxMDEuNjk1ODQzIDQwLjIwMjA5MiAxMDIuMDAwMDEgNDAuMzY2Njc2IEMgMTAyLjMwNjI2IDQwLjUzMTI1OSAxMDIuNjE2Njc2IDQwLjY4NTQyNiAxMDIuOTMxMjYgNDAuODMxMjU5IEMgMTAzLjI0NTg0MyA0MC45NzcwOTIgMTAzLjU2NDU5MyA0MS4xMTQ1OTIgMTAzLjg4NzUxIDQxLjI0MTY3NiBDIDEwNC4yMTA0MjYgNDEuMzY4NzU5IDEwNC41Mzc1MSA0MS40ODc1MDkgMTA0Ljg2NjY3NiA0MS41OTU4NDIgQyAxMDUuMTk1ODQzIDQxLjcwNDE3NiAxMDUuNTI5MTc2IDQxLjgwMjA5MiAxMDUuODY0NTkzIDQxLjg5MTY3NiBDIDEwNi4yMDAwMSA0MS45ODEyNTkgMTA2LjUzNzUxIDQyLjA2MDQyNiAxMDYuODc3MDkzIDQyLjEzMTI1OSBDIDEwNy4yMTY2NzcgNDIuMjAwMDA5IDEwNy41NTgzNDMgNDIuMjYwNDI2IDEwNy45MDIwOTMgNDIuMzEwNDI2IEMgMTA4LjI0NTg0MyA0Mi4zNjA0MjYgMTA4LjU4OTU5MyA0Mi40MDIwOTIgMTA4LjkzNTQyNyA0Mi40MzEyNTkgQyAxMDkuMjgxMjYgNDIuNDYwNDI2IDEwOS42MjcwOTMgNDIuNDgxMjU5IDEwOS45NzUwMSA0Mi40OTE2NzYgQyAxMTAuMzIwODQzIDQyLjUwMjA5MiAxMTAuNjY4NzYgNDIuNTAyMDkyIDExMS4wMTQ1OTMgNDIuNDkxNjc2IEMgMTExLjM2MjUxIDQyLjQ4MTI1OSAxMTEuNzA4MzQzIDQyLjQ2MjUwOSAxMTIuMDU0MTc3IDQyLjQzMTI1OSBDIDExMi40MDAwMSA0Mi40MDIwOTIgMTEyLjc0Mzc2IDQyLjM2MjUwOSAxMTMuMDg3NTEgNDIuMzEyNTA5IEMgMTEzLjQzMTI2IDQyLjI2MjUwOSAxMTMuNzcyOTI3IDQyLjIwMjA5MiAxMTQuMTEyNTEgNDIuMTMzMzQyIEMgMTE0LjQ1MjA5MyA0Mi4wNjQ1OTIgMTE0Ljc4OTU5MyA0MS45ODMzNDIgMTE1LjEyNTAxIDQxLjg5NTg0MiBDIDExNS40NjA0MjcgNDEuODA2MjU5IDExNS43OTM3NiA0MS43MDYyNTkgMTE2LjEyMjkyNyA0MS41OTc5MjYgQyAxMTYuNDUyMDk0IDQxLjQ4OTU5MiAxMTYuNzc5MTc3IDQxLjM3MjkyNiAxMTcuMTAyMDk0IDQxLjI0NTg0MiBDIDExNy40MjUwMSA0MS4xMTg3NTkgMTE3Ljc0Mzc2IDQwLjk4MTI1OSAxMTguMDU4MzQ0IDQwLjgzNTQyNiBDIDExOC4zNzI5MjcgNDAuNjg5NTkyIDExOC42ODMzNDQgNDAuNTM1NDI2IDExOC45ODk1OTQgNDAuMzcwODQyIEMgMTE5LjI5NTg0NCA0MC4yMDgzNDIgMTE5LjU5NTg0NCA0MC4wMzU0MjYgMTE5Ljg5MTY3NyAzOS44NTQxNzYgQyAxMjAuMTg3NTEgMzkuNjcyOTI2IDEyMC40NzkxNzcgMzkuNDgzMzQyIDEyMC43NjQ1OTQgMzkuMjg1NDI2IEMgMTIxLjA1MDAxIDM5LjA4NzUwOSAxMjEuMzI3MDk0IDM4Ljg4MzM0MiAxMjEuNjAyMDk0IDM4LjY2ODc1OSBDIDEyMS44NzUwMSAzOC40NTQxNzYgMTIyLjE0MTY3NyAzOC4yMzMzNDIgMTIyLjQwMjA5NCAzOC4wMDQxNzYgQyAxMjIuNjYyNTEgMzcuNzcyOTI2IDEyMi45MTQ1OTQgMzcuNTM3NTA5IDEyMy4xNjI1MTEgMzcuMjkzNzU5IEMgMTIzLjQwODM0NCAzNy4wNDc5MjUgMTIzLjY0NzkyNyAzNi43OTc5MjUgMTIzLjg3OTE3NyAzNi41Mzk1OTIgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLjg3NSwgMCwgMCwgMS44NzUsIDIzMS44NzQ5OSwgMzUyLjM3NDk4NikiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9IiNGRkZGRkYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSAzOTMuMTI1IDM4Ni4xMjUgTCA0ODUgMzg2LjEyNSBMIDQ4NSA0MTAuNSBMIDM5My4xMjUgNDEwLjUgWiBNIDM5My4xMjUgMzg2LjEyNSAiLz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSIjRkZGRkZGIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0gNDk2LjI1IDM1Mi4zNzUgTCA1NzMuMTI1IDM1Mi4zNzUgTCA1NzMuMTI1IDM3MyBMIDUyNi4yNSA0MjMuNjI1IEwgNTczLjEyNSA0MjMuNjI1IEwgNTczLjEyNSA0NDQuMjUgTCA0OTYuMjUgNDQ0LjI1IEwgNDk2LjI1IDQyMy42MjUgTCA1NDMuMTI1IDM3MyBMIDQ5Ni4yNSAzNzMgWiBNIDQ5Ni4yNSAzNTIuMzc1ICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC00KSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMTMiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2U9IiNGRkZGRkYiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iNCIgZD0iTSA2LjUwMDAxMyAwLjAwMDAwNzI3NSBMIDYuNTAwMDEzIDI0LjUwMDAwOCBDIDYuNTAwMDEzIDI1LjA4OTU5MiA2LjUyOTE4IDI1LjY3NzA5MiA2LjU4NzUxMyAyNi4yNjQ1OTIgQyA2LjY0Mzc2MyAyNi44NTAwMDggNi43MzEyNjMgMjcuNDMzMzQyIDYuODQ1ODQ3IDI4LjAxMjUwOCBDIDYuOTYwNDMgMjguNTg5NTkyIDcuMTA0MTggMjkuMTYwNDI1IDcuMjc1MDE0IDI5LjcyNTAwOSBDIDcuNDQ1ODQ3IDMwLjI4OTU5MiA3LjY0Mzc2NCAzMC44NDM3NTkgNy44NzA4NDcgMzEuMzg3NTA5IEMgOC4wOTU4NDcgMzEuOTMzMzQyIDguMzQ3OTMgMzIuNDY0NTkyIDguNjI1MDE0IDMyLjk4NTQyNSBDIDguOTA0MTggMzMuNTA0MTc1IDkuMjA2MjY0IDM0LjAxMDQyNSA5LjUzMzM0NyAzNC41MDAwMDkgQyA5Ljg2MDQzIDM0Ljk4OTU5MiAxMC4yMTI1MTQgMzUuNDYyNTA5IDEwLjU4NTQzIDM1LjkxODc1OSBDIDEwLjk2MDQzIDM2LjM3NTAwOSAxMS4zNTYyNjQgMzYuODEwNDI1IDExLjc3MjkzIDM3LjIyNzA5MiBDIDEyLjE4OTU5NyAzNy42NDM3NTkgMTIuNjI1MDE0IDM4LjAzOTU5MiAxMy4wODEyNjQgMzguNDE0NTkyIEMgMTMuNTM3NTE0IDM4Ljc4NzUwOSAxNC4wMTA0MyAzOS4xMzk1OTIgMTQuNTAwMDE0IDM5LjQ2NjY3NiBDIDE0Ljk4OTU5NyAzOS43OTM3NTkgMTUuNDk1ODQ3IDQwLjA5NTg0MiAxNi4wMTQ1OTcgNDAuMzc1MDA5IEMgMTYuNTM1NDMxIDQwLjY1MjA5MiAxNy4wNjY2ODEgNDAuOTA0MTc2IDE3LjYxMjUxNCA0MS4xMjkxNzYgQyAxOC4xNTYyNjQgNDEuMzU2MjU5IDE4LjcxMDQzMSA0MS41NTQxNzYgMTkuMjc1MDE0IDQxLjcyNTAwOSBDIDE5LjgzOTU5NyA0MS44OTU4NDIgMjAuNDEwNDMxIDQyLjAzOTU5MiAyMC45ODc1MTQgNDIuMTU0MTc2IEMgMjEuNTY2NjgxIDQyLjI2ODc1OSAyMi4xNTAwMTQgNDIuMzU2MjU5IDIyLjczNTQzMSA0Mi40MTI1MDkgQyAyMy4zMjI5MzEgNDIuNDcwODQyIDIzLjkxMDQzMSA0Mi41MDAwMDkgMjQuNTAwMDE0IDQyLjUwMDAwOSBDIDI1LjA4OTU5OCA0Mi41MDAwMDkgMjUuNjc3MDk4IDQyLjQ3MDg0MiAyNi4yNjQ1OTggNDIuNDEyNTA5IEMgMjYuODUwMDE0IDQyLjM1NjI1OSAyNy40MzMzNDggNDIuMjY4NzU5IDI4LjAxMjUxNCA0Mi4xNTQxNzYgQyAyOC41ODk1OTggNDIuMDM5NTkyIDI5LjE2MDQzMSA0MS44OTU4NDIgMjkuNzI1MDE0IDQxLjcyNTAwOSBDIDMwLjI4OTU5OCA0MS41NTQxNzYgMzAuODQzNzY0IDQxLjM1NjI1OSAzMS4zODc1MTUgNDEuMTI5MTc2IEMgMzEuOTMzMzQ4IDQwLjkwNDE3NiAzMi40NjQ1OTggNDAuNjUyMDkyIDMyLjk4NTQzMSA0MC4zNzUwMDkgQyAzMy41MDQxODEgNDAuMDk1ODQyIDM0LjAxMDQzMSAzOS43OTM3NTkgMzQuNTAwMDE1IDM5LjQ2NjY3NiBDIDM0Ljk4OTU5OCAzOS4xMzk1OTIgMzUuNDYyNTE1IDM4Ljc4NzUwOSAzNS45MTg3NjUgMzguNDE0NTkyIEMgMzYuMzc1MDE1IDM4LjAzOTU5MiAzNi44MTA0MzEgMzcuNjQzNzU5IDM3LjIyNzA5OCAzNy4yMjcwOTIgQyAzNy42NDM3NjUgMzYuODEwNDI1IDM4LjAzOTU5OCAzNi4zNzUwMDkgMzguNDE0NTk4IDM1LjkxODc1OSBDIDM4Ljc4NzUxNSAzNS40NjI1MDkgMzkuMTM5NTk4IDM0Ljk4OTU5MiAzOS40NjY2ODIgMzQuNTAwMDA5IEMgMzkuNzkzNzY1IDM0LjAxMDQyNSA0MC4wOTU4NDggMzMuNTA0MTc1IDQwLjM3NTAxNSAzMi45ODU0MjUgQyA0MC42NTIwOTggMzIuNDY0NTkyIDQwLjkwNDE4MiAzMS45MzMzNDIgNDEuMTI5MTgyIDMxLjM4NzUwOSBDIDQxLjM1NjI2NSAzMC44NDM3NTkgNDEuNTU0MTgyIDMwLjI4OTU5MiA0MS43MjUwMTUgMjkuNzI1MDA5IEMgNDEuODk1ODQ4IDI5LjE2MDQyNSA0Mi4wMzk1OTggMjguNTg5NTkyIDQyLjE1NDE4MiAyOC4wMTI1MDggQyA0Mi4yNjg3NjUgMjcuNDMzMzQyIDQyLjM1NjI2NSAyNi44NTAwMDggNDIuNDEyNTE1IDI2LjI2NDU5MiBDIDQyLjQ3MDg0OCAyNS42NzcwOTIgNDIuNTAwMDE1IDI1LjA4OTU5MiA0Mi41MDAwMTUgMjQuNTAwMDA4IE0gNDIuNTAwMDE1IDAuMDAwMDA3Mjc1IEwgNDIuNTAwMDE1IDQ5LjAwMDAwOSAiIHRyYW5zZm9ybT0ibWF0cml4KDEuODc1LCAwLCAwLCAxLjg3NSwgNTg0LjM3NDk3NSwgMzUyLjM3NDk4NikiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9IiM5REI1REIiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSA2ODMuNzUgNDE5Ljg3NSBMIDcwOC4xMjUgNDE5Ljg3NSBMIDcwOC4xMjUgNDQ0LjI1IEwgNjgzLjc1IDQ0NC4yNSBaIE0gNjgzLjc1IDQxOS44NzUgIi8+Cjwvc3ZnPg==" alt="reezu." width="150" height="30"><span>MARKETING EDUCACIONAL</span></a>
+      <span class="prod">Raio-X Escolar</span>
+    </div>
     <div class="search">
       <label for="q">Busque uma escola privada pelo nome, município, estado ou código INEP</label>
-      <div class="ufs" id="ufs"></div>
-      <div class="sbox"><input id="q" type="search" autocomplete="off" placeholder="Ex.: Conexão Saber, La Salle Manaus, Juazeiro do Norte" role="combobox" aria-expanded="false" aria-controls="sugg" aria-autocomplete="list"></div>
+      <div class="sbox"><input id="q" type="search" autocomplete="off" placeholder="Ex.: Ateneu, La Salle Manaus, Juazeiro do Norte" role="combobox" aria-expanded="false" aria-controls="sugg" aria-autocomplete="list"></div>
       <div class="sugg" id="sugg" role="listbox" hidden></div>
+      <div class="ufs" id="ufs"></div>
       <div class="alt"><span>A escola não está no INEP? Cole a coordenada do Google Maps:</span>
-        <input id="coord" type="text" placeholder="-3.8163, -38.5390" aria-label="Latitude e longitude">
+        <input id="coord" type="text" inputmode="decimal" placeholder="-3.8163, -38.5390" aria-label="Latitude e longitude">
         <input id="cname" type="text" placeholder="Nome da escola (opcional)" aria-label="Nome da escola">
         <button type="button" class="btn" id="goCoord">Analisar ponto</button><span class="err" id="cerr" hidden></span></div>
     </div>
-  </header>
-
-  <div id="result" style="display:grid;gap:56px">
-    <section class="res-head" aria-labelledby="rname">
-      <h1 id="rname"></h1>
-      <div class="facts" id="rfacts"></div>
-      <div class="radius"><span>Raio</span><span class="filters" id="radSeg">
-        <button type="button" class="cbtn" data-v="1" aria-pressed="false">1 km</button>
-        <button type="button" class="cbtn" data-v="2" aria-pressed="false">2 km</button>
-        <button type="button" class="cbtn" data-v="3" aria-pressed="true">3 km</button>
-        <button type="button" class="cbtn" data-v="5" aria-pressed="false">5 km</button></span></div>
-      <div class="flag" id="rflag" hidden></div>
-    </section>
-
-    <section aria-labelledby="h-resumo"><div class="lede"><h2 id="h-resumo">O que os dados dizem</h2></div><div class="statements" id="statements"></div></section>
-
-    <section aria-labelledby="h-hist" id="histSec">
-      <div class="two"><div class="lede"><h2 id="h-hist">Matrículas da escola, 2019 a 2025</h2><p id="histLede"></p></div>
-      <div class="paper"><div id="histChart"></div></div></div>
-    </section>
-
-    <section aria-labelledby="h-mercado"><div class="lede"><h2 id="h-mercado">Mercado privado no raio, por segmento</h2>
-      <p>Alunos de 2025 em todas as escolas privadas do raio, a variação desde 2019 e quanto das crianças da idade que moram ali já estão em escola privada.</p></div>
-      <div class="segs" id="segs"></div></section>
-
-    <section aria-labelledby="h-mapa"><div class="lede"><h2 id="h-mapa">Onde moram as crianças e quem pode pagar</h2>
-      <p>Cada forma é um setor censitário do IBGE. Passe o mouse para ver os números e clique numa escola para ver o histórico dela.</p></div>
-      <div class="plate">
-        <div class="plate-tools">
-          <div class="tool"><span class="lab">Camada</span><div class="toggle" id="layerSeg">
-            <button type="button" data-v="dens" aria-pressed="true">Crianças por hectare</button>
-            <button type="button" data-v="renda" aria-pressed="false">Renda média</button>
-            <button type="button" data-v="pot" aria-pressed="false">Potencial</button></div></div>
-          <div class="tool"><span class="lab">Idade</span><div class="toggle" id="segSeg">
-            <button type="button" data-v="all" aria-pressed="true">0 a 14</button>
-            <button type="button" data-v="0" aria-pressed="false">Infantil</button>
-            <button type="button" data-v="1" aria-pressed="false">Fund. I</button>
-            <button type="button" data-v="2" aria-pressed="false">Fund. II</button>
-            <button type="button" data-v="3" aria-pressed="false">Médio</button></div></div>
-          <div class="tool"><label for="rmin">Renda mínima do responsável: <b id="rminV" class="num"></b></label>
-            <input type="range" id="rmin" min="1200" max="6000" step="100" value="2400"></div>
-        </div>
-        <div class="map" id="map"><div class="tip" id="tip" hidden></div></div>
-        <aside class="side" id="side"></aside>
-      </div></section>
-
-    <section aria-labelledby="h-conc"><div class="lede"><h2 id="h-conc">Escolas privadas no raio</h2><p id="concCount"></p></div>
-      <div class="filters" id="concFilter">
-        <button type="button" class="cbtn" data-v="all" aria-pressed="true">Todas</button>
-        <button type="button" class="cbtn" data-v="200" aria-pressed="false">Acima de 200 alunos</button>
-        <button type="button" class="cbtn" data-v="seg" aria-pressed="false">Oferecem a idade escolhida no mapa</button></div>
-      <div class="tbl-wrap"><table id="concTbl"><thead><tr>
-        <th><button type="button" data-k="nome">Escola</button></th>
-        <th class="r"><button type="button" data-k="km">Distância</button></th>
-        <th class="r"><button type="button" data-k="tot" data-on="1">Alunos 2025</button></th>
-        <th class="r"><button type="button" data-k="v22">Desde 2022</button></th>
-        <th>2019 a 2025</th><th>Segmentos</th></tr></thead><tbody></tbody></table></div></section>
-
-    <section aria-labelledby="h-dig"><div class="lede"><h2 id="h-dig">Camada digital</h2>
-      <p>Atalhos para conferir anúncios ativos, avaliações e Instagram da escola e dos maiores concorrentes do raio. A Meta e o Google não liberam esses dados para consulta automática, então a checagem é feita nos links.</p></div>
-      <div class="dig" id="dig"></div></section>
-
-    <section aria-labelledby="h-met"><div class="lede"><h2 id="h-met">Fontes e limites</h2></div>
-      <div class="src">
-        <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP; o sinal <span class="approx">≈</span> marca escolas posicionadas pelo bairro ou pelo centro do município, que podem cair dentro ou fora do raio por engano.</p>
-        <p><b>População, idade e renda.</b> Censo Demográfico 2022 por setor censitário. Um setor entra no raio quando o seu ponto central está dentro do círculo. Renda é a média mensal do responsável pelo domicílio em valores de 2022 (salário mínimo de R$ 1.212). Idades dos segmentos estimadas pelos grupos de 5 anos do IBGE.</p>
-        <p><b>Concorrentes.</b> Entram só escolas com Educação Infantil, Fundamental ou Médio em 2025. Unidades que oferecem apenas curso técnico ou EJA ficam de fora, porque não disputam as mesmas famílias.</p>
-        <p><b>Limites.</b> O Censo Escolar não informa onde mora cada aluno. A população é de 2022 e as matrículas, de 2025.</p>
-        <p>Fontes: <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar" target="_blank" rel="noopener">Censo Escolar</a>, <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas" target="_blank" rel="noopener">Catálogo de Escolas</a>, <a href="https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/" target="_blank" rel="noopener">IBGE, setores censitários</a>.</p>
-      </div></section>
   </div>
-  <footer><span>Reezu Marketing Educacional</span><span>Base: Censo Escolar 2025 e Censo IBGE 2022</span></footer>
-</div>
+</header>
 
+<main class="in" id="result">
+  <section class="res-head" aria-labelledby="rname">
+    <span class="lab">Raio-X de mercado escolar</span>
+    <h1 id="rname"></h1>
+    <div class="facts" id="rfacts"></div>
+    <div class="radius"><span class="lab">Raio</span><span class="filters" id="radSeg">
+      <button type="button" class="cbtn" data-v="1" aria-pressed="false">1 km</button>
+      <button type="button" class="cbtn" data-v="2" aria-pressed="false">2 km</button>
+      <button type="button" class="cbtn" data-v="3" aria-pressed="true">3 km</button>
+      <button type="button" class="cbtn" data-v="5" aria-pressed="false">5 km</button></span></div>
+    <div class="flag" id="rflag" hidden></div>
+  </section>
+
+  <section aria-labelledby="h-mapa">
+    <div class="lede"><span class="lab">Mapa de oportunidade</span>
+      <h2 id="h-mapa">Onde estão as <span class="hl">famílias</span> que a escola pode conquistar</h2>
+      <p>Cada forma é um setor censitário do IBGE. A cor junta três coisas: quantas crianças moram ali na idade dos segmentos da escola, se a renda do bairro comporta a mensalidade e quantas escolas concorrentes estão por perto. Toque num setor para ver os números.</p></div>
+    <div class="plate dark">
+      <div class="plate-tools">
+        <div class="tool"><span class="lab">Camada</span><div class="toggle" id="layerSeg">
+          <button type="button" data-v="opp" aria-pressed="true">Oportunidade</button>
+          <button type="button" data-v="dens" aria-pressed="false">Crianças por hectare</button>
+          <button type="button" data-v="renda" aria-pressed="false">Renda média</button></div></div>
+        <div class="tool"><span class="lab">Idade</span><div class="toggle" id="segSeg">
+          <button type="button" data-v="all" aria-pressed="true" id="segAll">Segmentos da escola</button>
+          <button type="button" data-v="0" aria-pressed="false">Infantil</button>
+          <button type="button" data-v="1" aria-pressed="false">Fund. I</button>
+          <button type="button" data-v="2" aria-pressed="false">Fund. II</button>
+          <button type="button" data-v="3" aria-pressed="false">Médio</button></div></div>
+        <div class="tool"><label for="rmin">Renda mínima do responsável: <b id="rminV" class="num"></b></label>
+          <input type="range" id="rmin" min="1" max="5" step="0.25" value="2"></div>
+      </div>
+      <div class="mapcol">
+        <div class="map" id="map"><div class="tip" id="tip" hidden></div><div class="legend" id="legend"></div></div>
+        <div class="scard" id="scard" hidden aria-live="polite"></div>
+      </div>
+      <aside class="side" id="side"></aside>
+    </div>
+  </section>
+
+  <section aria-labelledby="h-grow">
+    <div class="lede"><span class="lab">Onde crescer</span><h2 id="h-grow">Os três bairros com mais oportunidade no raio</h2>
+      <p id="growLede"></p></div>
+    <div class="grow" id="grow"></div>
+  </section>
+
+  <section aria-labelledby="h-resumo"><div class="lede"><span class="lab">Resumo</span><h2 id="h-resumo">O que os dados dizem</h2></div><div class="statements" id="statements"></div></section>
+
+  <section aria-labelledby="h-hist" id="histSec">
+    <div class="two"><div class="lede"><span class="lab">Histórico</span><h2 id="h-hist">Matrículas da escola, 2019 a 2025</h2><p id="histLede"></p></div>
+    <div class="paper"><div id="histChart"></div></div></div>
+  </section>
+
+  <section aria-labelledby="h-mercado"><div class="lede"><span class="lab">Mercado</span><h2 id="h-mercado">Mercado privado no raio, por segmento</h2>
+    <p>Alunos de 2025 em todas as escolas privadas do raio e quanto das crianças da idade que moram ali já estão em escola privada.</p></div>
+    <div class="segs" id="segs"></div></section>
+
+  <section aria-labelledby="h-conc"><div class="lede"><span class="lab">Concorrência</span><h2 id="h-conc">Escolas privadas no raio</h2><p id="concCount"></p></div>
+    <div class="filters" id="concFilter">
+      <button type="button" class="cbtn" data-v="all" aria-pressed="true">Todas</button>
+      <button type="button" class="cbtn" data-v="200" aria-pressed="false">Acima de 200 alunos</button>
+      <button type="button" class="cbtn" data-v="seg" aria-pressed="false">Oferecem a idade escolhida no mapa</button></div>
+    <div class="tbl-wrap"><table id="concTbl"><thead><tr>
+      <th><button type="button" data-k="nome">Escola</button></th>
+      <th class="r"><button type="button" data-k="km">Distância</button></th>
+      <th class="r"><button type="button" data-k="tot" data-on="1">Alunos 2025</button></th>
+      <th class="r"><button type="button" data-k="v22">Desde 2022</button></th>
+      <th>2019 a 2025</th><th>Segmentos</th></tr></thead><tbody></tbody></table></div></section>
+
+  <section aria-labelledby="h-dig"><div class="lede"><span class="lab">Presença digital</span><h2 id="h-dig">Onde conferir a comunicação de cada escola</h2>
+    <p>Atalhos para ver anúncios ativos, perfil no Google Maps e Instagram da escola e dos maiores concorrentes do raio. A Meta e o Google não liberam esses dados para consulta automática, então a checagem é feita nos links. Nada disso entra nos números desta página.</p></div>
+    <div class="dig" id="dig"></div></section>
+
+  <section aria-labelledby="h-met"><div class="lede"><span class="lab">Método</span><h2 id="h-met">Como o índice de oportunidade é calculado</h2></div>
+    <div class="method">
+      <p>O índice compara os setores censitários de dentro do raio entre si. Ele vai de 0 a 100: o setor com mais oportunidade no raio recebe 100.</p>
+      <ol>
+        <li><b>Demanda.</b> Crianças e jovens que moram no setor na idade dos segmentos que a escola oferece em 2025 (Infantil, Fundamental I, Fundamental II, Médio).</li>
+        <li><b>Poder de compra.</b> Só conta a demanda de setores com renda média do responsável igual ou acima do mínimo escolhido no mapa (padrão: 2 salários mínimos de 2022, R$ 2.424). Os demais ficam com índice zero.</li>
+        <li><b>Concorrência.</b> Alunos de 2025 das escolas concorrentes a até 1 km do setor, nos mesmos segmentos. Cada escola pesa pela distância: colada no setor vale 100% dos alunos, a 500 m vale 50%, a 1 km ou mais não entra. Essa pressão é medida em relação à média do raio.</li>
+        <li><b>Índice.</b> Demanda qualificada ÷ (1 + pressão da concorrência ÷ pressão média do raio). Um setor com concorrência igual à média do raio tem a oportunidade cortada pela metade.</li>
+      </ol>
+      <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro.</p>
+    </div>
+    <div class="src">
+      <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP; o sinal <span class="approx">≈</span> marca escolas posicionadas pelo centro do bairro ou do município, que podem cair dentro ou fora do raio por engano.</p>
+      <p><b>Concorrentes.</b> Entram só escolas com Educação Infantil, Fundamental ou Médio em 2025. Unidades que oferecem apenas curso técnico ou EJA ficam de fora, porque não disputam as mesmas famílias.</p>
+      <p><b>População, idade e renda.</b> Censo Demográfico 2022 por setor censitário. Um setor entra no raio quando o seu ponto representativo está dentro do círculo. Renda é a média mensal do responsável pelo domicílio em valores de 2022 (salário mínimo de R$ 1.212). Idades dos segmentos estimadas pelos grupos de 5 anos do IBGE: Infantil = 0 a 4 anos + 20% de 5 a 9; Fund. I = 80% de 5 a 9 + 20% de 10 a 14; Fund. II = 80% de 10 a 14; Médio = 60% de 15 a 19.</p>
+      <p><b>Limites.</b> O Censo Escolar não informa onde mora cada aluno. A população é de 2022 e as matrículas, de 2025.</p>
+      <p>Fontes: <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar" target="_blank" rel="noopener">Censo Escolar</a>, <a href="https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/inep-data/catalogo-de-escolas" target="_blank" rel="noopener">Catálogo de Escolas</a>, <a href="https://ftp.ibge.gov.br/Censos/Censo_Demografico_2022/Agregados_por_Setores_Censitarios/" target="_blank" rel="noopener">IBGE, setores censitários</a>.</p>
+    </div></section>
+</main>
+<footer class="foot"><div class="in">
+  <span class="logo"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjIzMiAzNTAgNDc3IDk2IiB3aWR0aD0iNDc3IiBoZWlnaHQ9Ijk2Ij48ZGVmcz4KPGNsaXBQYXRoIGlkPSJjbGlwLTAiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjIwIDM0MCBMIDc0MCAzNDAgTCA3NDAgNDUyIEwgMjIwIDQ1MiBaIE0gMjIwIDM0MCAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTEiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjMwIDM1MC41IEwgNDI4IDM1MC41IEwgNDI4IDQ0NS43NSBMIDIzMCA0NDUuNzUgWiBNIDIzMCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTIiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjMwIDM1MC41IEwgNTE5IDM1MC41IEwgNTE5IDQ0NS43NSBMIDIzMCA0NDUuNzUgWiBNIDIzMCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTMiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMjY3IDM1MC41IEwgNjExIDM1MC41IEwgNjExIDQ0NS43NSBMIDI2NyA0NDUuNzUgWiBNIDI2NyAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTQiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gNDU4IDM1MC41IEwgNzEwIDM1MC41IEwgNzEwIDQ0NS43NSBMIDQ1OCA0NDUuNzUgWiBNIDQ1OCAzNTAuNSAiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC0xKSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMTMiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2U9IiMwMTE2MzYiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iNCIgZD0iTSA2LjUwMDAwNiA0OS4wMDAwMDkgTCA2LjUwMDAwNiAyNC41MDAwMDggQyA2LjUwMDAwNiAyMy45MTA0MjUgNi41MjkxNzIgMjMuMzIyOTI1IDYuNTg3NTA2IDIyLjczNTQyNSBDIDYuNjQzNzU2IDIyLjE1MDAwOCA2LjczMTI1NiAyMS41NjY2NzUgNi44NDU4MzkgMjAuOTg3NTA4IEMgNi45NjA0MjIgMjAuNDEwNDI1IDcuMTA0MTcyIDE5LjgzOTU5MSA3LjI3NTAwNiAxOS4yNzUwMDggQyA3LjQ0NTgzOSAxOC43MTA0MjUgNy42NDM3NTYgMTguMTU2MjU4IDcuODcwODM5IDE3LjYxMjUwOCBDIDguMDk1ODM5IDE3LjA2NjY3NSA4LjM0NzkyMiAxNi41MzU0MjUgOC42MjUwMDYgMTYuMDE0NTkxIEMgOC45MDQxNzIgMTUuNDk1ODQxIDkuMjA2MjU2IDE0Ljk4OTU5MSA5LjUzMzMzOSAxNC41MDAwMDggQyA5Ljg2MDQyMiAxNC4wMTA0MjUgMTAuMjEyNTA2IDEzLjUzNzUwOCAxMC41ODU0MjIgMTMuMDgxMjU4IEMgMTAuOTYwNDIyIDEyLjYyNTAwOCAxMS4zNTYyNTYgMTIuMTg5NTkxIDExLjc3MjkyMyAxMS43NzI5MjQgQyAxMi4xODk1ODkgMTEuMzU2MjU4IDEyLjYyNTAwNiAxMC45NjA0MjQgMTMuMDgxMjU2IDEwLjU4NTQyNCBDIDEzLjUzNzUwNiAxMC4yMTI1MDggMTQuMDEwNDIzIDkuODYwNDI0IDE0LjUwMDAwNiA5LjUzMzM0MSBDIDE0Ljk4OTU4OSA5LjIwNjI1OCAxNS40OTU4MzkgOC45MDQxNzQgMTYuMDE0NTg5IDguNjI1MDA4IEMgMTYuNTM1NDIzIDguMzQ3OTI0IDE3LjA2NjY3MyA4LjA5NTg0MSAxNy42MTI1MDYgNy44NzA4NDEgQyAxOC4xNTYyNTYgNy42NDM3NTggMTguNzEwNDIzIDcuNDQ1ODQxIDE5LjI3NTAwNiA3LjI3NTAwOCBDIDE5LjgzOTU5IDcuMTA0MTc0IDIwLjQxMDQyMyA2Ljk2MDQyNCAyMC45ODc1MDYgNi44NDU4NDEgQyAyMS41NjY2NzMgNi43MzEyNTggMjIuMTUwMDA2IDYuNjQzNzU4IDIyLjczNTQyMyA2LjU4NzUwOCBDIDIzLjMyMjkyMyA2LjUyOTE3NCAyMy45MTA0MjMgNi41MDAwMDggMjQuNTAwMDA2IDYuNTAwMDA4IEwgMzEuMDAwMDA3IDYuNTAwMDA4ICIgdHJhbnNmb3JtPSJtYXRyaXgoMS44NzUsIDAsIDAsIDEuODc1LCAyMzEuODc0OTksIDM1Mi4zNzQ5ODYpIi8+CjwvZz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMikiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEzIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlPSIjNUI3OUFEIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjQiIGQ9Ik0gNDMuNTAwMDA3IDI0LjUwMDAwOCBDIDQzLjUwMDAwNyAyNC4xNTIwOTIgNDMuNTEwNDI0IDIzLjgwNjI1OCA0My41MjkxNzQgMjMuNDYwNDI1IEMgNDMuNTUwMDA3IDIzLjExMjUwOCA0My41NzkxNzQgMjIuNzY4NzU4IDQzLjYyMDg0MSAyMi40MjI5MjUgQyA0My42NjA0MjQgMjIuMDc5MTc1IDQzLjcxMDQyNCAyMS43MzU0MjUgNDMuNzcwODQxIDIxLjM5Mzc1OCBDIDQzLjgyOTE3NCAyMS4wNTIwOTEgNDMuOTAwMDA3IDIwLjcxMjUwOCA0My45NzkxNzQgMjAuMzc1MDA4IEMgNDQuMDU4MzQxIDIwLjAzNTQyNSA0NC4xNDc5MjQgMTkuNzAyMDkxIDQ0LjI0NTg0MSAxOS4zNjg3NTggQyA0NC4zNDU4NDEgMTkuMDM1NDI1IDQ0LjQ1NDE3NCAxOC43MDYyNTggNDQuNTcyOTI0IDE4LjM3OTE3NSBDIDQ0LjY4OTU5MSAxOC4wNTQxNzUgNDQuODE2Njc0IDE3LjczMTI1OCA0NC45NTQxNzQgMTcuNDEyNTA4IEMgNDUuMDg5NTkxIDE3LjA5Mzc1OCA0NS4yMzU0MjQgMTYuNzc5MTc1IDQ1LjM5MTY3NCAxNi40Njg3NTggQyA0NS41NDU4NDEgMTYuMTU4MzQxIDQ1LjcxMDQyNCAxNS44NTIwOTEgNDUuODgxMjU3IDE1LjU1MDAwOCBDIDQ2LjA1NDE3NCAxNS4yNTAwMDggNDYuMjM1NDI0IDE0Ljk1NDE3NSA0Ni40MjUwMDcgMTQuNjYyNTA4IEMgNDYuNjE0NTkxIDE0LjM3MjkyNSA0Ni44MTI1MDcgMTQuMDg3NTA4IDQ3LjAxODc1NyAxMy44MDgzNDEgQyA0Ny4yMjUwMDcgMTMuNTI5MTc1IDQ3LjQzOTU5MSAxMy4yNTYyNTggNDcuNjYwNDI0IDEyLjk4OTU5MSBDIDQ3Ljg4MzM0MSAxMi43MjI5MjQgNDguMTEyNTA3IDEyLjQ2MjUwOCA0OC4zNTAwMDcgMTIuMjA4MzQxIEMgNDguNTg1NDI0IDExLjk1NjI1OCA0OC44MjkxNzQgMTEuNzA4MzQxIDQ5LjA4MTI1NyAxMS40Njg3NTggQyA0OS4zMzMzNDEgMTEuMjI5MTc0IDQ5LjU4OTU5MSAxMC45OTc5MjQgNDkuODU0MTc0IDEwLjc3MjkyNCBDIDUwLjExODc1NyAxMC41NTAwMDggNTAuMzg5NTkxIDEwLjMzMzM0MSA1MC42NjY2NzQgMTAuMTIyOTI0IEMgNTAuOTQzNzU3IDkuOTE0NTkxIDUxLjIyNzA5MSA5LjcxNDU5MSA1MS41MTY2NzQgOS41MjA4NDEgQyA1MS44MDQxNzQgOS4zMjkxNzQgNTIuMTAwMDA4IDkuMTQ1ODQxIDUyLjM5NzkyNCA4Ljk3MDg0MSBDIDUyLjY5NzkyNCA4Ljc5Mzc1OCA1My4wMDIwOTEgOC42MjcwOTEgNTMuMzEwNDI0IDguNDcwODQxIEMgNTMuNjIwODQxIDguMzEyNTA4IDUzLjkzMzM0MSA4LjE2MjUwOCA1NC4yNTIwOTEgOC4wMjI5MjQgQyA1NC41Njg3NTggNy44ODMzNDEgNTQuODg5NTkxIDcuNzU0MTc0IDU1LjIxNDU5MSA3LjYzMTI1OCBDIDU1LjUzOTU5MSA3LjUxMDQyNCA1NS44Njg3NTggNy40MDAwMDggNTYuMjAwMDA4IDcuMjk3OTI0IEMgNTYuNTMxMjU4IDcuMTk1ODQxIDU2Ljg2NjY3NCA3LjEwMjA5MSA1Ny4yMDQxNzQgNy4wMTg3NTggQyA1Ny41Mzk1OTEgNi45Mzc1MDggNTcuODc5MTc0IDYuODY0NTkxIDU4LjIyMDg0MSA2LjgwMDAwOCBDIDU4LjU2MjUwOCA2LjczNzUwOCA1OC45MDQxNzQgNi42ODMzNDEgNTkuMjQ3OTI1IDYuNjQxNjc0IEMgNTkuNTkzNzU4IDYuNTk3OTI0IDU5LjkzNzUwOCA2LjU2NDU5MSA2MC4yODU0MjUgNi41Mzk1OTEgQyA2MC42MzEyNTggNi41MTY2NzQgNjAuOTc3MDkxIDYuNTA0MTc0IDYxLjMyNTAwOCA2LjUwMDAwOCBDIDYxLjY3MDg0MSA2LjQ5NzkyNCA2Mi4wMTg3NTggNi41MDQxNzQgNjIuMzY0NTkxIDYuNTIwODQxIEMgNjIuNzEwNDI1IDYuNTM3NTA4IDYzLjA1NjI1OCA2LjU2MjUwOCA2My40MDIwOTEgNi42MDAwMDggQyA2My43NDc5MjUgNi42Mzc1MDggNjQuMDkxNjc1IDYuNjgzMzQxIDY0LjQzMzM0MSA2LjczOTU5MSBDIDY0Ljc3NTAwOCA2Ljc5NTg0MSA2NS4xMTY2NzUgNi44NjI1MDggNjUuNDU0MTc1IDYuOTM5NTkxIEMgNjUuNzkzNzU4IDcuMDE0NTkxIDY2LjEyOTE3NSA3LjEwMjA5MSA2Ni40NjI1MDggNy4xOTc5MjQgQyA2Ni43OTU4NDEgNy4yOTM3NTggNjcuMTI3MDkyIDcuMzk3OTI0IDY3LjQ1NDE3NSA3LjUxMjUwOCBDIDY3Ljc4MTI1OCA3LjYyNzA5MSA2OC4xMDYyNTggNy43NTIwOTEgNjguNDI1MDA4IDcuODg1NDI0IEMgNjguNzQ1ODQyIDguMDE4NzU4IDY5LjA2MjUwOCA4LjE2MDQyNCA2OS4zNzUwMDggOC4zMTI1MDggQyA2OS42ODU0MjUgOC40NjQ1OTEgNjkuOTkzNzU4IDguNjI1MDA4IDcwLjI5NTg0MiA4Ljc5NTg0MSBDIDcwLjYwMDAwOCA4Ljk2NDU5MSA3MC44OTU4NDIgOS4xNDM3NTggNzEuMTg5NTkyIDkuMzI5MTc0IEMgNzEuNDgxMjU4IDkuNTE2Njc0IDcxLjc2ODc1OCA5LjcxMjUwOCA3Mi4wNTAwMDggOS45MTQ1OTEgQyA3Mi4zMzEyNTggMTAuMTE4NzU4IDcyLjYwNjI1OCAxMC4zMjkxNzQgNzIuODc1MDA4IDEwLjU1MDAwOCBDIDczLjE0Mzc1OCAxMC43Njg3NTggNzMuNDA2MjU4IDEwLjk5NTg0MSA3My42NjI1MDggMTEuMjI5MTc0IEMgNzMuOTE4NzU4IDExLjQ2NDU5MSA3NC4xNjY2NzUgMTEuNzA2MjU4IDc0LjQwODM0MiAxMS45NTQxNzQgQyA3NC42NTAwMDggMTIuMjA0MTc0IDc0Ljg4NTQyNSAxMi40NTgzNDEgNzUuMTEyNTA5IDEyLjcyMDg0MSBDIDc1LjMzOTU5MiAxMi45ODMzNDEgNzUuNTU4MzQyIDEzLjI1MjA5MSA3NS43Njg3NTkgMTMuNTI3MDkxIEMgNzUuOTgxMjU5IDEzLjgwMjA5MSA3Ni4xODU0MjUgMTQuMDgzMzQxIDc2LjM3OTE3NSAxNC4zNzA4NDEgQyA3Ni41NzUwMDkgMTQuNjU4MzQxIDc2Ljc2MjUwOSAxNC45NTAwMDggNzYuOTM5NTkyIDE1LjI0NzkyNSBDIDc3LjExODc1OSAxNS41NDU4NDEgNzcuMjg3NTA5IDE1Ljg0NzkyNSA3Ny40NTAwMDkgMTYuMTU0MTc1IEMgNzcuNjEwNDI1IDE2LjQ2MjUwOCA3Ny43NjI1MDkgMTYuNzc1MDA4IDc3LjkwNDE3NSAxNy4wODk1OTEgQyA3OC4wNDc5MjUgMTcuNDA2MjU4IDc4LjE4MTI1OSAxNy43MjcwOTEgNzguMzA2MjU5IDE4LjA1MDAwOCBDIDc4LjQyOTE3NSAxOC4zNzUwMDggNzguNTQzNzU5IDE4LjcwMjA5MSA3OC42NTAwMDkgMTkuMDMzMzQxIEMgNzguNzU0MTc1IDE5LjM2MjUwOCA3OC44NTAwMDkgMTkuNjk1ODQxIDc4LjkzNzUwOSAyMC4wMzMzNDEgQyA3OS4wMjI5MjUgMjAuMzY4NzU4IDc5LjEwMDAwOSAyMC43MDgzNDEgNzkuMTY2Njc1IDIxLjA0NzkyNSBDIDc5LjIzMzM0MiAyMS4zODc1MDggNzkuMjg5NTkyIDIxLjczMTI1OCA3OS4zMzU0MjUgMjIuMDc1MDA4IEMgNzkuMzgzMzQyIDIyLjQxODc1OCA3OS40MTg3NTkgMjIuNzYyNTA4IDc5LjQ0NTg0MiAyMy4xMDgzNDIgQyA3OS40NzI5MjUgMjMuNDU2MjU4IDc5LjQ4OTU5MiAyMy44MDIwOTIgNzkuNDk1ODQyIDI0LjE0NzkyNSBDIDc5LjUwNDE3NSAyNC40OTU4NDIgNzkuNTAwMDA5IDI0Ljg0MTY3NSA3OS40ODc1MDkgMjUuMTg5NTkyIEMgNzkuNDcyOTI1IDI1LjUzNTQyNSA3OS40NTAwMDkgMjUuODgxMjU4IDc5LjQxNjY3NSAyNi4yMjcwOTIgQyA3OS4zODMzNDIgMjYuNTcyOTI1IDc5LjMzOTU5MiAyNi45MTY2NzUgNzkuMjg3NTA5IDI3LjI2MDQyNSBDIDc5LjIzMzM0MiAyNy42MDIwOTIgNzkuMTcwODQyIDI3Ljk0Mzc1OCA3OS4wOTc5MjUgMjguMjgzMzQyIEMgNzkuMDI1MDA5IDI4LjYyMjkyNSA3OC45NDE2NzUgMjguOTU4MzQyIDc4Ljg1MDAwOSAyOS4yOTM3NTggQyA3OC43NTgzNDIgMjkuNjI3MDkyIDc4LjY1NjI1OSAyOS45NjA0MjUgNzguNTQzNzU5IDMwLjI4NzUwOSBDIDc4LjQzMTI1OSAzMC42MTY2NzUgNzguMzEwNDI1IDMwLjk0MTY3NSA3OC4xODEyNTkgMzEuMjYyNTA5IEMgNzguMDUwMDA5IDMxLjU4NTQyNSA3Ny45MTA0MjUgMzEuOTAyMDkyIDc3Ljc2MjUwOSAzMi4yMTY2NzUgQyA3Ny42MTI1MDkgMzIuNTI5MTc1IDc3LjQ1NjI1OSAzMi44Mzc1MDkgNzcuMjg5NTkyIDMzLjE0Mzc1OSBDIDc3LjEyMjkyNSAzMy40NDc5MjUgNzYuOTQ3OTI1IDMzLjc0NTg0MiA3Ni43NjI1MDkgMzQuMDQxNjc1IEMgNzYuNTc5MTc1IDM0LjMzNTQyNSA3Ni4zODc1MDkgMzQuNjIyOTI1IDc2LjE4NTQyNSAzNC45MDYyNTkgQyA3NS45ODU0MjUgMzUuMTg5NTkyIDc1Ljc3NzA5MiAzNS40NjY2NzUgNzUuNTYwNDI1IDM1LjczNzUwOSBDIDc1LjM0Mzc1OSAzNi4wMDgzNDIgNzUuMTE4NzU5IDM2LjI3MjkyNSA3NC44ODc1MDggMzYuNTMxMjU5IEMgNzQuNjU2MjU4IDM2Ljc4OTU5MiA3NC40MTY2NzUgMzcuMDQxNjc1IDc0LjE3MDg0MiAzNy4yODU0MjUgQyA3My45MjI5MjUgMzcuNTI5MTc2IDczLjY3MDg0MiAzNy43NjY2NzYgNzMuNDEwNDI1IDM3Ljk5NTg0MiBDIDczLjE1MDAwOCAzOC4yMjUwMDkgNzIuODgzMzQyIDM4LjQ0NzkyNiA3Mi42MTA0MjUgMzguNjYyNTA5IEMgNzIuMzM3NTA4IDM4Ljg3NTAwOSA3Mi4wNTgzNDIgMzkuMDgxMjU5IDcxLjc3MjkyNSAzOS4yNzkxNzYgQyA3MS40ODc1MDggMzkuNDc3MDkyIDcxLjE5NzkyNSAzOS42NjY2NzYgNzAuOTAyMDkyIDM5Ljg0NzkyNiBDIDcwLjYwNjI1OCA0MC4wMjkxNzYgNzAuMzA0MTc1IDQwLjIwMjA5MiA3MC4wMDAwMDggNDAuMzY2Njc2IEMgNjkuNjkzNzU4IDQwLjUzMTI1OSA2OS4zODMzNDIgNDAuNjg1NDI2IDY5LjA2ODc1OCA0MC44MzEyNTkgQyA2OC43NTQxNzUgNDAuOTc3MDkyIDY4LjQzNTQyNSA0MS4xMTQ1OTIgNjguMTEyNTA4IDQxLjI0MTY3NiBDIDY3Ljc4OTU5MiA0MS4zNjg3NTkgNjcuNDYyNTA4IDQxLjQ4NzUwOSA2Ny4xMzMzNDIgNDEuNTk1ODQyIEMgNjYuODA0MTc1IDQxLjcwNDE3NiA2Ni40NzA4NDEgNDEuODAyMDkyIDY2LjEzNTQyNSA0MS44OTE2NzYgQyA2NS44MDAwMDggNDEuOTgxMjU5IDY1LjQ2MjUwOCA0Mi4wNjA0MjYgNjUuMTIyOTI1IDQyLjEzMTI1OSBDIDY0Ljc4MzM0MSA0Mi4yMDAwMDkgNjQuNDQxNjc1IDQyLjI2MDQyNiA2NC4wOTc5MjUgNDIuMzEwNDI2IEMgNjMuNzU0MTc1IDQyLjM2MDQyNiA2My40MTA0MjUgNDIuNDAyMDkyIDYzLjA2NDU5MSA0Mi40MzEyNTkgQyA2Mi43MTg3NTggNDIuNDYwNDI2IDYyLjM3MjkyNSA0Mi40ODEyNTkgNjIuMDI1MDA4IDQyLjQ5MTY3NiBDIDYxLjY3OTE3NSA0Mi41MDIwOTIgNjEuMzMxMjU4IDQyLjUwMjA5MiA2MC45ODU0MjUgNDIuNDkxNjc2IEMgNjAuNjM3NTA4IDQyLjQ4MTI1OSA2MC4yOTE2NzUgNDIuNDYyNTA5IDU5Ljk0NTg0MSA0Mi40MzEyNTkgQyA1OS42MDAwMDggNDIuNDAyMDkyIDU5LjI1NjI1OCA0Mi4zNjI1MDkgNTguOTEyNTA4IDQyLjMxMjUwOSBDIDU4LjU2ODc1OCA0Mi4yNjI1MDkgNTguMjI3MDkxIDQyLjIwMjA5MiA1Ny44ODc1MDggNDIuMTMzMzQyIEMgNTcuNTQ3OTI0IDQyLjA2NDU5MiA1Ny4yMTA0MjQgNDEuOTgzMzQyIDU2Ljg3NTAwOCA0MS44OTU4NDIgQyA1Ni41Mzk1OTEgNDEuODA2MjU5IDU2LjIwNjI1OCA0MS43MDYyNTkgNTUuODc3MDkxIDQxLjU5NzkyNiBDIDU1LjU0NzkyNCA0MS40ODk1OTIgNTUuMjIwODQxIDQxLjM3MjkyNiA1NC44OTc5MjQgNDEuMjQ1ODQyIEMgNTQuNTc1MDA4IDQxLjExODc1OSA1NC4yNTYyNTggNDAuOTgxMjU5IDUzLjk0MTY3NCA0MC44MzU0MjYgQyA1My42MjcwOTEgNDAuNjg5NTkyIDUzLjMxNjY3NCA0MC41MzU0MjYgNTMuMDEwNDI0IDQwLjM3MDg0MiBDIDUyLjcwNDE3NCA0MC4yMDgzNDIgNTIuNDA0MTc0IDQwLjAzNTQyNiA1Mi4xMDgzNDEgMzkuODU0MTc2IEMgNTEuODEyNTA4IDM5LjY3MjkyNiA1MS41MjA4NDEgMzkuNDgzMzQyIDUxLjIzNTQyNCAzOS4yODU0MjYgQyA1MC45NTAwMDcgMzkuMDg3NTA5IDUwLjY3MjkyNCAzOC44ODMzNDIgNTAuMzk3OTI0IDM4LjY2ODc1OSBDIDUwLjEyNTAwNyAzOC40NTQxNzYgNDkuODU4MzQxIDM4LjIzMzM0MiA0OS41OTc5MjQgMzguMDA0MTc2IEMgNDkuMzM3NTA3IDM3Ljc3MjkyNiA0OS4wODU0MjQgMzcuNTM3NTA5IDQ4LjgzNzUwNyAzNy4yOTM3NTkgQyA0OC41OTE2NzQgMzcuMDQ3OTI1IDQ4LjM1MjA5MSAzNi43OTc5MjUgNDguMTIwODQxIDM2LjUzOTU5MiAiIHRyYW5zZm9ybT0ibWF0cml4KDEuODc1LCAwLCAwLCAxLjg3NSwgMjMxLjg3NDk5LCAzNTIuMzc0OTg2KSIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0ibm9uemVybyIgZmlsbD0iIzVCNzlBRCIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDMwMS4yNSAzODYuMTI1IEwgMzkzLjEyNSAzODYuMTI1IEwgMzkzLjEyNSA0MTAuNSBMIDMwMS4yNSA0MTAuNSBaIE0gMzAxLjI1IDM4Ni4xMjUgIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwLTMpIj4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxMyIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiIHN0cm9rZT0iIzAxMTYzNiIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSI0IiBkPSJNIDEyOC41MDAwMTEgMjQuNTAwMDA4IEMgMTI4LjUwMDAxMSAyNC4xNTIwOTIgMTI4LjQ4OTU5NCAyMy44MDYyNTggMTI4LjQ3MDg0NCAyMy40NjA0MjUgQyAxMjguNDUwMDExIDIzLjExMjUwOCAxMjguNDIwODQ0IDIyLjc2ODc1OCAxMjguMzc5MTc3IDIyLjQyMjkyNSBDIDEyOC4zMzk1OTQgMjIuMDc5MTc1IDEyOC4yODk1OTQgMjEuNzM1NDI1IDEyOC4yMjkxNzcgMjEuMzkzNzU4IEMgMTI4LjE3MDg0NCAyMS4wNTIwOTEgMTI4LjEwMDAxMSAyMC43MTI1MDggMTI4LjAyMDg0NCAyMC4zNzUwMDggQyAxMjcuOTQxNjc3IDIwLjAzNTQyNSAxMjcuODUyMDk0IDE5LjcwMjA5MSAxMjcuNzU0MTc3IDE5LjM2ODc1OCBDIDEyNy42NTQxNzcgMTkuMDM1NDI1IDEyNy41NDU4NDQgMTguNzA2MjU4IDEyNy40MjcwOTQgMTguMzc5MTc1IEMgMTI3LjMxMDQyNyAxOC4wNTQxNzUgMTI3LjE4MzM0NCAxNy43MzEyNTggMTI3LjA0NTg0NCAxNy40MTI1MDggQyAxMjYuOTEwNDI3IDE3LjA5Mzc1OCAxMjYuNzY0NTk0IDE2Ljc3OTE3NSAxMjYuNjA4MzQ0IDE2LjQ2ODc1OCBDIDEyNi40NTQxNzcgMTYuMTU4MzQxIDEyNi4yODk1OTQgMTUuODUyMDkxIDEyNi4xMTg3NjEgMTUuNTUwMDA4IEMgMTI1Ljk0NTg0NCAxNS4yNTAwMDggMTI1Ljc2NDU5NCAxNC45NTQxNzUgMTI1LjU3NTAxMSAxNC42NjI1MDggQyAxMjUuMzg1NDI3IDE0LjM3MjkyNSAxMjUuMTg3NTExIDE0LjA4NzUwOCAxMjQuOTgxMjYxIDEzLjgwODM0MSBDIDEyNC43NzUwMTEgMTMuNTI5MTc1IDEyNC41NjA0MjcgMTMuMjU2MjU4IDEyNC4zMzk1OTQgMTIuOTg5NTkxIEMgMTI0LjExNjY3NyAxMi43MjI5MjQgMTIzLjg4NzUxMSAxMi40NjI1MDggMTIzLjY1MDAxMSAxMi4yMDgzNDEgQyAxMjMuNDE0NTk0IDExLjk1NjI1OCAxMjMuMTcwODQ0IDExLjcwODM0MSAxMjIuOTE4NzYgMTEuNDY4NzU4IEMgMTIyLjY2NjY3NyAxMS4yMjkxNzQgMTIyLjQxMDQyNyAxMC45OTc5MjQgMTIyLjE0NTg0NCAxMC43NzI5MjQgQyAxMjEuODgxMjYgMTAuNTUwMDA4IDEyMS42MTA0MjcgMTAuMzMzMzQxIDEyMS4zMzMzNDQgMTAuMTIyOTI0IEMgMTIxLjA1NjI2IDkuOTE0NTkxIDEyMC43NzI5MjcgOS43MTQ1OTEgMTIwLjQ4MzM0NCA5LjUyMDg0MSBDIDEyMC4xOTU4NDQgOS4zMjkxNzQgMTE5LjkwMDAxIDkuMTQ1ODQxIDExOS42MDIwOTQgOC45NzA4NDEgQyAxMTkuMzAyMDk0IDguNzkzNzU4IDExOC45OTc5MjcgOC42MjcwOTEgMTE4LjY4OTU5NCA4LjQ3MDg0MSBDIDExOC4zNzkxNzcgOC4zMTI1MDggMTE4LjA2NjY3NyA4LjE2MjUwOCAxMTcuNzQ3OTI3IDguMDIyOTI0IEMgMTE3LjQzMTI2IDcuODgzMzQxIDExNy4xMTA0MjcgNy43NTQxNzQgMTE2Ljc4NTQyNyA3LjYzMTI1OCBDIDExNi40NjA0MjcgNy41MTA0MjQgMTE2LjEzMTI2IDcuNDAwMDA4IDExNS44MDAwMSA3LjI5NzkyNCBDIDExNS40Njg3NiA3LjE5NTg0MSAxMTUuMTMzMzQ0IDcuMTAyMDkxIDExNC43OTU4NDMgNy4wMTg3NTggQyAxMTQuNDYwNDI3IDYuOTM3NTA4IDExNC4xMjA4NDMgNi44NjQ1OTEgMTEzLjc3OTE3NyA2LjgwMDAwOCBDIDExMy40Mzc1MSA2LjczNzUwOCAxMTMuMDk1ODQzIDYuNjgzMzQxIDExMi43NTIwOTMgNi42NDE2NzQgQyAxMTIuNDA2MjYgNi41OTc5MjQgMTEyLjA2MjUxIDYuNTY0NTkxIDExMS43MTQ1OTMgNi41Mzk1OTEgQyAxMTEuMzY4NzYgNi41MTY2NzQgMTExLjAyMjkyNyA2LjUwNDE3NCAxMTAuNjc1MDEgNi41MDAwMDggQyAxMTAuMzI5MTc3IDYuNDk3OTI0IDEwOS45ODEyNiA2LjUwNDE3NCAxMDkuNjM1NDI3IDYuNTIwODQxIEMgMTA5LjI4OTU5MyA2LjUzNzUwOCAxMDguOTQzNzYgNi41NjI1MDggMTA4LjU5NzkyNyA2LjYwMDAwOCBDIDEwOC4yNTIwOTMgNi42Mzc1MDggMTA3LjkwODM0MyA2LjY4MzM0MSAxMDcuNTY2Njc3IDYuNzM5NTkxIEMgMTA3LjIyNTAxIDYuNzk1ODQxIDEwNi44ODMzNDMgNi44NjI1MDggMTA2LjU0NTg0MyA2LjkzOTU5MSBDIDEwNi4yMDYyNiA3LjAxNDU5MSAxMDUuODcwODQzIDcuMTAyMDkxIDEwNS41Mzc1MSA3LjE5NzkyNCBDIDEwNS4yMDQxNzYgNy4yOTM3NTggMTA0Ljg3MjkyNiA3LjM5NzkyNCAxMDQuNTQ1ODQzIDcuNTEyNTA4IEMgMTA0LjIxODc2IDcuNjI3MDkxIDEwMy44OTM3NiA3Ljc1MjA5MSAxMDMuNTc1MDEgNy44ODU0MjQgQyAxMDMuMjU0MTc2IDguMDE4NzU4IDEwMi45Mzc1MSA4LjE2MDQyNCAxMDIuNjI1MDEgOC4zMTI1MDggQyAxMDIuMzE0NTkzIDguNDY0NTkxIDEwMi4wMDYyNiA4LjYyNTAwOCAxMDEuNzA0MTc2IDguNzk1ODQxIEMgMTAxLjQwMDAxIDguOTY0NTkxIDEwMS4xMDIwOTMgOS4xNDM3NTggMTAwLjgxMDQyNiA5LjMyOTE3NCBDIDEwMC41MTg3NiA5LjUxNjY3NCAxMDAuMjMxMjYgOS43MTI1MDggOTkuOTUwMDEgOS45MTQ1OTEgQyA5OS42Njg3NiAxMC4xMTg3NTggOTkuMzkzNzYgMTAuMzI5MTc0IDk5LjEyNTAxIDEwLjU1MDAwOCBDIDk4Ljg1NjI1OSAxMC43Njg3NTggOTguNTkzNzU5IDEwLjk5NTg0MSA5OC4zMzc1MDkgMTEuMjI5MTc0IEMgOTguMDgxMjU5IDExLjQ2NDU5MSA5Ny44MzMzNDMgMTEuNzA2MjU4IDk3LjU5MTY3NiAxMS45NTQxNzQgQyA5Ny4zNTAwMDkgMTIuMjA0MTc0IDk3LjExNDU5MyAxMi40NTgzNDEgOTYuODg3NTA5IDEyLjcyMDg0MSBDIDk2LjY2MDQyNiAxMi45ODMzNDEgOTYuNDQxNjc2IDEzLjI1MjA5MSA5Ni4yMzEyNTkgMTMuNTI3MDkxIEMgOTYuMDE4NzU5IDEzLjgwMjA5MSA5NS44MTQ1OTMgMTQuMDgzMzQxIDk1LjYyMDg0MyAxNC4zNzA4NDEgQyA5NS40MjUwMDkgMTQuNjU4MzQxIDk1LjIzNzUwOSAxNC45NTAwMDggOTUuMDYwNDI2IDE1LjI0NzkyNSBDIDk0Ljg4MTI1OSAxNS41NDU4NDEgOTQuNzEyNTA5IDE1Ljg0NzkyNSA5NC41NTAwMDkgMTYuMTU0MTc1IEMgOTQuMzg5NTkzIDE2LjQ2MjUwOCA5NC4yMzc1MDkgMTYuNzc1MDA4IDk0LjA5NTg0MyAxNy4wODk1OTEgQyA5My45NTIwOTMgMTcuNDA2MjU4IDkzLjgxODc1OSAxNy43MjcwOTEgOTMuNjkzNzU5IDE4LjA1MDAwOCBDIDkzLjU3MDg0MyAxOC4zNzUwMDggOTMuNDU2MjU5IDE4LjcwMjA5MSA5My4zNTAwMDkgMTkuMDMzMzQxIEMgOTMuMjQzNzU5IDE5LjM2MjUwOCA5My4xNTAwMDkgMTkuNjk1ODQxIDkzLjA2MjUwOSAyMC4wMzMzNDEgQyA5Mi45NzcwOTMgMjAuMzY4NzU4IDkyLjkwMDAwOSAyMC43MDgzNDEgOTIuODMzMzQzIDIxLjA0NzkyNSBDIDkyLjc2NjY3NiAyMS4zODc1MDggOTIuNzEwNDI2IDIxLjczMTI1OCA5Mi42NjQ1OTMgMjIuMDc1MDA4IEMgOTIuNjE2Njc2IDIyLjQxODc1OCA5Mi41ODEyNTkgMjIuNzYyNTA4IDkyLjU1NDE3NiAyMy4xMDgzNDIgQyA5Mi41MjcwOTMgMjMuNDU2MjU4IDkyLjUxMDQyNiAyMy44MDIwOTIgOTIuNTA0MTc2IDI0LjE0NzkyNSBDIDkyLjQ5NTg0MyAyNC40OTU4NDIgOTIuNTAwMDA5IDI0Ljg0MTY3NSA5Mi41MTI1MDkgMjUuMTg5NTkyIEMgOTIuNTI3MDkzIDI1LjUzNTQyNSA5Mi41NTAwMDkgMjUuODgxMjU4IDkyLjU4MzM0MyAyNi4yMjcwOTIgQyA5Mi42MTY2NzYgMjYuNTcyOTI1IDkyLjY2MDQyNiAyNi45MTY2NzUgOTIuNzEyNTA5IDI3LjI2MDQyNSBDIDkyLjc2NjY3NiAyNy42MDIwOTIgOTIuODI5MTc2IDI3Ljk0Mzc1OCA5Mi45MDIwOTMgMjguMjgzMzQyIEMgOTIuOTc1MDA5IDI4LjYyMjkyNSA5My4wNTgzNDMgMjguOTU4MzQyIDkzLjE1MDAwOSAyOS4yOTM3NTggQyA5My4yNDE2NzYgMjkuNjI3MDkyIDkzLjM0Mzc1OSAyOS45NjA0MjUgOTMuNDU2MjU5IDMwLjI4NzUwOSBDIDkzLjU2ODc1OSAzMC42MTY2NzUgOTMuNjg5NTkzIDMwLjk0MTY3NSA5My44MTg3NTkgMzEuMjYyNTA5IEMgOTMuOTUwMDA5IDMxLjU4NTQyNSA5NC4wODk1OTMgMzEuOTAyMDkyIDk0LjIzNzUwOSAzMi4yMTY2NzUgQyA5NC4zODc1MDkgMzIuNTI5MTc1IDk0LjU0Mzc1OSAzMi44Mzc1MDkgOTQuNzEwNDI2IDMzLjE0Mzc1OSBDIDk0Ljg3NzA5MyAzMy40NDc5MjUgOTUuMDUyMDkzIDMzLjc0NTg0MiA5NS4yMzc1MDkgMzQuMDQxNjc1IEMgOTUuNDIwODQzIDM0LjMzNTQyNSA5NS42MTI1MDkgMzQuNjIyOTI1IDk1LjgxNDU5MyAzNC45MDYyNTkgQyA5Ni4wMTQ1OTMgMzUuMTg5NTkyIDk2LjIyMjkyNiAzNS40NjY2NzUgOTYuNDM5NTkzIDM1LjczNzUwOSBDIDk2LjY1NjI1OSAzNi4wMDgzNDIgOTYuODgxMjU5IDM2LjI3MjkyNSA5Ny4xMTI1MDkgMzYuNTMxMjU5IEMgOTcuMzQzNzU5IDM2Ljc4OTU5MiA5Ny41ODMzNDMgMzcuMDQxNjc1IDk3LjgyOTE3NiAzNy4yODU0MjUgQyA5OC4wNzcwOTMgMzcuNTI5MTc2IDk4LjMyOTE3NiAzNy43NjY2NzYgOTguNTg5NTkzIDM3Ljk5NTg0MiBDIDk4Ljg1MDAwOSAzOC4yMjUwMDkgOTkuMTE2Njc2IDM4LjQ0NzkyNiA5OS4zODk1OTMgMzguNjYyNTA5IEMgOTkuNjYyNTEgMzguODc1MDA5IDk5Ljk0MTY3NiAzOS4wODEyNTkgMTAwLjIyNzA5MyAzOS4yNzkxNzYgQyAxMDAuNTEyNTEgMzkuNDc3MDkyIDEwMC44MDIwOTMgMzkuNjY2Njc2IDEwMS4wOTc5MjYgMzkuODQ3OTI2IEMgMTAxLjM5Mzc2IDQwLjAyOTE3NiAxMDEuNjk1ODQzIDQwLjIwMjA5MiAxMDIuMDAwMDEgNDAuMzY2Njc2IEMgMTAyLjMwNjI2IDQwLjUzMTI1OSAxMDIuNjE2Njc2IDQwLjY4NTQyNiAxMDIuOTMxMjYgNDAuODMxMjU5IEMgMTAzLjI0NTg0MyA0MC45NzcwOTIgMTAzLjU2NDU5MyA0MS4xMTQ1OTIgMTAzLjg4NzUxIDQxLjI0MTY3NiBDIDEwNC4yMTA0MjYgNDEuMzY4NzU5IDEwNC41Mzc1MSA0MS40ODc1MDkgMTA0Ljg2NjY3NiA0MS41OTU4NDIgQyAxMDUuMTk1ODQzIDQxLjcwNDE3NiAxMDUuNTI5MTc2IDQxLjgwMjA5MiAxMDUuODY0NTkzIDQxLjg5MTY3NiBDIDEwNi4yMDAwMSA0MS45ODEyNTkgMTA2LjUzNzUxIDQyLjA2MDQyNiAxMDYuODc3MDkzIDQyLjEzMTI1OSBDIDEwNy4yMTY2NzcgNDIuMjAwMDA5IDEwNy41NTgzNDMgNDIuMjYwNDI2IDEwNy45MDIwOTMgNDIuMzEwNDI2IEMgMTA4LjI0NTg0MyA0Mi4zNjA0MjYgMTA4LjU4OTU5MyA0Mi40MDIwOTIgMTA4LjkzNTQyNyA0Mi40MzEyNTkgQyAxMDkuMjgxMjYgNDIuNDYwNDI2IDEwOS42MjcwOTMgNDIuNDgxMjU5IDEwOS45NzUwMSA0Mi40OTE2NzYgQyAxMTAuMzIwODQzIDQyLjUwMjA5MiAxMTAuNjY4NzYgNDIuNTAyMDkyIDExMS4wMTQ1OTMgNDIuNDkxNjc2IEMgMTExLjM2MjUxIDQyLjQ4MTI1OSAxMTEuNzA4MzQzIDQyLjQ2MjUwOSAxMTIuMDU0MTc3IDQyLjQzMTI1OSBDIDExMi40MDAwMSA0Mi40MDIwOTIgMTEyLjc0Mzc2IDQyLjM2MjUwOSAxMTMuMDg3NTEgNDIuMzEyNTA5IEMgMTEzLjQzMTI2IDQyLjI2MjUwOSAxMTMuNzcyOTI3IDQyLjIwMjA5MiAxMTQuMTEyNTEgNDIuMTMzMzQyIEMgMTE0LjQ1MjA5MyA0Mi4wNjQ1OTIgMTE0Ljc4OTU5MyA0MS45ODMzNDIgMTE1LjEyNTAxIDQxLjg5NTg0MiBDIDExNS40NjA0MjcgNDEuODA2MjU5IDExNS43OTM3NiA0MS43MDYyNTkgMTE2LjEyMjkyNyA0MS41OTc5MjYgQyAxMTYuNDUyMDk0IDQxLjQ4OTU5MiAxMTYuNzc5MTc3IDQxLjM3MjkyNiAxMTcuMTAyMDk0IDQxLjI0NTg0MiBDIDExNy40MjUwMSA0MS4xMTg3NTkgMTE3Ljc0Mzc2IDQwLjk4MTI1OSAxMTguMDU4MzQ0IDQwLjgzNTQyNiBDIDExOC4zNzI5MjcgNDAuNjg5NTkyIDExOC42ODMzNDQgNDAuNTM1NDI2IDExOC45ODk1OTQgNDAuMzcwODQyIEMgMTE5LjI5NTg0NCA0MC4yMDgzNDIgMTE5LjU5NTg0NCA0MC4wMzU0MjYgMTE5Ljg5MTY3NyAzOS44NTQxNzYgQyAxMjAuMTg3NTEgMzkuNjcyOTI2IDEyMC40NzkxNzcgMzkuNDgzMzQyIDEyMC43NjQ1OTQgMzkuMjg1NDI2IEMgMTIxLjA1MDAxIDM5LjA4NzUwOSAxMjEuMzI3MDk0IDM4Ljg4MzM0MiAxMjEuNjAyMDk0IDM4LjY2ODc1OSBDIDEyMS44NzUwMSAzOC40NTQxNzYgMTIyLjE0MTY3NyAzOC4yMzMzNDIgMTIyLjQwMjA5NCAzOC4wMDQxNzYgQyAxMjIuNjYyNTEgMzcuNzcyOTI2IDEyMi45MTQ1OTQgMzcuNTM3NTA5IDEyMy4xNjI1MTEgMzcuMjkzNzU5IEMgMTIzLjQwODM0NCAzNy4wNDc5MjUgMTIzLjY0NzkyNyAzNi43OTc5MjUgMTIzLjg3OTE3NyAzNi41Mzk1OTIgIiB0cmFuc2Zvcm09Im1hdHJpeCgxLjg3NSwgMCwgMCwgMS44NzUsIDIzMS44NzQ5OSwgMzUyLjM3NDk4NikiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9IiMwMTE2MzYiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSAzOTMuMTI1IDM4Ni4xMjUgTCA0ODUgMzg2LjEyNSBMIDQ4NSA0MTAuNSBMIDM5My4xMjUgNDEwLjUgWiBNIDM5My4xMjUgMzg2LjEyNSAiLz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSIjMDExNjM2IiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0gNDk2LjI1IDM1Mi4zNzUgTCA1NzMuMTI1IDM1Mi4zNzUgTCA1NzMuMTI1IDM3MyBMIDUyNi4yNSA0MjMuNjI1IEwgNTczLjEyNSA0MjMuNjI1IEwgNTczLjEyNSA0NDQuMjUgTCA0OTYuMjUgNDQ0LjI1IEwgNDk2LjI1IDQyMy42MjUgTCA1NDMuMTI1IDM3MyBMIDQ5Ni4yNSAzNzMgWiBNIDQ5Ni4yNSAzNTIuMzc1ICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC00KSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMTMiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49Im1pdGVyIiBzdHJva2U9IiMwMTE2MzYiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iNCIgZD0iTSA2LjUwMDAxMyAwLjAwMDAwNzI3NSBMIDYuNTAwMDEzIDI0LjUwMDAwOCBDIDYuNTAwMDEzIDI1LjA4OTU5MiA2LjUyOTE4IDI1LjY3NzA5MiA2LjU4NzUxMyAyNi4yNjQ1OTIgQyA2LjY0Mzc2MyAyNi44NTAwMDggNi43MzEyNjMgMjcuNDMzMzQyIDYuODQ1ODQ3IDI4LjAxMjUwOCBDIDYuOTYwNDMgMjguNTg5NTkyIDcuMTA0MTggMjkuMTYwNDI1IDcuMjc1MDE0IDI5LjcyNTAwOSBDIDcuNDQ1ODQ3IDMwLjI4OTU5MiA3LjY0Mzc2NCAzMC44NDM3NTkgNy44NzA4NDcgMzEuMzg3NTA5IEMgOC4wOTU4NDcgMzEuOTMzMzQyIDguMzQ3OTMgMzIuNDY0NTkyIDguNjI1MDE0IDMyLjk4NTQyNSBDIDguOTA0MTggMzMuNTA0MTc1IDkuMjA2MjY0IDM0LjAxMDQyNSA5LjUzMzM0NyAzNC41MDAwMDkgQyA5Ljg2MDQzIDM0Ljk4OTU5MiAxMC4yMTI1MTQgMzUuNDYyNTA5IDEwLjU4NTQzIDM1LjkxODc1OSBDIDEwLjk2MDQzIDM2LjM3NTAwOSAxMS4zNTYyNjQgMzYuODEwNDI1IDExLjc3MjkzIDM3LjIyNzA5MiBDIDEyLjE4OTU5NyAzNy42NDM3NTkgMTIuNjI1MDE0IDM4LjAzOTU5MiAxMy4wODEyNjQgMzguNDE0NTkyIEMgMTMuNTM3NTE0IDM4Ljc4NzUwOSAxNC4wMTA0MyAzOS4xMzk1OTIgMTQuNTAwMDE0IDM5LjQ2NjY3NiBDIDE0Ljk4OTU5NyAzOS43OTM3NTkgMTUuNDk1ODQ3IDQwLjA5NTg0MiAxNi4wMTQ1OTcgNDAuMzc1MDA5IEMgMTYuNTM1NDMxIDQwLjY1MjA5MiAxNy4wNjY2ODEgNDAuOTA0MTc2IDE3LjYxMjUxNCA0MS4xMjkxNzYgQyAxOC4xNTYyNjQgNDEuMzU2MjU5IDE4LjcxMDQzMSA0MS41NTQxNzYgMTkuMjc1MDE0IDQxLjcyNTAwOSBDIDE5LjgzOTU5NyA0MS44OTU4NDIgMjAuNDEwNDMxIDQyLjAzOTU5MiAyMC45ODc1MTQgNDIuMTU0MTc2IEMgMjEuNTY2NjgxIDQyLjI2ODc1OSAyMi4xNTAwMTQgNDIuMzU2MjU5IDIyLjczNTQzMSA0Mi40MTI1MDkgQyAyMy4zMjI5MzEgNDIuNDcwODQyIDIzLjkxMDQzMSA0Mi41MDAwMDkgMjQuNTAwMDE0IDQyLjUwMDAwOSBDIDI1LjA4OTU5OCA0Mi41MDAwMDkgMjUuNjc3MDk4IDQyLjQ3MDg0MiAyNi4yNjQ1OTggNDIuNDEyNTA5IEMgMjYuODUwMDE0IDQyLjM1NjI1OSAyNy40MzMzNDggNDIuMjY4NzU5IDI4LjAxMjUxNCA0Mi4xNTQxNzYgQyAyOC41ODk1OTggNDIuMDM5NTkyIDI5LjE2MDQzMSA0MS44OTU4NDIgMjkuNzI1MDE0IDQxLjcyNTAwOSBDIDMwLjI4OTU5OCA0MS41NTQxNzYgMzAuODQzNzY0IDQxLjM1NjI1OSAzMS4zODc1MTUgNDEuMTI5MTc2IEMgMzEuOTMzMzQ4IDQwLjkwNDE3NiAzMi40NjQ1OTggNDAuNjUyMDkyIDMyLjk4NTQzMSA0MC4zNzUwMDkgQyAzMy41MDQxODEgNDAuMDk1ODQyIDM0LjAxMDQzMSAzOS43OTM3NTkgMzQuNTAwMDE1IDM5LjQ2NjY3NiBDIDM0Ljk4OTU5OCAzOS4xMzk1OTIgMzUuNDYyNTE1IDM4Ljc4NzUwOSAzNS45MTg3NjUgMzguNDE0NTkyIEMgMzYuMzc1MDE1IDM4LjAzOTU5MiAzNi44MTA0MzEgMzcuNjQzNzU5IDM3LjIyNzA5OCAzNy4yMjcwOTIgQyAzNy42NDM3NjUgMzYuODEwNDI1IDM4LjAzOTU5OCAzNi4zNzUwMDkgMzguNDE0NTk4IDM1LjkxODc1OSBDIDM4Ljc4NzUxNSAzNS40NjI1MDkgMzkuMTM5NTk4IDM0Ljk4OTU5MiAzOS40NjY2ODIgMzQuNTAwMDA5IEMgMzkuNzkzNzY1IDM0LjAxMDQyNSA0MC4wOTU4NDggMzMuNTA0MTc1IDQwLjM3NTAxNSAzMi45ODU0MjUgQyA0MC42NTIwOTggMzIuNDY0NTkyIDQwLjkwNDE4MiAzMS45MzMzNDIgNDEuMTI5MTgyIDMxLjM4NzUwOSBDIDQxLjM1NjI2NSAzMC44NDM3NTkgNDEuNTU0MTgyIDMwLjI4OTU5MiA0MS43MjUwMTUgMjkuNzI1MDA5IEMgNDEuODk1ODQ4IDI5LjE2MDQyNSA0Mi4wMzk1OTggMjguNTg5NTkyIDQyLjE1NDE4MiAyOC4wMTI1MDggQyA0Mi4yNjg3NjUgMjcuNDMzMzQyIDQyLjM1NjI2NSAyNi44NTAwMDggNDIuNDEyNTE1IDI2LjI2NDU5MiBDIDQyLjQ3MDg0OCAyNS42NzcwOTIgNDIuNTAwMDE1IDI1LjA4OTU5MiA0Mi41MDAwMTUgMjQuNTAwMDA4IE0gNDIuNTAwMDE1IDAuMDAwMDA3Mjc1IEwgNDIuNTAwMDE1IDQ5LjAwMDAwOSAiIHRyYW5zZm9ybT0ibWF0cml4KDEuODc1LCAwLCAwLCAxLjg3NSwgNTg0LjM3NDk3NSwgMzUyLjM3NDk4NikiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9IiM1Qjc5QUQiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSA2ODMuNzUgNDE5Ljg3NSBMIDcwOC4xMjUgNDE5Ljg3NSBMIDcwOC4xMjUgNDQ0LjI1IEwgNjgzLjc1IDQ0NC4yNSBaIE0gNjgzLjc1IDQxOS44NzUgIi8+Cjwvc3ZnPg==" alt="reezu." width="110" height="22"><span style="font-size:6.9px">MARKETING EDUCACIONAL</span></span>
+  <span>Base: Censo Escolar 2025 e Censo IBGE 2022</span></div></footer>
 <div class="loading" id="loading" hidden></div>
+
 <script>window.STATES=[{"uf": "AM", "nome": "Amazonas", "bbox": [-73.70412, -56.10709, -9.64062, 1.97799], "n": 392}, {"uf": "CE", "nome": "Ceará", "bbox": [-41.37882, -37.257, -7.84416, -2.7934], "n": 1686}];</script>
 <script>
 (function(){
 const fmt=n=>n==null||isNaN(n)?'—':Math.round(n).toLocaleString('pt-BR');
 const brl=n=>'R$ '+Math.round(n).toLocaleString('pt-BR');
 const pct=(n,d=0)=>!isFinite(n)?'—':(n*100).toLocaleString('pt-BR',{maximumFractionDigits:d,minimumFractionDigits:d})+'%';
+const kmf=v=>v.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})+' km';
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 const norm=s=>(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
-const SEGN=['Infantil','Fund. I','Fund. II','Médio'],YRS=[2019,2020,2021,2022,2023,2024,2025];
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SEGN=['Infantil','Fund. I','Fund. II','Médio'],YRS=[2019,2020,2021,2022,2023,2024,2025],SM=1212;
+const SEGAGE=[[0,5],[6,10],[11,14],[15,17]];
 const NS='http://www.w3.org/2000/svg';function el(t,a,p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
-const MUN={};const ES=[];const ESmap={};const SSC={};const UFN={};STATES.forEach(s=>UFN[s.uf]=s.nome);
+const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
+const km=(la1,lo1,la2,lo2)=>Math.hypot((la1-la2)*111.32,(lo1-lo2)*111.32*Math.cos(la1*Math.PI/180));
+function decode(enc){return enc.map(arr=>{const pts=[];let x=0,y=0;for(let i=0;i<arr.length;i+=2){x+=arr[i];y+=arr[i+1];pts.push([x/1e5,y/1e5])}return pts})}
+const isApprox=e=>e.fonte==='b'||e.fonte==='m';
+/* concorrente: tem aluno em 2025 e oferece segmento regular (sem unidades só técnicas ou EJA) */
+const isRegular=e=>e.lat!=null&&e.tot>0&&e.seg.some(x=>x>0);
+
+/* ---------- dados por estado ---------- */
+const MUN={},ES=[],ESmap={},SSC={},UFN={};STATES.forEach(s=>UFN[s.uf]=s.nome);
 const loading=document.getElementById('loading');
 function showL(m){loading.textContent=m;loading.hidden=!m}
-function addEsc(uf,d){Object.assign(MUN,d.muns);d.e.forEach(r=>{const s=r[7],t=s[6]>0?s[6]:0,mn=d.muns[r[2]]||'';const e={uf,code:r[0],nome:r[1],mun:r[2],mn,bairro:r[3],lat:r[4],lon:r[5],fonte:r[6],serie:s,seg:r[8],end:r[9],tot:t,
-  v22:s[3]>0&&s[6]>=0?s[6]/s[3]-1:null,key:norm(r[1]+' '+mn+' '+r[3]+' '+r[0]+' '+uf+' '+UFN[uf])};ES.push(e);ESmap[e.code]=e})}
+/* escolas: [code,nome,mun,bairro,lat,lon,fonte,serie[7],seg[4],end] */
+function addEsc(uf,d){Object.assign(MUN,d.muns);d.e.forEach(r=>{const s=r[7],t=s[6]>0?s[6]:0,mn=d.muns[r[2]]||'';
+  const e={uf,code:r[0],nome:r[1],mun:r[2],mn,bairro:r[3],lat:r[4],lon:r[5],fonte:r[6],serie:s,seg:r[8],end:r[9],tot:t,
+    v22:s[3]>0&&s[6]>=0?s[6]/s[3]-1:null,key:norm(r[1]+' '+mn+' '+r[3]+' '+r[0]+' '+uf+' '+UFN[uf])};ES.push(e);ESmap[e.code]=e})}
+/* setores: [mun,bairro,pop,dom,a0,a5,a10,a15,renda,ha,x,y,enc] */
 async function loadSet(uf){if(SSC[uf])return SSC[uf];showL('Carregando mapa de '+UFN[uf]+'…');
   const d=await fetch('data/'+uf+'_setores.json').then(r=>{if(!r.ok)throw new Error('falha');return r.json()});
   SSC[uf]=d.s.map(r=>{const s={m:r[0],b:r[1],p:r[2],d:r[3],a:[r[4],r[5],r[6],r[7]],r:r[8],ha:r[9],x:r[10],y:r[11],enc:r[12]};s.seg=[s.a[0]+.2*s.a[1],.8*s.a[1]+.2*s.a[2],.8*s.a[2],.6*s.a[3]];return s});showL('');return SSC[uf]}
-let SS=[];
-const trendCol=v=>v==null?css('--muted'):v>=.05?css('--up'):v<=-.05?css('--down'):css('--hold');
-const km=(la1,lo1,la2,lo2)=>Math.hypot((la1-la2)*111.32,(lo1-lo2)*111.32*Math.cos(la1*Math.PI/180));
-function decode(enc){return enc.map(arr=>{const pts=[];let x=0,y=0;for(let i=0;i<arr.length;i+=2){x+=arr[i];y+=arr[i+1];pts.push([x/1e5,y/1e5])}return pts})}
+let SS=[],active=[];
 
-const st={center:null,R:3,layer:'dens',seg:'all',rmin:2400,sel:null,sk:'tot',sd:-1,flt:'all'};
-let IN=[],COMP=[],VIEW=[];
+const st={center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
+let IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
 
-/* ---------- search ---------- */
+/* ---------- busca ---------- */
 const q=document.getElementById('q'),sugg=document.getElementById('sugg');let sIdx=-1,sList=[];
-let active=[];
 q.addEventListener('input',()=>{const t=norm(q.value).trim();if(t.length<2){closeS();return}
   const toks=t.split(/\s+/);sList=active.filter(e=>toks.every(k=>e.key.includes(k))).sort((a,b)=>b.tot-a.tot).slice(0,10);
-  sIdx=-1;if(!sList.length){sugg.innerHTML=`<div style="padding:12px;color:var(--muted);font-size:14px">Nenhuma escola privada encontrada com esse termo. Confira a grafia ou use a coordenada do Google Maps.</div>`}
-  else sugg.innerHTML=sList.map((e,i)=>`<button type="button" role="option" id="o${i}" data-c="${e.code}" aria-selected="false"><span class="n">${e.nome}</span><span class="m">${e.mn}${e.bairro?', '+e.bairro:''}</span><span class="t">${e.tot?fmt(e.tot)+' alunos':'sem alunos em 2025'}</span></button>`).join('');
+  sIdx=-1;if(!sList.length){sugg.innerHTML=`<div class="none">Nenhuma escola privada encontrada com esse termo. Confira a grafia ou use a coordenada do Google Maps.</div>`}
+  else sugg.innerHTML=sList.map((e,i)=>`<button type="button" role="option" id="o${i}" data-c="${e.code}" aria-selected="false"><span class="n">${esc(e.nome)}</span><span class="m">${esc(e.mn)}${e.bairro?', '+esc(e.bairro):''}, ${e.uf}</span><span class="t">${e.tot?fmt(e.tot)+' alunos':'sem alunos em 2025'}</span></button>`).join('');
   sugg.hidden=false;q.setAttribute('aria-expanded','true')});
 q.addEventListener('keydown',e=>{if(sugg.hidden)return;const b=sugg.querySelectorAll('button');if(!b.length)return;
   if(e.key==='ArrowDown'){sIdx=Math.min(b.length-1,sIdx+1);e.preventDefault()}else if(e.key==='ArrowUp'){sIdx=Math.max(0,sIdx-1);e.preventDefault()}
@@ -272,54 +374,89 @@ q.addEventListener('keydown',e=>{if(sugg.hidden)return;const b=sugg.querySelecto
 sugg.addEventListener('click',e=>{const b=e.target.closest('button');if(b)chooseSchool(b.dataset.c)});
 document.addEventListener('click',e=>{if(!e.target.closest('.search'))closeS()});
 function closeS(){sugg.hidden=true;q.setAttribute('aria-expanded','false')}
-function chooseSchool(code){const e=ESmap[code];if(!e)return;closeS();q.value=e.nome;st.center={lat:e.lat,lon:e.lon,name:e.nome,school:e,uf:e.uf};st.sel=null;
-  try{history.replaceState(null,'','#e'+code)}catch(_){location.hash='e'+code}run()}
+function chooseSchool(code){const e=ESmap[code];if(!e||e.lat==null)return;closeS();q.value=e.nome;st.center={lat:e.lat,lon:e.lon,name:e.nome,school:e,uf:e.uf};st.sel=null;st.selS=null;
+  try{history.replaceState(null,'','#e'+code)}catch(_){location.hash='e'+code}run(true)}
 document.getElementById('goCoord').addEventListener('click',()=>{const v=document.getElementById('coord').value.split(/[,;\s]+/).map(Number).filter(n=>!isNaN(n)&&n!==0),err=document.getElementById('cerr');
   const uf=v.length>=2?(STATES.find(s=>v[1]>=s.bbox[0]-.05&&v[1]<=s.bbox[1]+.05&&v[0]>=s.bbox[2]-.05&&v[0]<=s.bbox[3]+.05)||{}).uf:null;
   if(!uf){err.textContent='Cole latitude e longitude de um ponto dentro de um dos estados disponíveis, por exemplo -3.8163, -38.5390.';err.hidden=false;return}
-  err.hidden=true;const nm=document.getElementById('cname').value.trim()||'Ponto escolhido';st.center={lat:v[0],lon:v[1],name:nm,school:null,uf};st.sel=null;run()});
+  err.hidden=true;const nm=document.getElementById('cname').value.trim()||'Ponto escolhido';st.center={lat:v[0],lon:v[1],name:nm,school:null,uf};st.sel=null;st.selS=null;run(true)});
 
-/* ---------- compute ---------- */
-function alert0(){const f=document.getElementById('rflag');f.hidden=false;f.innerHTML='<b>Não foi possível carregar o mapa deste estado.</b> Verifique a conexão e busque a escola de novo.'}
+/* ---------- cálculo ---------- */
 function compute(){
-  const {lat,lon}=st.center,R=st.R;
-  IN=SS.filter(s=>Math.abs(s.y-lat)<R/70&&Math.abs(s.x-lon)<R/70).map(s=>{s.km=km(lat,lon,s.y,s.x);return s});
-  VIEW=IN.filter(s=>s.km<=R*1.45);IN=IN.filter(s=>s.km<=R);
-  COMP=ES.filter(e=>e.uf===st.center.uf&&e.lat!=null&&(e.tot>0)&&e.seg.some(x=>x>0)&&(!st.center.school||e.code!==st.center.school.code)).map(e=>Object.assign(e,{km:km(lat,lon,e.lat,e.lon)})).filter(e=>e.km<=R);
+  const {lat,lon}=st.center,R=st.R,me=st.center.school;
+  VIEW=SS.filter(s=>Math.abs(s.y-lat)<R/70&&Math.abs(s.x-lon)<R/70).map(s=>{s.km=km(lat,lon,s.y,s.x);return s}).filter(s=>s.km<=R*1.45);
+  IN=VIEW.filter(s=>s.km<=R);
+  const cand=ES.filter(e=>e.uf===st.center.uf&&isRegular(e)&&(!me||e.code!==me.code)).map(e=>Object.assign(e,{km:km(lat,lon,e.lat,e.lon)}));
+  COMP=cand.filter(e=>e.km<=R);
+  NEAR=cand.filter(e=>e.km<=R*1.45+1.05);
+  computeOpp();
 }
-const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
+/* segmentos considerados: os que a escola oferece em 2025 (ou todos, numa análise por ponto); o seletor de idade restringe a um */
+function oppSegs(){if(st.seg!=='all')return[+st.seg];const e=st.center.school;const s=e?[0,1,2,3].filter(i=>e.seg[i]>0):[];return s.length?s:[0,1,2,3]}
+function computeOpp(){
+  const segs=oppSegs();OPP.segs=segs;
+  const cs=NEAR.map(c=>({c,n:sum(segs,i=>c.seg[i])})).filter(x=>x.n>0);
+  VIEW.forEach(s=>{
+    s.D=sum(segs,i=>s.seg[i]);s.nd=!s.r;s.Dq=s.nd?0:(s.r>=st.rmin?s.D:0);
+    let P=0;const near=[];
+    cs.forEach(x=>{const d=km(s.y,s.x,x.c.lat,x.c.lon);if(d<1){P+=x.n*(1-d);near.push({c:x.c,d})}});
+    s.P=P;s.near=near.sort((a,b)=>a.d-b.d);
+  });
+  const ins=IN.filter(s=>!s.nd);
+  const pbar=ins.length?sum(ins,s=>s.P)/ins.length:0;OPP.pbar=pbar>0?pbar:1;
+  VIEW.forEach(s=>{s.raw=s.nd?null:s.Dq/(1+s.P/OPP.pbar)});
+  const pos=ins.map(s=>s.raw).filter(v=>v>0).sort((a,b)=>a-b);OPP.max=pos.length?pos[pos.length-1]:1;
+  const qn=p=>{if(!pos.length)return Infinity;const i=(pos.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return pos[lo]+(pos[hi]-pos[lo])*(i-lo)};
+  OPP.brk=[.2,.4,.6,.8].map(qn);
+  VIEW.forEach(s=>{if(s.raw==null){s.idx=null;s.band=null;return}s.idx=Math.min(100,100*s.raw/OPP.max);let b=0;if(s.raw>0)while(b<4&&s.raw>OPP.brk[b])b++;s.band=b});
+  computeGrow();
+}
+function computeGrow(){
+  const g={};IN.forEach(s=>{if(!s.b||s.nd)return;const k=s.m+'|'+s.b;const o=g[k]=g[k]||{b:s.b,m:s.m,raw:0,D:0,Dq:0,rw:0,dw:0,x:0,y:0,w:0,best:null};
+    o.raw+=s.raw;o.D+=s.D;o.Dq+=s.Dq;if(s.r){o.rw+=s.r*s.d;o.dw+=s.d}const w=s.D+1;o.x+=s.x*w;o.y+=s.y*w;o.w+=w;if(!o.best||s.raw>o.best.raw)o.best=s});
+  GROW=Object.values(g).filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,3);
+  const top=GROW.length?GROW[0].raw:1;
+  GROW.forEach(o=>{o.x/=o.w;o.y/=o.w;o.ren=o.dw?o.rw/o.dw:null;o.rel=o.raw/top;
+    o.nc=NEAR.filter(c=>sum(OPP.segs,i=>c.seg[i])>0&&km(o.y,o.x,c.lat,c.lon)<1).length});
+}
+function ageTxt(segs){const a=SEGAGE[Math.min(...segs)][0],b=SEGAGE[Math.max(...segs)][1];return (b>=15?'crianças e jovens':'crianças')+` de ${a} a ${b} anos`}
+const BANDN=['Baixa','Moderada','Média','Alta','Muito alta'],HV=['--h1','--h2','--h3','--h4','--h5'];
 
 /* ---------- render ---------- */
-async function run(){try{SS=await loadSet(st.center.uf)}catch(_){showL('');alert0();return}compute();renderHead();renderStatements();renderHist();renderSegs();buildMap();renderMap();renderTable();renderDig();
-  document.getElementById('rname').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+async function run(scroll){try{SS=await loadSet(st.center.uf)}catch(_){showL('');alert0();return}
+  compute();renderAll();
+  if(scroll)document.getElementById('rname').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
+function renderAll(){renderHead();buildMap();renderMap();renderGrow();renderStatements();renderHist();renderSegs();renderTable();renderDig()}
+function alert0(){const f=document.getElementById('rflag');f.hidden=false;f.innerHTML='<b>Não foi possível carregar o mapa deste estado.</b> Verifique a conexão e busque a escola de novo.'}
 function renderHead(){
   const c=st.center,e=c.school;document.getElementById('rname').textContent=c.name;
-  const f=[];if(e){f.push(`<span>${e.mn}${e.bairro?', '+e.bairro:''}, ${e.uf}</span>`,`<span>INEP <b>${e.code}</b></span>`,`<span>Alunos em 2025 <b>${e.tot?fmt(e.tot):'não informou'}</b></span>`)}
+  const f=[];if(e){f.push(`<span>${esc(e.mn)}${e.bairro?', '+esc(e.bairro):''}, ${e.uf}</span>`,`<span>INEP <b>${e.code}</b></span>`,`<span>Alunos em 2025 <b>${e.tot?fmt(e.tot):'não informou'}</b></span>`)}
   else f.push(`<span>Ponto <b>${c.lat.toFixed(5)}, ${c.lon.toFixed(5)}</b></span>`);
   f.push(`<span>Raio de <b>${st.R} km</b></span>`);document.getElementById('rfacts').innerHTML=f.join('');
   const fl=document.getElementById('rflag');
-  if(e&&(e.fonte==='b'||e.fonte==='m')){fl.hidden=false;fl.innerHTML=`<b>Localização aproximada.</b> O INEP não informa a coordenada desta escola; ela foi posicionada ${e.fonte==='b'?'no centro do bairro':'no centro do município'}. Para um raio exato, copie a coordenada da escola no Google Maps e use "Analisar ponto" acima.`}
-  else if(!e){fl.hidden=false;fl.innerHTML=`<b>Análise por ponto.</b> Sem código INEP, não há histórico de matrículas desta escola; o resto da análise vale normalmente.`}
+  if(e&&isApprox(e)){fl.hidden=false;fl.innerHTML=`<b>Posição aproximada.</b> O INEP não informa a coordenada desta escola; ela foi posicionada ${e.fonte==='b'?'no centro do bairro':'no centro do município'}. Para um raio exato, copie a coordenada da escola no Google Maps e use "Analisar ponto" no topo.`}
+  else if(!e){fl.hidden=false;fl.innerHTML=`<b>Análise por ponto.</b> Sem código INEP, não há histórico de matrículas desta escola. O mapa considera todos os segmentos; o resto da análise vale normalmente.`}
   else fl.hidden=true;
   document.querySelectorAll('#radSeg button').forEach(b=>b.setAttribute('aria-pressed',+b.dataset.v===st.R?'true':'false'));
+  document.getElementById('segAll').textContent=e&&e.seg.some(x=>x>0)?'Segmentos da escola':'Todos os segmentos';
 }
 function kidsTot(f){return sum(IN.filter(f||(()=>true)),s=>s.a[0]+s.a[1]+s.a[2])}
 function mkt(y){return sum(COMP,e=>Math.max(0,e.serie[YRS.indexOf(y)]))}
 function renderStatements(){
   const k=kidsTot(),seg=[0,1,2,3].map(i=>sum(IN,s=>s.seg[i])),m25=[0,1,2,3].map(i=>sum(COMP,e=>e.seg[i]));
   const rw=sum(IN.filter(s=>s.r),s=>s.r*s.d),dw=sum(IN.filter(s=>s.r),s=>s.d),ren=dw?rw/dw:NaN;
-  const k2=kidsTot(s=>s.r&&s.r>=2424);
+  const k2=kidsTot(s=>s.r&&s.r>=2*SM);
   const t25=mkt(2025),t19=mkt(2019),t21=mkt(2021);
   const S=[];
-  S.push([fmt(k),'crianças de 0 a 14 anos no raio',`As escolas privadas do raio atendem ${pct(m25[1]/seg[1])} da idade do Fund. I e ${pct(m25[0]/seg[0])} da do Infantil.`,m25[1]/seg[1]<.5?'Demanda ampla':'Mercado disputado',m25[1]/seg[1]<.5?'c-blue':'c-hold']);
+  S.push([fmt(k),'crianças de 0 a 14 anos no raio',`As escolas privadas do raio atendem ${pct(m25[1]/seg[1])} da idade do Fund. I e ${pct(m25[0]/seg[0])} da do Infantil.`,m25[1]/seg[1]<.5?'Espaço para crescer':'Mercado disputado',m25[1]/seg[1]<.5?'c-blue':'c-hold']);
   S.push([fmt(COMP.length),'outras escolas privadas no raio',`Somam ${fmt(t25)} alunos em 2025, contra ${fmt(t21)} em 2021 e ${fmt(t19)} em 2019.`,t25>=t19*1.03?'Mercado crescendo':t25>=t19*.97?'Mercado estável':'Mercado encolhendo',t25>=t19*1.03?'c-up':t25>=t19*.97?'c-blue':'c-down']);
-  if(isFinite(ren))S.push([brl(ren),'renda média do responsável',`Cerca de ${(ren/1212).toLocaleString('pt-BR',{maximumFractionDigits:1})} salários mínimos de 2022. ${pct(k2/k)} das crianças moram em setores com renda média acima de 2 salários.`,ren<2424?'Sensível a preço':ren<4848?'Classe média':'Alta renda',ren<2424?'c-hold':'c-blue']);
+  if(isFinite(ren))S.push([brl(ren),'renda média do responsável',`Cerca de ${(ren/SM).toLocaleString('pt-BR',{maximumFractionDigits:1})} salários mínimos de 2022. ${pct(k2/k)} das crianças moram em setores com renda média de 2 salários ou mais.`,ren<2*SM?'Sensível a preço':ren<4*SM?'Classe média':'Alta renda',ren<2*SM?'c-hold':'c-blue']);
   const e=st.center.school;
   if(e){const s=e.serie,f=s.findIndex(x=>x>0),l=s[6];
-    if(f>=0&&l>0){const ch=l/s[f]-1,rank=COMP.filter(c=>c.tot>l).length+1;S.push([(ch>=0?'+':'−')+pct(Math.abs(ch)),`alunos da escola, ${YRS[f]} a 2025`,`Passou de ${fmt(s[f])} para ${fmt(l)} alunos. ${rank===1?"É a maior escola privada do raio em número de alunos.":"É a "+rank+"ª escola privada do raio em número de alunos."}`,ch>=.05?'Crescendo':ch<=-.05?'Perdendo espaço':'Estável',ch>=.05?'c-up':ch<=-.05?'c-down':'c-hold'])}
+    if(f>=0&&l>0){const ch=l/s[f]-1,rank=COMP.filter(c=>c.tot>l).length+1;S.push([(ch>=0?'+':'−')+pct(Math.abs(ch)),`alunos da escola, ${YRS[f]} a 2025`,`Passou de ${fmt(s[f])} para ${fmt(l)} alunos. ${rank===1?'É a maior escola privada do raio em número de alunos.':'É a '+rank+'ª escola privada do raio em número de alunos.'}`,ch>=.05?'Crescendo':ch<=-.05?'Perdendo espaço':'Estável',ch>=.05?'c-up':ch<=-.05?'c-down':'c-hold'])}
     else if(l<=0){const li=s.map((x,i)=>x>0?i:-1).filter(i=>i>=0).pop();S.push(['—','sem alunos informados em 2025',li!=null&&li>=0?`O último registro no Censo Escolar é de ${YRS[li]}, com ${fmt(s[li])} alunos. Confirme com a escola se mudou de nome ou de código.`:'Sem matrícula registrada no período.','Confirmar','c-hold'])}}
-  const g=COMP.filter(c=>c.serie[3]>=80&&c.v22!=null&&c.seg.some(x=>x>0)).sort((a,b)=>b.v22-a.v22);
-  if(g.length&&g[0].v22>0.1)S.push(['+'+pct(g[0].v22),`${g[0].nome} desde 2022`,`A ${g[0].km.toLocaleString('pt-BR',{maximumFractionDigits:1})} km, chegou a ${fmt(g[0].tot)} alunos. É quem mais cresceu no raio entre as escolas com pelo menos 80 alunos em 2022.`,'Concorrente em alta','c-down']);
+  const g=COMP.filter(c=>c.serie[3]>=80&&c.v22!=null).sort((a,b)=>b.v22-a.v22);
+  if(g.length&&g[0].v22>0.1)S.push(['+'+pct(g[0].v22),`${esc(g[0].nome)} desde 2022`,`A ${kmf(g[0].km)}, chegou a ${fmt(g[0].tot)} alunos. É quem mais cresceu no raio entre as escolas com pelo menos 80 alunos em 2022.`,'Concorrente em alta','c-down']);
   document.getElementById('statements').innerHTML=S.map(s=>`<div class="st"><div class="fig">${s[0]}<small>${s[1]}</small></div><p>${s[2]}</p><span class="chip ${s[4]}">${s[3]}</span></div>`).join('');
 }
 function renderHist(){
@@ -329,94 +466,130 @@ function renderHist(){
   const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':'Alunos por ano: '+YRS.map((y,i)=>y+' '+(s[i]<0?'sem dado':s[i])).join(', ')},host);svg.style.width='100%';svg.style.height='auto';
   const tk=[0,mx/2,mx].map(v=>Math.round(v/10)*10);tk.forEach(v=>{el('line',{x1:pl,x2:W-pr,y1:sy(v),y2:sy(v),stroke:css('--rule')},svg);const t=el('text',{x:pl-6,y:sy(v)+4,'text-anchor':'end'},svg);t.textContent=fmt(v)});
   YRS.forEach((y,i)=>{const x=pl+i*bw+bw*.2,w=bw*.6,v=s[i];const t=el('text',{x:x+w/2,y:H-6,'text-anchor':'middle'},svg);t.textContent=y;
-    if(v<0){el('line',{x1:x,x2:x+w,y1:sy(0),y2:sy(0),stroke:css('--hold'),'stroke-width':3},svg);return}
-    el('rect',{x,y:sy(v),width:w,height:sy(0)-sy(v),fill:i===6?css('--r5'):css('--r3'),rx:2},svg);const l=el('text',{x:x+w/2,y:sy(v)-6,'text-anchor':'middle'},svg);l.textContent=fmt(v);l.style.fill=css('--ink');l.style.fontWeight='700'});
-  const sg=e.seg;document.getElementById('histLede').innerHTML=e.tot?`Em 2025: ${SEGN.map((n,i)=>sg[i]?`${n} <b>${fmt(sg[i])}</b>`:'').filter(Boolean).join(', ')}. ${e.end?'<br><span class="muted">'+e.end+'</span>':''}`:'A escola não informou alunos em 2025.';
+    if(v<0){el('line',{x1:x,x2:x+w,y1:sy(0),y2:sy(0),stroke:css('--sky'),'stroke-width':3},svg);return}
+    el('rect',{x,y:sy(v),width:w,height:sy(0)-sy(v),fill:i===6?css('--navy'):css('--steel')},svg);const l=el('text',{x:x+w/2,y:sy(v)-6,'text-anchor':'middle'},svg);l.textContent=fmt(v);l.style.fill=css('--navy');l.style.fontWeight='600'});
+  const sg=e.seg;document.getElementById('histLede').innerHTML=e.tot?`Em 2025: ${SEGN.map((n,i)=>sg[i]?`${n} <b>${fmt(sg[i])}</b>`:'').filter(Boolean).join(', ')}. ${e.end?'<br><span class="muted">'+esc(e.end)+'</span>':''}`:'A escola não informou alunos em 2025.';
 }
 function renderSegs(){const seg=[0,1,2,3].map(i=>sum(IN,s=>s.seg[i]));
-  const K=['seg'];document.getElementById('segs').innerHTML=[0,1,2,3].map(i=>{const b=sum(COMP,e=>e.seg[i])+(st.center.school?st.center.school.seg[i]:0);
-    const a19=sum(COMP,e=>0);const cov=b/seg[i];
+  document.getElementById('segs').innerHTML=[0,1,2,3].map(i=>{const b=sum(COMP,e=>e.seg[i])+(st.center.school?st.center.school.seg[i]:0);const cov=b/seg[i];
     return `<div class="seg-c"><h3>${SEGN[i]}</h3><div class="v">${fmt(b)}</div><div class="bar"><span style="width:${Math.min(100,cov*100)}%"></span></div><div class="s">${pct(cov)} das ~${fmt(seg[i])} crianças da idade no raio</div></div>`}).join('')}
 
-/* ---------- map ---------- */
-let msvg,gS,gC,mapEl=document.getElementById('map'),tip=document.getElementById('tip');
-const PR=['--p0','--p1','--p2','--p3','--p4','--p5'],DQ=[1,10,25,45,70,100];
+/* ---------- mapa ---------- */
+let msvg,gS,gC,gTop,mapEl=document.getElementById('map'),tip=document.getElementById('tip'),RS=1;
+const DQ=[0,10,25,45,70],RQ=[0,1,2,3,5].map(x=>x*SM),BV=['--b1','--b2','--b3','--b4','--b5'];
 function buildMap(){
   if(msvg)msvg.remove();const {lat,lon}=st.center,R=st.R,cosL=Math.cos(lat*Math.PI/180),P=(x,y)=>[(x-lon)*cosL*1000,-(y-lat)*1000],RR=R/111.32*1000;
-  msvg=el('svg',{viewBox:`${-RR*1.3} ${-RR*1.16} ${RR*2.6} ${RR*2.32}`,role:'img','aria-label':`Mapa de setores censitários num raio de ${R} km`});mapEl.insertBefore(msvg,mapEl.firstChild);
-  gS=el('g',{},msvg);const gL=el('g',{},msvg),gR=el('g',{},msvg);gC=el('g',{},msvg);
+  msvg=el('svg',{viewBox:`${-RR*1.3} ${-RR*1.16} ${RR*2.6} ${RR*2.32}`,role:'img','aria-label':`Mapa de oportunidade por setor censitário num raio de ${R} km`});mapEl.insertBefore(msvg,mapEl.firstChild);
+  gS=el('g',{},msvg);gTop=el('g',{},msvg);const gL=el('g',{},msvg),gR=el('g',{},msvg);gC=el('g',{},msvg);
   VIEW.forEach(s=>{if(!s.poly)s.poly=decode(s.enc);const d=s.poly.map(r=>'M'+r.map(c=>{const p=P(c[0],c[1]);return p[0].toFixed(2)+','+p[1].toFixed(2)}).join('L')+'Z').join('');
-    s.el=el('path',{d,class:'sp'},gS);s.el.onmousemove=e=>tipS(e,s);s.el.onmouseleave=hide});
+    s.el=el('path',{d,class:'sp'+(s.km>R?' out':'')},gS);
+    s.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipS(e,s)});s.el.addEventListener('pointerleave',hide);
+    s.el.addEventListener('click',()=>{hide();selectSector(s===st.selS?null:s)})});
   el('circle',{cx:0,cy:0,r:RR,class:'ring'},gR);const fs=RR/18;
-  const rl=el('text',{x:RR*.74,y:RR*.74},gR);rl.textContent=R+' km';rl.style.cssText=`font-size:${fs*.85}px;fill:var(--plate-ink);font-weight:700;font-family:var(--font)`;
+  const rl=el('text',{x:RR*.74,y:RR*.76},gR);rl.textContent=R+' km';rl.style.cssText=`font-size:${fs*.85}px;fill:var(--navy);font-weight:600;font-family:var(--text);paint-order:stroke;stroke:#fff;stroke-width:${fs*.25}px`;
   const lab={};VIEW.forEach(s=>{if(!s.b)return;const k=s.b,w=s.a[0]+s.a[1]+s.a[2]+1;(lab[k]=lab[k]||{x:0,y:0,w:0}).x+=s.x*w;lab[k].y+=s.y*w;lab[k].w+=w});
-  Object.entries(lab).forEach(([n,v])=>{if(v.w<200)return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*1.2)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.7)+'px'});
-  const mx=Math.max(...COMP.map(c=>c.tot),1),rs=RR/36;
-  const all=ES.filter(e=>e.uf===st.center.uf&&e.lat!=null&&e.tot>0&&e.seg.some(x=>x>0)&&(!st.center.school||e.code!==st.center.school.code)).map(e=>Object.assign(e,{km:km(lat,lon,e.lat,e.lon)})).filter(e=>e.km<=R*1.45);
-  all.forEach(c=>{const p=P(c.lon,c.lat);c.el=el('circle',{cx:p[0],cy:p[1],r:rs*(.35+1.7*Math.sqrt(c.tot/mx)),class:'sc'},gC);c.el.style.strokeWidth=rs*.15;c.el.style.opacity=c.km<=R?1:.45;
-    c.el.onmousemove=e=>tipC(e,c);c.el.onmouseleave=hide;c.el.onclick=()=>pick(c.code,true)});
-  const fg=el('g',{},gC);el('rect',{x:-rs*1.1,y:-rs*1.1,width:rs*2.2,height:rs*2.2,transform:'rotate(45)',fill:'#FFFFFF',stroke:'#0E2240','stroke-width':rs*.25},fg);
-  const ft=el('text',{x:rs*2,y:rs*.6},fg);ft.textContent=st.center.name;ft.style.cssText=`font-size:${fs}px;font-weight:800;fill:#FFFFFF;font-family:var(--font);paint-order:stroke;stroke:#0E2240;stroke-width:${fs*.28}px`;
+  Object.entries(lab).forEach(([n,v])=>{if(v.w<200)return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*1.2)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.66)+'px';t.style.strokeWidth=(fs*.2)+'px'});
+  const mx=Math.max(...COMP.map(c=>c.tot),1),rs=RR/36;RS=rs;
+  NEAR.filter(c=>c.km<=R*1.45).sort((a,b)=>b.tot-a.tot).forEach(c=>{const p=P(c.lon,c.lat);c.el=el('circle',{cx:p[0],cy:p[1],r:rs*(.35+1.6*Math.sqrt(c.tot/mx)),class:'sc'},gC);c.el.style.strokeWidth=rs*.16;c.el.style.opacity=c.km<=R?.92:.4;
+    c.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipC(e,c)});c.el.addEventListener('pointerleave',hide);c.el.addEventListener('click',ev=>{ev.stopPropagation();hide();pick(c.code,true)})});
+  /* escola analisada: o ponto quadrado da marca, em azul-aço */
+  const fg=el('g',{},gC),q=rs*1.25;el('rect',{x:-q,y:-q,width:q*2,height:q*2,fill:css('--steel'),stroke:'#FFFFFF','stroke-width':rs*.3},fg);
+  const ft=el('text',{x:q+rs*.7,y:rs*.55},fg);ft.textContent=st.center.name;ft.style.cssText=`font-size:${fs}px;font-weight:700;fill:var(--navy);font-family:var(--title);paint-order:stroke;stroke:#FFFFFF;stroke-width:${fs*.3}px;stroke-linejoin:round;pointer-events:none`;
 }
-function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingClientRect();let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x+260>b.width)x-=280;if(y+120>b.height)y-=130;tip.style.left=x+'px';tip.style.top=y+'px'}
+function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingClientRect();let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x+260>b.width)x-=280;if(y+140>b.height)y-=150;tip.style.left=Math.max(4,x)+'px';tip.style.top=Math.max(4,y)+'px'}
 function hide(){tip.hidden=true}
-const kids=s=>st.seg==='all'?s.a[0]+s.a[1]+s.a[2]:s.seg[+st.seg];
-function tipS(e,s){place(e,`<b>${s.b||MUN[s.m]}</b><br>${fmt(kids(s))} ${st.seg==='all'?'crianças de 0 a 14':'crianças, '+SEGN[+st.seg]}<br>${fmt(s.d)} domicílios<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}${s.km>st.R?'<br>Fora do raio':''}`)}
-function tipC(e,c){place(e,`<b>${c.nome}</b><br>${fmt(c.tot)} alunos em 2025, a ${c.km.toLocaleString('pt-BR',{maximumFractionDigits:1})} km<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${c.fonte==='b'||c.fonte==='m'?'<br>Posição aproximada':''}`)}
-function fill(s){if(st.layer==='renda'){if(!s.r)return css('--pq');const br=[0,1212,1818,2424,3636,6060];let i=0;while(i<5&&s.r>=br[i+1])i++;return css(PR[i])}
-  if(st.layer==='pot'&&!(s.r&&s.r>=st.rmin))return css('--pq');const d=kids(s)/Math.max(s.ha,.3),k=st.seg==='all'?1:.33;let i=0;while(i<5&&d>=DQ[i+1]*k)i++;return css(PR[i])}
-function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math.max(...v,1),sx=i=>3+(W-8)*i/6,sy=x=>H-4-(H-8)*x/mx,col=light?css('--p5'):trendCol(c.v22);
-  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><circle cx="${sx(6)}" cy="${sy(v[6])}" r="2.6" fill="${col}"/></svg>`}
+const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN[+st.seg];
+function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b><br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
+function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025, a ${kmf(c.km)}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':''}`)}
+function fill(s){
+  if(st.layer==='opp')return s.band==null?css('--hnull'):css(HV[s.band]);
+  if(st.layer==='renda'){if(!s.r)return css('--hnull');let i=0;while(i<4&&s.r>=RQ[i+1])i++;return css(BV[i])}
+  const k=st.seg==='all'&&OPP.segs.length>1?1:.33,d=s.D/Math.max(s.ha,.3);let i=0;while(i<4&&d>=DQ[i+1]*k)i++;return css(BV[i])}
+function legendHTML(){
+  if(st.layer==='opp')return `<span class="lab">Índice de oportunidade</span><div class="sw">${HV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div><div class="sl"><span>Baixa</span><span>Muito alta</span></div><p>Quanto mais quente, mais famílias com perfil e menos concorrência por perto.</p><div class="nd"><i></i>Sem dado de renda do IBGE</div>`;
+  const sw=`<div class="sw">${BV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div>`;
+  if(st.layer==='renda')return `<span class="lab">Renda média do responsável</span>${sw}<div class="sl"><span>até 1 SM</span><span>2 SM</span><span>5 SM ou mais</span></div><div class="nd"><i></i>Renda sob sigilo do IBGE</div>`;
+  const k=st.seg==='all'&&OPP.segs.length>1?1:.33;return `<span class="lab">Crianças por hectare</span>${sw}<div class="sl"><span>menos de ${Math.round(DQ[1]*k)}</span><span>${Math.round(DQ[4]*k)} ou mais</span></div>`}
+function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math.max(...v,1),sx=i=>3+(W-8)*i/6,sy=x=>H-4-(H-8)*x/mx,col=light?css('--sky'):css('--steel');
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><rect x="${sx(6)-2.6}" y="${sy(v[6])-2.6}" width="5.2" height="5.2" fill="${light?'#FFFFFF':css('--navy')}"/></svg>`}
+const trendTxt=v=>v==null?'nova':(v>=0?'▲ +':'▼ −')+pct(Math.abs(v));
 function renderMap(){
-  VIEW.forEach(s=>s.el&&s.el.setAttribute('fill',fill(s)));ES.forEach(c=>{if(c.el&&c.el.isConnected){c.el.setAttribute('fill',trendCol(c.v22));c.el.classList.toggle('sel',c.code===st.sel)}});
-  document.getElementById('rminV').textContent=brl(st.rmin)+' ('+(st.rmin/1212).toLocaleString('pt-BR',{maximumFractionDigits:1})+' SM)';
-  const all=sum(IN,kids),qq=sum(IN.filter(s=>s.r&&s.r>=st.rmin),kids),nm=st.seg==='all'?'de 0 a 14 anos':'na idade do '+SEGN[+st.seg];
-  const mat=st.seg==='all'?null:sum(COMP,e=>e.seg[+st.seg]);const rs=PR.map(v=>`<span style="background:${css(v)}"></span>`).join(''),k=st.seg==='all'?1:.33;
-  const leg=st.layer==='renda'?`<div class="ramp">${rs}</div><div class="ramp-lab"><span>até 1 SM</span><span>2 SM</span><span>5 SM ou mais</span></div>`:`<div class="ramp">${rs}</div><div class="ramp-lab"><span>${Math.round(DQ[0]*k)}</span><span>${Math.round(DQ[3]*k)}</span><span>${Math.round(DQ[5]*k)}+ por hectare</span></div>${st.layer==='pot'?`<div class="dots"><span><i style="background:${css('--pq')};border-radius:2px;outline:1px solid var(--plate-2)"></i>renda abaixo da mínima</span></div>`:''}`;
+  VIEW.forEach(s=>s.el&&s.el.setAttribute('fill',fill(s)));
+  ES.forEach(c=>{if(c.el&&c.el.isConnected)c.el.classList.toggle('sel',c.code===st.sel)});
+  document.getElementById('legend').innerHTML=legendHTML();
+  document.getElementById('rminV').textContent=brl(st.rmin)+' ('+(st.rmin/SM).toLocaleString('pt-BR',{maximumFractionDigits:2})+' SM)';
+  const all=sum(IN,s=>s.D),qq=sum(IN,s=>s.Dq),nm=segLabel();
+  const mat=sum(COMP,e=>sum(OPP.segs,i=>e.seg[i]));
   let sel='';const c=st.sel&&ESmap[st.sel];
-  if(c)sel=`<div class="selbox"><h3>${c.nome}</h3>${spark(c,240,48,true)}<dl class="kv"><dt>Distância</dt><dd>${c.km.toLocaleString('pt-BR',{maximumFractionDigits:1})} km</dd><dt>Alunos 2025</dt><dd>${fmt(c.tot)}</dd><dt>Infantil, F.I, F.II, Médio</dt><dd>${c.seg.join(', ')}</dd><dt>Desde 2022</dt><dd>${c.v22==null?'—':(c.v22>=0?'+':'')+pct(c.v22)}</dd></dl><button type="button" class="btn" id="analyzeSel">Analisar esta escola</button></div>`;
-  document.getElementById('side').innerHTML=`<div><div class="k">${fmt(all)}</div><div class="s">crianças ${nm} moram a até ${st.R} km</div></div><div><div class="k hi">${fmt(qq)}</div><div class="s">${pct(qq/all)} delas em setores com renda média de ${brl(st.rmin)} ou mais</div></div>
-   ${mat!=null?`<dl class="kv"><dt>Alunos em outras escolas privadas</dt><dd>${fmt(mat)}</dd><dt>Atendimento privado</dt><dd>${pct(mat/all)}</dd></dl>`:''}<div style="display:grid;gap:6px">${leg}</div>
-   <div class="dots"><span><i style="background:${css('--up')}"></i>cresceu desde 2022</span><span><i style="background:${css('--hold')}"></i>estável</span><span><i style="background:${css('--down')}"></i>caiu</span><span><i style="background:${css('--muted')}"></i>nova</span></div><div class="s">Círculo maior, mais alunos em 2025. Os apagados ficam fora do raio.</div>${sel}`;
+  if(c&&c.km!=null)sel=`<div class="selbox"><h3>${esc(c.nome)}</h3>${spark(c,240,48,true)}<dl class="kv"><dt>Distância</dt><dd>${kmf(c.km)}</dd><dt>Alunos 2025</dt><dd>${fmt(c.tot)}</dd><dt>Infantil, F.I, F.II, Médio</dt><dd>${c.seg.join(', ')}</dd><dt>Desde 2022</dt><dd>${trendTxt(c.v22)}</dd></dl><button type="button" class="btn" id="analyzeSel">Analisar esta escola</button></div>`;
+  document.getElementById('side').innerHTML=`<div><div class="k">${fmt(qq)}</div><div class="s">${nm} moram no raio em setores com renda média de ${brl(st.rmin)} ou mais</div></div>
+   <div><div class="k" style="color:var(--sky)">${fmt(all)}</div><div class="s">${nm} no raio, sem filtro de renda (${pct(qq/all)} têm o perfil)</div></div>
+   <dl class="kv"><dt>Alunos nesses segmentos nas outras escolas do raio</dt><dd>${fmt(mat)}</dd><dt>Atendimento privado</dt><dd>${pct(mat/all)}</dd></dl>
+   <div class="note"><span><i style="width:12px;height:12px;background:var(--navy);border:1.5px solid #fff;border-radius:50%"></i>Escola concorrente: quanto maior, mais alunos em 2025</span><span><i style="width:12px;height:12px;background:var(--steel);border:1.5px solid #fff"></i>${st.center.school?'Escola analisada':'Ponto analisado'}</span><span>Os setores e escolas apagados ficam fora do raio.</span></div>${sel}`;
   const ab=document.getElementById('analyzeSel');if(ab)ab.onclick=()=>chooseSchool(st.sel);
+  renderSCard();
 }
+function selectSector(s){if(st.selS&&st.selS.el)st.selS.el.classList.remove('on');st.selS=s;if(s&&s.el){s.el.classList.add('on');gS.appendChild(s.el)}renderSCard()}
+function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
+  if(!s||!s.el||!s.el.isConnected){box.hidden=true;box.innerHTML='';return}
+  const BX=['Renda abaixo do mínimo ou entre os 20% de setores com menos oportunidade no raio','Entre os 40% de setores com menos oportunidade no raio','Na faixa do meio entre os setores do raio','Entre os 40% de setores com mais oportunidade no raio','Entre os 20% de setores com mais oportunidade no raio'];
+  const bx=s.band==null?'':(s.band===0&&s.Dq===0?'Renda média abaixo do mínimo escolhido':BX[s.band]);
+  const bd=s.band==null?'':`<span class="bd" style="background:${css(HV[s.band])};color:${s.band>=3?'#FFFFFF':css('--navy')}">${BANDN[s.band]}</span><div class="bx">${bx}</div>`;
+  const segs=[0,1,2,3].map(i=>`<dt>${SEGN[i]}${OPP.segs.includes(i)?'':' <span style="font-size:12px">(fora da conta)</span>'}</dt><dd>${fmt(s.seg[i])}</dd>`).join('');
+  const nl=s.near.slice(0,4).map(x=>`<li><span>${esc(x.c.nome)}${isApprox(x.c)?'<span class="approx" title="Posição aproximada">≈</span>':''}</span><span>${fmt(x.c.tot)} alunos · ${Math.round(x.d*1000/10)*10} m</span></li>`).join('');
+  box.innerHTML=`<div class="hd"><div><span class="lab">Setor censitário${s.km>st.R?' · fora do raio':''}</span><h3 style="margin-top:6px">${esc(s.b||'Sem nome de bairro')}</h3><div class="muted" style="font-size:13.5px">${esc(MUN[s.m]||'')}</div>${bd}</div>
+    <div class="ix">${s.idx==null?'—':fmt(s.idx)}<small>índice de 0 a 100</small></div></div>
+    <dl class="kv">${segs}<dt>Renda média do responsável</dt><dd>${s.r?brl(s.r)+' ('+(s.r/SM).toLocaleString('pt-BR',{maximumFractionDigits:1})+' SM)':'sob sigilo do IBGE'}</dd><dt>Domicílios</dt><dd>${fmt(s.d)}</dd></dl>
+    <div><span class="lab">Escolas concorrentes a menos de 1 km: ${s.near.length}</span>${nl?`<ul style="margin-top:8px">${nl}</ul>`:'<p class="muted" style="font-size:13.5px;margin-top:6px">Nenhuma escola privada regular a menos de 1 km.</p>'}${s.near.length>4?`<p class="muted" style="font-size:13px;margin-top:4px">e mais ${s.near.length-4}.</p>`:''}</div>
+    <button type="button" class="x" id="scx">Fechar</button>`;
+  box.hidden=false;document.getElementById('scx').onclick=()=>selectSector(null)}
+function renderGrow(){const g=document.getElementById('grow'),nm=ageTxt(OPP.segs);
+  document.getElementById('growLede').textContent=`Bairros dentro do raio de ${st.R} km com a maior soma do índice de oportunidade: muitas famílias com renda de ${brl(st.rmin)} ou mais e pouca concorrência por perto. Toque num bairro para vê-lo no mapa.`;
+  if(!GROW.length){g.innerHTML=`<div class="empty">Nenhum bairro do raio tem setores com renda acima do mínimo escolhido. Baixe a renda mínima no mapa para ver onde está a demanda.</div>`;return}
+  g.innerHTML=GROW.map((o,i)=>{const nc=o.nc===0?'nenhuma escola concorrente a menos de 1 km':(o.nc<=2?'só ':'')+o.nc+(o.nc===1?' escola concorrente':' escolas concorrentes')+' a menos de 1 km';
+    return `<button type="button" class="grow-c" data-i="${i}"><div class="rk"><b>${i+1}</b><span>${fmt(100*o.rel)} pontos</span></div>
+    <p><b style="font-family:var(--title);font-weight:600">${esc(o.b)}:</b> ${fmt(o.Dq)} ${nm} em setores com renda de ${brl(st.rmin)} ou mais (de ${fmt(o.D)} no bairro), renda média ${o.ren?brl(o.ren):'sob sigilo'} e ${nc}.</p>
+    <div class="ib"><i style="width:${Math.max(4,100*o.rel)}%;background:${css(HV[4-Math.min(i,2)])}"></i></div><span class="go">Ver no mapa</span></button>`}).join('');
+  g.querySelectorAll('.grow-c').forEach(b=>b.onclick=()=>{const o=GROW[+b.dataset.i];selectSector(o.best);document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}
 function pick(code,fromMap){st.sel=st.sel===code?null:code;renderMap();renderTable();if(!fromMap&&st.sel)document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
 function bind(id,cb){const b=document.getElementById(id);b.addEventListener('click',e=>{const x=e.target.closest('button');if(!x)return;b.querySelectorAll('button').forEach(y=>y.setAttribute('aria-pressed',y===x?'true':'false'));cb(x.dataset.v)})}
-bind('layerSeg',v=>{st.layer=v;renderMap()});bind('segSeg',v=>{st.seg=v;renderMap();renderTable()});bind('concFilter',v=>{st.flt=v;renderTable()});
-bind('radSeg',v=>{st.R=+v;st.sel=null;if(!SS.length)return;compute();renderHead();renderStatements();renderSegs();buildMap();renderMap();renderTable();renderDig()});
-document.getElementById('rmin').addEventListener('input',e=>{st.rmin=+e.target.value;renderMap()});
-document.querySelectorAll('#concTbl th button').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;if(st.sk===k)st.sd=-st.sd;else{st.sk=k;st.sd=k==='nome'||k==='km'?1:-1}document.querySelectorAll('#concTbl th button').forEach(x=>x.dataset.on=x===b?'1':'0');renderTable()}));
+const ready=()=>SS.length&&st.center;
+bind('layerSeg',v=>{st.layer=v;if(ready())renderMap()});
+bind('segSeg',v=>{st.seg=v;if(!ready())return;computeOpp();renderMap();renderGrow();renderTable()});
+bind('concFilter',v=>{st.flt=v;if(ready())renderTable()});
+bind('radSeg',v=>{st.R=+v;st.sel=null;st.selS=null;if(!ready())return;compute();renderAll()});
+document.getElementById('rmin').addEventListener('input',e=>{st.rmin=+e.target.value*SM;if(!ready())return;computeOpp();renderMap();renderGrow()});
+document.querySelectorAll('#concTbl th button').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;if(st.sk===k)st.sd=-st.sd;else{st.sk=k;st.sd=k==='nome'||k==='km'?1:-1}document.querySelectorAll('#concTbl th button').forEach(x=>x.dataset.on=x===b?'1':'0');if(ready())renderTable()}));
 function renderTable(){let r=COMP.slice();if(st.flt==='200')r=r.filter(c=>c.tot>200);if(st.flt==='seg'&&st.seg!=='all')r=r.filter(c=>c.seg[+st.seg]>0);
   r.sort((a,b)=>{const x=a[st.sk],y=b[st.sk];if(x==null)return 1;if(y==null)return -1;return(typeof x==='string'?x.localeCompare(y):x-y)*st.sd});
-  document.getElementById('concCount').textContent=`${r.length} de ${COMP.length} escolas com alunos em 2025. A variação compara com 2022, ano do Censo do IBGE. Clique numa linha para destacá-la no mapa.`;
+  document.getElementById('concCount').textContent=`${r.length} de ${COMP.length} escolas com Infantil, Fundamental ou Médio e alunos em 2025, somando ${fmt(sum(r,c=>c.tot))} alunos. A variação compara com 2022, ano do Censo do IBGE. Toque numa linha para destacá-la no mapa.`;
   document.querySelector('#concTbl tbody').innerHTML=r.map(c=>{const v=c.v22,cl=v==null?'c-mute':v>=.05?'c-up':v<=-.05?'c-down':'c-hold';
-    return `<tr tabindex="0" data-c="${c.code}" class="${c.code===st.sel?'hl':''}"><td class="name">${c.nome}${c.fonte==='b'||c.fonte==='m'?'<span class="approx" title="Posição aproximada">≈</span>':''}</td><td class="r">${c.km.toLocaleString('pt-BR',{minimumFractionDigits:1,maximumFractionDigits:1})} km</td><td class="r">${fmt(c.tot)}</td><td class="r ${cl}" style="font-weight:600">${v==null?'nova':(v>=0?'+':'')+pct(v)}</td><td>${spark(c)}</td><td><span class="segdots">${c.seg.map((x,i)=>`<span class="${x>0?'on':''}">${['Inf','F.I','F.II','EM'][i]}</span>`).join('')}</span></td></tr>`}).join('')}
+    return `<tr tabindex="0" data-c="${c.code}" class="${c.code===st.sel?'hl':''}"><td class="name">${esc(c.nome)}${isApprox(c)?'<span class="approx" title="Posição aproximada">≈</span>':''}</td><td class="r">${kmf(c.km)}</td><td class="r">${fmt(c.tot)}</td><td class="r ${cl}" style="font-weight:600">${trendTxt(v)}</td><td>${spark(c)}</td><td><span class="segdots">${c.seg.map((x,i)=>`<span class="${x>0?'on':''}">${['Inf','F.I','F.II','EM'][i]}</span>`).join('')}</span></td></tr>`}).join('')}
 const tb=document.querySelector('#concTbl tbody');tb.addEventListener('click',e=>{const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)});tb.addEventListener('keydown',e=>{if(e.key==='Enter'){const t=e.target.closest('tr');if(t)pick(t.dataset.c,false)}});
 function clean(n){return n.replace(/\b(Ltda|Me|Eireli|Ss|S\/S|Sc)\b\.?/gi,'').replace(/\s+-\s+.*/,'').replace(/\s{2,}/g,' ').trim()}
 function renderDig(){const list=[];if(st.center.school||st.center.name!=='Ponto escolhido')list.push({nome:st.center.name,mn:st.center.school?st.center.school.mn:'',me:true});
   COMP.slice().sort((a,b)=>b.tot-a.tot).slice(0,8).forEach(c=>list.push(c));
   document.getElementById('dig').innerHTML=list.map(c=>{const n=clean(c.nome),m=c.mn||UFN[st.center.uf],E=encodeURIComponent;
-    return `<div><span class="nm">${c.nome}<small>${c.me?'escola analisada':fmt(c.tot)+' alunos, '+c.km.toLocaleString('pt-BR',{maximumFractionDigits:1})+' km'}</small></span><span class="links">
+    return `<div><span class="nm">${esc(c.nome)}<small>${c.me?'escola analisada':fmt(c.tot)+' alunos, '+kmf(c.km)}</small></span><span class="links">
     <a href="https://www.facebook.com/ads/library/?active_status=active&ad_type=all&country=BR&media_type=all&q=${E(n)}&search_type=keyword_unordered" target="_blank" rel="noopener">Anúncios na Meta</a>
     <a href="https://www.google.com/maps/search/?api=1&query=${E(n+' '+m+' '+st.center.uf)}" target="_blank" rel="noopener">Google Maps</a>
     <a href="https://www.google.com/search?q=${E(n+' '+m+' instagram')}" target="_blank" rel="noopener">Instagram</a>
     <a href="https://adstransparency.google.com/?region=BR" target="_blank" rel="noopener">Anúncios no Google</a></span></div>`}).join('')}
 
-/* ---------- start ---------- */
+/* ---------- início ---------- */
 async function start(){showL('Carregando escolas…');
   const res=await Promise.all(STATES.map(s=>fetch('data/'+s.uf+'_esc.json').then(r=>r.json()).then(d=>[s.uf,d]).catch(()=>null)));
   res.forEach(x=>{if(x)addEsc(x[0],x[1])});active=ES.filter(e=>e.lat!=null);showL('');
-  const ALL=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'];
-  const on=STATES.map(s=>s.uf);
-  document.getElementById('ufs').innerHTML='<span>Estados disponíveis:</span>'+STATES.map(s=>`<b title="${s.n} escolas privadas com alunos em 2025">${s.nome}</b>`).join('')+`<span class="soon">Em breve: ${ALL.filter(u=>!on.includes(u)).join(', ')}</span>`;
+  const ALL=['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'],on=STATES.map(s=>s.uf);
+  document.getElementById('ufs').innerHTML='<span>Estados disponíveis:</span>'+STATES.map(s=>`<b title="${s.n} escolas privadas com alunos em 2025">${s.nome}</b>`).join('')+`<span>Em breve: ${ALL.filter(u=>!on.includes(u)).join(', ')}</span>`;
   const h=(location.hash||'').replace('#','');
   if(h.startsWith('e')&&ESmap[h.slice(1)]&&ESmap[h.slice(1)].lat!=null){const e=ESmap[h.slice(1)];q.value=e.nome;st.center={lat:e.lat,lon:e.lon,name:e.nome,school:e,uf:e.uf}}
-  else st.center={lat:-3.8163473,lon:-38.5389519,name:'Colégio Futuro (exemplo)',school:null,uf:'CE'};
-  try{SS=await loadSet(st.center.uf)}catch(_){showL('');alert0();return}
-  compute();renderHead();renderStatements();renderHist();renderSegs();buildMap();renderMap();renderTable();renderDig()}
+  else st.center={lat:-3.8163473,lon:-38.5389519,name:'Ponto de exemplo em Fortaleza',school:null,uf:'CE'};
+  run(false)}
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(h.startsWith('e')&&ESmap[h.slice(1)]&&(!st.center||!st.center.school||st.center.school.code!==h.slice(1)))chooseSchool(h.slice(1))});
+document.getElementById('rminV').textContent=brl(st.rmin)+' (2 SM)';
 start();
-const re=()=>{if(!SS.length)return;renderHist();renderMap();renderTable()};const mq=matchMedia('(prefers-color-scheme: dark)');mq.addEventListener&&mq.addEventListener('change',re);
-new MutationObserver(re).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 })();
 </script>
+</body>
+</html>
