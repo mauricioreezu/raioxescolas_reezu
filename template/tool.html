@@ -139,15 +139,19 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .side .kk{display:grid;grid-template-columns:1fr 1fr;gap:14px}.side .kk .k{font-size:28px}
 .side .note .g2{display:grid;grid-template-columns:1fr 1fr;gap:6px 10px}
 .mapcol{align-content:start}
-.mshare{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.mshare li{display:grid;grid-template-columns:1fr auto;gap:3px 10px;font-size:13px;color:var(--sky);cursor:pointer}
-.mshare li.me{cursor:default;background:var(--navy2);margin:0 -8px;padding:6px 8px}
-.mshare .n{color:#fff;font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mshare li.big .n::after{content:" · maior";color:var(--sky);font-weight:500}
-.mshare .p{color:#fff;font-weight:700;font-variant-numeric:tabular-nums}
-.mshare .bar{grid-column:1/-1;height:6px;background:var(--navy2)}.mshare li.me .bar{background:var(--navy)}
-.mshare .bar i{display:block;height:100%}
-.mshare .t{grid-column:1/-1;font-size:12px}.mshare .t b{font-weight:600}.mshare .t b.up{color:#9DB5DB}.mshare .t b.down{color:#E8642C}
+.mtools{display:grid;gap:8px}
+.mtools .toggle{display:flex}.mtools .toggle button{flex:1;text-align:center;padding:6px 6px;font-size:12.5px}
+.mtools input{font:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--navy2);border-radius:0;background:var(--navy2);color:#fff;width:100%;-webkit-appearance:none;appearance:none}
+.mtools input::placeholder{color:var(--sky)}.mtools input:focus-visible{outline:2px solid var(--steel);outline-offset:0}
+.mshare{list-style:none;margin:0;padding:0;display:grid}
+.mshare li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1px 10px;font-size:12.5px;color:var(--sky);cursor:pointer;padding:7px 0;border-bottom:1px solid var(--navy2)}
+.mshare li:hover,.mshare li.on{background:var(--navy2);margin:0 -8px;padding:7px 8px}
+.mshare li.me{cursor:default;background:var(--navy2);margin:0 -8px;padding:7px 8px;border-left:3px solid #fff}
+.mshare li.gap,.mshare li.none{display:block;cursor:default;border:0;padding:4px 0;color:var(--sky)}.mshare li.gap{text-align:center;line-height:.6}
+.mshare .n{color:#fff;font-weight:600;font-size:13.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mshare .mb{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--sky);margin-left:6px}
+.mshare .p{color:#fff;font-weight:700;font-variant-numeric:tabular-nums;font-size:14px}
+.mshare .t{grid-column:1/-1}.mshare .t b{font-weight:600}.mshare .t b.up{color:#9DB5DB}.mshare .t b.down{color:#E8642C}
 .legend .slg{display:grid;gap:7px;border-top:1px solid var(--rule);padding-top:10px;margin-top:4px}
 .note2{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
 .note2 .g2{display:contents}.note2 span{display:inline-flex;align-items:center;gap:7px}.note2 i{display:inline-block;flex:none}
@@ -395,7 +399,7 @@ async function loadView(c,R){const S=STATES.find(s=>s.uf===c.uf),uf=c.uf;
   return keys.flatMap(k=>TC[k])}
 let SS=[],active=[];
 
-const st={center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
+const st={ms:'size',mq:'',center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
 let MKT=0,LABELED=[],IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
 
 /* ---------- busca ---------- */
@@ -591,19 +595,29 @@ function renderMap(){
   const mat=sum(COMP,e=>sum(OPP.segs,i=>e.seg[i]));
   let sel='';const c=st.sel&&ESmap[st.sel];
   if(c&&c.km!=null)sel=`<div class="selbox"><h3>${esc(c.nome)}</h3>${spark(c,240,48,true)}<dl class="kv"><dt>Distância</dt><dd>${kmf(c.km)}</dd><dt>Alunos 2025</dt><dd>${fmt(c.tot)}</dd><dt>Infantil, F.I, F.II, Médio</dt><dd>${c.seg.join(', ')}</dd><dt>Desde 2022</dt><dd>${trendTxt(c.v22)}</dd></dl><button type="button" class="btn" id="analyzeSel">Analisar esta escola</button></div>`;
-  const me=st.center.school,rk=COMP.concat(me&&me.tot>0?[me]:[]).sort((a,b)=>b.tot-a.tot),pos=me?rk.indexOf(me):-1,show=rk.filter((x,i)=>i<6||x===me||LABELED.includes(x));
-  const smax=Math.max(...show.map(x=>x.share||0),.01);
-  const share=`<div><h3>Participação no mercado do raio</h3><div class="s">${fmt(MKT)} alunos em escolas privadas a até ${st.R} km, em 2025.${(mapEl.clientWidth||600)<560?' Os números no mapa são a posição neste ranking.':''}</div></div>
-   <ol class="mshare">${show.map(x=>{const k=trendK(x),isMe=x===me,i=rk.indexOf(x)+1;const tr=k==='up'?`<b class="up">▲ ${pct(x.v22)}</b>`:k==='down'?`<b class="down">▼ ${pct(Math.abs(x.v22))}</b>`:k==='new'?'<b class="up">nova</b>':'<b>estável</b>';
-     return `<li class="${isMe?'me':''}${x.big?' big':''}" data-c="${x.code}"><span class="n">${i}. ${esc(short(x.nome,30))}${isMe?' (sua escola)':''}</span><span class="p">${pct(x.share)}</span><span class="bar"><i style="width:${100*x.share/smax}%;background:${isMe?'#FFFFFF':TCOL[k]==='#011636'?'#9DB5DB':k==='down'?'#E8642C':'#9DB5DB'}"></i></span><span class="t">${fmt(x.tot)} alunos · ${tr}</span></li>`}).join('')}</ol>
-   ${me&&me.tot>0?`<div class="s">A sua escola tem <b style="color:#fff">${pct(me.share)}</b> do mercado e é a <b style="color:#fff">${pos+1}ª</b> do raio. ${COMP.filter(c=>c.big).length?`${COMP.filter(c=>c.big).length} concorrente${COMP.filter(c=>c.big).length>1?'s são maiores':' é maior'}.`:'Nenhum concorrente é maior.'}</div>`:''}`;
-  document.getElementById('side').innerHTML=share+`<div class="sep"></div><div class="kk"><div><div class="k">${fmt(qq)}</div><div class="s">${nm} em famílias com renda de ${brl(st.rmin)} ou mais</div></div>
-   <div><div class="k" style="color:var(--sky)">${pct(mat/all)}</div><div class="s">dessas idades já estão em escola privada no raio</div></div></div>
-${sel}`;
+  const me=st.center.school,rk=COMP.concat(me&&me.tot>0?[me]:[]).sort((a,b)=>b.tot-a.tot),pos=me?rk.indexOf(me):-1;
+  const mob=(mapEl.clientWidth||600)<560;
+  document.getElementById('side').innerHTML=`<div><h3>Participação no mercado do raio</h3><div class="s">${fmt(MKT)} alunos em ${rk.length} escolas privadas a até ${st.R} km (2025).${me&&me.tot>0?` A sua escola tem <b style="color:#fff">${pct(me.share)}</b> e é a <b style="color:#fff">${pos+1}ª</b>.`:''}${mob?' Os números no mapa são a posição por tamanho.':''}</div></div>
+   <div class="mtools"><div class="toggle" id="msSort">${[['size','Maiores'],['up','Mais cresceram'],['down','Mais perderam']].map(([v,l])=>`<button type="button" data-v="${v}" aria-pressed="${st.ms===v}">${l}</button>`).join('')}</div>
+   <input type="search" id="msQ" placeholder="Buscar escola no raio" aria-label="Buscar escola no raio" value="${esc(st.mq)}" autocomplete="off"></div>
+   <ol class="mshare" id="mshare"></ol>${sel}`;
+  document.querySelectorAll('#msSort button').forEach(b=>b.onclick=()=>{st.ms=b.dataset.v;document.querySelectorAll('#msSort button').forEach(x=>x.setAttribute('aria-pressed',x===b?'true':'false'));renderShare()});
+  document.getElementById('msQ').addEventListener('input',e=>{st.mq=e.target.value;renderShare()});
+  renderShare();
   const ab=document.getElementById('analyzeSel');if(ab)ab.onclick=()=>chooseSchool(st.sel);
-  document.querySelectorAll('.mshare li').forEach(li=>{const c=ESmap[li.dataset.c];if(c&&c!==st.center.school)li.onclick=()=>pick(c.code,true)});
   renderSCard();
 }
+/* lista do painel: até 8 escolas, ordenadas por tamanho, por crescimento ou por queda; busca pelo nome; a escola analisada fica fixa no fim */
+function renderShare(){const box=document.getElementById('mshare');if(!box)return;
+  const me=st.center.school,rk=COMP.concat(me&&me.tot>0?[me]:[]).sort((a,b)=>b.tot-a.tot),RANK=new Map(rk.map((c,i)=>[c,i+1]));
+  const q=norm(st.mq).trim();let L=q?rk.filter(c=>norm(c.nome).includes(q)):rk.slice();
+  const g=c=>c.v22==null?null:c.v22;
+  if(st.ms==='up')L.sort((a,b)=>(g(b)??-9)-(g(a)??-9));else if(st.ms==='down')L.sort((a,b)=>(g(a)??9)-(g(b)??9));
+  const show=L.slice(0,8),extra=!q&&me&&me.tot>0&&!show.includes(me)?[me]:[];
+  const row=x=>{const k=trendK(x),isMe=x===me,tr=k==='up'?`<b class="up">▲ ${pct(x.v22)}</b>`:k==='down'?`<b class="down">▼ ${pct(Math.abs(x.v22))}</b>`:k==='new'?'<b class="up">nova</b>':'<b>estável</b>';
+    return `<li class="${isMe?'me':''}${x.code===st.sel?' on':''}" data-c="${x.code}" title="${esc(x.nome)}${x.big?' · maior que a sua escola':''}"><span class="n">${RANK.get(x)}. ${esc(short(x.nome,30))}${isMe?' (sua)':''}${x.big?'<i class="mb">maior</i>':''}</span><span class="p">${pct(x.share)}</span><span class="t">${fmt(x.tot)} alunos · ${tr}</span></li>`};
+  box.innerHTML=show.length?show.map(row).join('')+(extra.length?`<li class="gap" aria-hidden="true">…</li>`+extra.map(row).join(''):''):`<li class="none">Nenhuma escola do raio com esse nome.</li>`;
+  box.querySelectorAll('li[data-c]').forEach(li=>{const c=ESmap[li.dataset.c];if(c&&c!==me)li.onclick=()=>pick(c.code,true)})}
 function selectSector(s){if(st.selS&&st.selS.el)st.selS.el.classList.remove('on');st.selS=s;if(s&&s.el){s.el.classList.add('on');gS.appendChild(s.el)}renderSCard()}
 function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
   if(!s||!s.el||!s.el.isConnected){box.hidden=true;box.innerHTML='';return}
