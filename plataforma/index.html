@@ -105,7 +105,9 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .map .lbl{fill:var(--muted);opacity:.85;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--text);paint-order:stroke;stroke:rgba(255,255,255,.75);stroke-linejoin:round}
 .map .sc{stroke:var(--white);cursor:pointer}
 .map .sc.sel{stroke:var(--navy);stroke-width:3px!important}
-.tip{position:absolute;pointer-events:none;background:var(--navy);color:var(--white);font-size:13px;padding:9px 11px;max-width:250px;line-height:1.45;z-index:3;box-shadow:0 6px 18px rgba(1,22,54,.3)}
+.tip{position:absolute;pointer-events:none;background:#FFFFFF;color:var(--navy);font-size:13px;padding:11px 13px;width:290px;max-width:calc(100% - 8px);line-height:1.45;z-index:3;border:1px solid var(--rule);border-top:3px solid var(--navy);box-shadow:0 10px 24px rgba(1,22,54,.22)}
+.tip .tn{display:block;font-size:14px;margin-bottom:4px}.tip .tv{font-family:var(--title);font-weight:700;font-size:18px;line-height:1.2;margin:2px 0 6px}.tip .tv span{font-size:14px}.tip .tv small{display:block;font-family:var(--text);font-size:11.5px;font-weight:500;color:var(--muted)}
+.tip .tg{display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12px;color:var(--muted);margin-bottom:6px}.tip .tg b{color:var(--navy);font-family:var(--text)}.tip .tg .bg{grid-column:1/-1;font-weight:600;color:var(--navy)}.tip .tf{font-size:11.5px;color:var(--muted)}
 .tip b{font-family:var(--title);font-weight:600}
 .legend{position:static;border:0;border-top:1px solid var(--rule);background:var(--white);padding:10px 12px;display:grid;gap:7px;color:var(--navy);font-size:12.5px;line-height:1.4}
 .legend .sw{display:grid;grid-template-columns:repeat(5,1fr);gap:2px}
@@ -158,6 +160,7 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .side .note span{display:flex;align-items:center;gap:8px}
 .side .note i{display:inline-block;flex:none}
 .selbox{border-top:1px solid var(--navy2);padding-top:16px;display:grid;gap:10px}
+.selbox .sv .tv{font-family:var(--title);font-weight:700;font-size:20px;filter:brightness(1.6)}.selbox .sv .tv small{display:block;font-family:var(--text);font-size:12px;font-weight:500;color:var(--sky);filter:none}.selbox .sv .tv span{font-size:15px}.selbox .gm{color:#fff;font-size:13.5px;font-weight:600}
 .selbox .btn{justify-self:start}
 
 /* ---------- onde crescer ---------- */
@@ -560,7 +563,7 @@ function buildMap(){
     if(conc){const r=rs*(.5+1.9*Math.sqrt(c.tot/mx));c.mr=r;
       if(c.big)el('circle',{cx:p[0],cy:p[1],r:r+rs*.45,fill:'none',stroke:css('--navy'),'stroke-width':rs*.22,'pointer-events':'none'},gC);
       c.el=el('circle',{cx:p[0],cy:p[1],r,class:'sc',fill:colC(c)},gC);c.el.style.strokeWidth=rs*.26}
-    else{const r=rs*(.3+.9*Math.sqrt(c.tot/mx));c.mr=r;c.el=el('circle',{cx:p[0],cy:p[1],r,class:'sc',fill:'#4A5872'},gC);c.el.style.opacity=.55;c.el.style.strokeWidth=rs*.12}
+    else{const r=rs*(.35+1*Math.sqrt(c.tot/mx));c.mr=r;const k=moveK(c);c.el=el('circle',{cx:p[0],cy:p[1],r,class:'sc',fill:k==='gain'?GAIN[2]:k==='loss'?LOSS[2]:'#8A94A6'},gC);c.el.style.strokeWidth=rs*.16}
     c.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipC(e,c)});c.el.addEventListener('pointerleave',hide);c.el.addEventListener('click',ev=>{ev.stopPropagation();hide();pick(c.code,true)})});
   /* escola analisada: quadrado branco com borda azul-aço */
   const fg=el('g',{},gC),q=rs*1.6;el('rect',{x:-q,y:-q,width:q*2,height:q*2,fill:'#FFFFFF',stroke:css('--steel'),'stroke-width':rs*.5},fg);el('rect',{x:-q*.45,y:-q*.45,width:q*.9,height:q*.9,fill:css('--steel')},fg);
@@ -615,11 +618,18 @@ function buildMap(){
     gLab.insertBefore(el('line',{x1:x,y1:y,x2:cx2,y2:cy2,stroke:bg,'stroke-width':rs*.18},gLab),gLab.firstChild)});
 }
 const short=(n,k)=>{n=clean(n);return n.length>k?n.slice(0,k-1).trim()+'…':n};
-function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingClientRect();let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x+260>b.width)x-=280;if(y+140>b.height)y-=150;tip.style.left=Math.max(4,x)+'px';tip.style.top=Math.max(4,y)+'px'}
+function place(e,h){tip.innerHTML=h;tip.hidden=false;const b=mapEl.getBoundingClientRect(),th=tip.offsetHeight;let x=e.clientX-b.left+14,y=e.clientY-b.top+14;if(x+270>b.width)x-=290;if(y+th>b.height)y-=th+24;tip.style.left=Math.max(4,x)+'px';tip.style.top=Math.max(4,y)+'px'}
 function hide(){tip.hidden=true}
 const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN[+st.seg];
 function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b>${s.bx?' <span style="opacity:.75">(nome aproximado)</span>':''}<br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
-function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025 · ${pct(c.share)} do mercado do raio<br>a ${kmf(c.km)}${c.big?' · maior que a sua escola':''}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
+const gmaps=c=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(clean(c.nome)+' '+(c.mn||'')+' '+(c.uf||''));
+function trendBlock(c){const k=moveK(c),b=base22(c),col=k==='gain'?'#1B7A4B':k==='loss'?'#B8231F':'#4A5872';
+  if(b<=0)return `<div class="tv" style="color:#1B7A4B">▲ ${dTxt(c)} alunos <small>escola nova</small></div>`;
+  return `<div class="tv" style="color:${col}">${k==='gain'?'▲':k==='loss'?'▼':'●'} ${dTxt(c)} alunos <span>(${pB(c)>=0?'+':'−'}${pct(Math.abs(pB(c)))})</span> <small>${k==='flat'?'estável ':''}desde 2022</small></div>`}
+function tipC(e,c){place(e,`<b class="tn">${esc(c.nome)}</b>${trendBlock(c)}
+  <div class="tg"><span><b>${fmt(c.tot)}</b> alunos em 2025</span><span><b>${pct(c.share)}</b> do mercado</span><span><b>${kmf(c.km)}</b> da sua escola</span>${c.big?'<span class="bg">maior que a sua escola</span>':''}</div>
+  ${spark(c,220,34)}<div class="tf">Segmentos: ${['Inf','F.I','F.II','EM'].filter((x,i)=>c.seg[i]>0).join(' · ')||'—'}${isApprox(c)?' · posição aproximada':''}</div><div class="tf">Toque na escola para ver a avaliação no Google</div>`);return;
+  place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025 · ${pct(c.share)} do mercado do raio<br>a ${kmf(c.km)}${c.big?' · maior que a sua escola':''}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
 /* faixa baixa sem cor; fora do raio e foco Concorrência em cinza neutro */
 /* mapa-base cinza (setores com borda branca) e, por cima, o calor em manchas suaves de azul, só dentro do raio */
 const OUTC='#EEF0F4',INC='#E3E8EF',HB=['#FFFFFF','#DDE6F3','#B3C5E4','#5B79AD','#1E3A73'],HV2=HB;
@@ -644,12 +654,12 @@ function renderMap(){
   const g3=(k,txt)=>`<span><b style="color:${TCOL[k]};font-size:14px;line-height:1">${TGLY[k]}</b>${txt}</span>`;
   document.getElementById('legend').innerHTML=st.focus==='conc'
    ?`<span class="lab">Quem ganhou e quem perdeu alunos (2022 → 2025)</span><div class="note2"><span><i style="width:14px;height:12px;background:#1B7A4B"></i><i style="width:14px;height:12px;background:#3FA56B"></i><i style="width:14px;height:12px;background:#9FD8B4"></i>&nbsp;Ganhou alunos</span><span><i style="width:14px;height:12px;background:#B8231F"></i><i style="width:14px;height:12px;background:#DE5A49"></i><i style="width:14px;height:12px;background:#F2A99E"></i>&nbsp;Perdeu alunos</span><span><i style="width:12px;height:12px;background:#AEB7C5;border-radius:50%"></i>Estável</span><span><i style="width:14px;height:14px;border:2px solid #011636;border-radius:50%"></i>Maior que a sua escola</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div><p class="muted" style="font-size:12.5px">Cor mais forte, maior a mudança. Tamanho do círculo = alunos em 2025. As etiquetas mostram as escolas que mais ganharam e as que mais perderam alunos.</p>`
-   :legendHTML()+`<div class="slg"><div class="note2"><span><i style="width:10px;height:10px;background:#4A5872;opacity:.6;border-radius:50%"></i><span>Escolas privadas. Para ver crescimento, queda e participação, use o foco <b style="color:var(--navy)">Concorrência</b></span></span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div></div>`;
+   :legendHTML()+`<div class="slg"><div class="note2"><span><i style="width:11px;height:11px;background:#1B7A4B;border-radius:50%"></i>Escola que ganhou alunos</span><span><i style="width:11px;height:11px;background:#B8231F;border-radius:50%"></i>Perdeu alunos</span><span><i style="width:11px;height:11px;background:#8A94A6;border-radius:50%"></i>Estável</span><span>Passe o cursor numa escola para ver o resumo</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div></div>`;
   document.getElementById('rminV').textContent=brl(st.rmin)+' ('+(st.rmin/SM).toLocaleString('pt-BR',{maximumFractionDigits:2})+' SM)';
   const all=sum(IN,s=>s.D),qq=sum(IN,s=>s.Dq),nm=segLabel();
   const mat=sum(COMP,e=>sum(OPP.segs,i=>e.seg[i]));
   let sel='';const c=st.sel&&ESmap[st.sel];
-  if(c&&c.km!=null)sel=`<div class="selbox"><h3>${esc(c.nome)}</h3>${spark(c,240,48,true)}<dl class="kv"><dt>Distância</dt><dd>${kmf(c.km)}</dd><dt>Alunos 2025</dt><dd>${fmt(c.tot)}</dd><dt>Infantil, F.I, F.II, Médio</dt><dd>${c.seg.join(', ')}</dd><dt>Desde 2022</dt><dd>${trendTxt(c.v22)}</dd></dl><button type="button" class="btn" id="analyzeSel">Analisar esta escola</button></div>`;
+  if(c&&c.km!=null)sel=`<div class="selbox"><h3>${esc(c.nome)}</h3>${spark(c,240,48,true)}<dl class="kv"><dt>Distância</dt><dd>${kmf(c.km)}</dd><dt>Alunos 2025</dt><dd>${fmt(c.tot)}</dd><dt>Infantil, F.I, F.II, Médio</dt><dd>${c.seg.join(', ')}</dd><dt>Participação</dt><dd>${pct(c.share)}</dd></dl><div class="sv">${trendBlock(c)}</div><a class="gm" href="${gmaps(c)}" target="_blank" rel="noopener">Ver avaliações no Google Maps ↗</a><button type="button" class="btn" id="analyzeSel">Analisar esta escola</button></div>`;
   const me=st.center.school,rk=COMP.concat(me&&me.tot>0?[me]:[]).sort((a,b)=>b.tot-a.tot),pos=me?rk.indexOf(me):-1;
   const mob=(mapEl.clientWidth||600)<560;
   document.getElementById('side').innerHTML=`<div><h3>Participação no mercado do raio</h3><div class="s">${fmt(MKT)} alunos em ${rk.length} escolas privadas a até ${st.R} km (2025).${me&&me.tot>0?` A sua escola tem <b style="color:#fff">${pct(me.share)}</b> e é a <b style="color:#fff">${pos+1}ª</b>.`:''}</div></div>
