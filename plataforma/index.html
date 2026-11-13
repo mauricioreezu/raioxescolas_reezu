@@ -100,7 +100,6 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .map svg{display:block;width:100%;height:auto}
 .map path.sp{stroke-width:.6;vector-effect:non-scaling-stroke;cursor:pointer}
 @media (hover:hover){.map path.sp:hover{stroke:var(--navy);stroke-width:1.4}}
-.map.conc path.sp:hover{stroke:#FFFFFF}
 .map path.sp.on{stroke:var(--navy);stroke-width:3}
 .map .ring{fill:none;stroke:var(--navy);stroke-width:1.6;stroke-dasharray:6 6;vector-effect:non-scaling-stroke}
 .map .lbl{fill:var(--muted);opacity:.85;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--text);paint-order:stroke;stroke:rgba(255,255,255,.75);stroke-linejoin:round}
@@ -154,7 +153,7 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .mshare .t{grid-column:1/-1}.mshare .t b{font-weight:600}.mshare .t b.up{color:#7FD1A0}.mshare .t b.down{color:#E8642C}
 .legend .slg{display:grid;gap:7px;border-top:1px solid var(--rule);padding-top:10px;margin-top:4px}
 .note2{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted)}
-.note2 .g2{display:contents}.note2 span{display:inline-flex;align-items:center;gap:7px}.note2 i{display:inline-block;flex:none}
+.note2 .g2{display:contents}.note2 span{display:inline-flex;align-items:center;gap:7px}.note2 span span{display:inline}.note2 i{display:inline-block;flex:none}
 .side .note{font-size:12.5px;color:var(--sky);display:grid;gap:6px}
 .side .note span{display:flex;align-items:center;gap:8px}
 .side .note i{display:inline-block;flex:none}
@@ -411,7 +410,7 @@ async function loadView(c,R){const S=STATES.find(s=>s.uf===c.uf),uf=c.uf;
 let SS=[],active=[];
 
 const st={focus:'fam',ms:'size',mq:'',center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
-let MKT=0,LABELED=[],IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
+let TOPB=[],MKT=0,LABELED=[],IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
 
 /* ---------- busca ---------- */
 const q=document.getElementById('q'),sugg=document.getElementById('sugg');let sIdx=-1,sList=[];
@@ -469,9 +468,9 @@ function computeOpp(){
 function computeGrow(){
   const g={};IN.forEach(s=>{if(!s.b||s.nd)return;const k=s.m+'|'+s.b;const o=g[k]=g[k]||{b:s.b,m:s.m,raw:0,D:0,Dq:0,rw:0,dw:0,x:0,y:0,w:0,best:null,n:0,nx:0};o.n++;o.nx+=s.bx?1:0;
     o.raw+=s.raw;o.D+=s.D;o.Dq+=s.Dq;if(s.r){o.rw+=s.r*s.d;o.dw+=s.d}const w=s.D+1;o.x+=s.x*w;o.y+=s.y*w;o.w+=w;if(!o.best||s.raw>o.best.raw)o.best=s});
-  GROW=Object.values(g).filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,3);
+  TOPB=Object.values(g).filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,5);GROW=TOPB.slice(0,3);
   const top=GROW.length?GROW[0].raw:1;
-  GROW.forEach(o=>{o.x/=o.w;o.y/=o.w;o.ren=o.dw?o.rw/o.dw:null;o.rel=o.raw/top;
+  TOPB.forEach(o=>{o.x/=o.w;o.y/=o.w;o.ren=o.dw?o.rw/o.dw:null;o.rel=o.raw/top;
     o.nc=NEAR.filter(c=>sum(OPP.segs,i=>c.seg[i])>0&&km(o.y,o.x,c.lat,c.lon)<1).length});
 }
 function ageTxt(segs){const a=SEGAGE[Math.min(...segs)][0],b=SEGAGE[Math.max(...segs)][1];return (b>=15?'crianças e jovens':'crianças')+` de ${a} a ${b} anos`}
@@ -535,17 +534,21 @@ const DQ=[0,10,25,45,70],RQ=[0,1,2,3,5].map(x=>x*SM),BV=['--b1','--b2','--b3','-
 function buildMap(){
   if(msvg)msvg.remove();const {lat,lon}=st.center,R=st.R,cosL=Math.cos(lat*Math.PI/180),P=(x,y)=>[(x-lon)*cosL*1000,-(y-lat)*1000],RR=R/111.32*1000;
   msvg=el('svg',{viewBox:`${-RR*1.3} ${-RR*1.16} ${RR*2.6} ${RR*2.32}`,role:'img','aria-label':`Mapa de oportunidade por setor censitário num raio de ${R} km`});mapEl.insertBefore(msvg,mapEl.firstChild);
-  gS=el('g',{},msvg);gTop=el('g',{},msvg);
+  gS=el('g',{},msvg);
+  const defs=el('defs',{},msvg),fl=el('filter',{id:'hblur',x:'-20%',y:'-20%',width:'140%',height:'140%'},defs);el('feGaussianBlur',{stdDeviation:RR*.028},fl);
+  el('circle',{cx:0,cy:0,r:RR},el('clipPath',{id:'hclip'},defs));
+  const gH=el('g',{'clip-path':'url(#hclip)',style:'pointer-events:none'},msvg),gHb=el('g',{filter:'url(#hblur)',opacity:.88},gH);
+  gTop=el('g',{style:'pointer-events:none'},msvg);
   mapEl.classList.toggle('conc',st.focus==='conc');
   const gL=el('g',{},msvg),gR=el('g',{},msvg);gC=el('g',{},msvg);
   VIEW.forEach(s=>{if(!s.poly)s.poly=decode(s.enc);const d=s.poly.map(r=>'M'+r.map(c=>{const p=P(c[0],c[1]);return p[0].toFixed(2)+','+p[1].toFixed(2)}).join('L')+'Z').join('');
-    s.el=el('path',{d,class:'sp'+(s.km>R?' out':'')},gS);
+    s.el=el('path',{d,class:'sp'+(s.km>R?' out':'')},gS);s.d=d;s.hel=s.km<=R&&st.focus!=='conc'?el('path',{d,'stroke-width':RR*.006},gHb):null;
     s.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipS(e,s)});s.el.addEventListener('pointerleave',hide);
     s.el.addEventListener('click',()=>{hide();selectSector(s===st.selS?null:s)})});
   el('circle',{cx:0,cy:0,r:RR,class:'ring'},gR);const fs=RR/18;
   const rl=el('text',{x:RR*.74,y:RR*.76},gR);rl.textContent=R+' km';rl.style.cssText=`font-size:${fs*.85}px;fill:var(--navy);font-weight:600;font-family:var(--text);paint-order:stroke;stroke:#fff;stroke-width:${fs*.25}px`;
   const lab={};VIEW.forEach(s=>{if(!s.b)return;const k=s.b,w=s.a[0]+s.a[1]+s.a[2]+1;(lab[k]=lab[k]||{x:0,y:0,w:0}).x+=s.x*w;lab[k].y+=s.y*w;lab[k].w+=w});
-  Object.entries(lab).forEach(([n,v])=>{if(v.w<400)return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*.95)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.56)+'px';t.style.strokeWidth=(fs*.2)+'px'});
+  const topN=new Set(st.focus!=='conc'&&st.layer==='opp'?TOPB.slice(0,5).map(o=>o.b):[]);Object.entries(lab).forEach(([n,v])=>{if(v.w<400||topN.has(n))return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*.95)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.56)+'px';t.style.strokeWidth=(fs*.2)+'px'});
   const mx=Math.max(...COMP.map(c=>c.tot),1),rs=RR/36;RS=rs;
   const me=st.center.school,meT=me?me.tot:0;
   const conc=st.focus==='conc';NEAR.forEach(c=>{c.mp=null;c.el=null});
@@ -566,7 +569,26 @@ function buildMap(){
   if(me){const t2=el('tspan',{x:q+rs*.8,dy:fsMe*1.05},ft);t2.style.cssText=`font-size:${fsMe*.72}px;font-family:var(--text);font-weight:600`;
     t2.textContent=`${fmt(meT)} alunos · ${pct(me.share)} do mercado`;
     if(conc&&!mob&&base22(me)>0){const t3=el('tspan',{},ft);const k=moveK(me);t3.textContent=`  ${dTxt(me)} desde 2022`;t3.style.cssText=`font-size:${fsMe*.72}px;font-family:var(--text);font-weight:700;fill:${k==='gain'?GAIN[2]:k==='loss'?LOSS[2]:'#4A5872'}`}}
-  if(!conc){LABELED=[];return}
+  if(!conc){LABELED=[];
+    /* os 5 melhores bairros: número, nome e quantas crianças com perfil moram ali */
+    if(st.layer!=='opp')return;
+    const nb=mob?3:5,bx=[ft.getBBox(),{x:-q,y:-q,width:2*q,height:2*q},rl.getBBox()].map(b=>[b.x,b.y,b.x+b.width,b.y+b.height]);
+    const hit=b=>bx.reduce((s,q2)=>{const ox=Math.min(b[2],q2[2])-Math.max(b[0],q2[0]),oy=Math.min(b[3],q2[3])-Math.max(b[1],q2[1]);return s+(ox>0&&oy>0?ox*oy:0)},0);
+    const f1=Math.max(fs*.8,13/ppu),f2=Math.max(fs*.64,11/ppu),VX=RR*1.3,VY=RR*1.16,gB=el('g',{style:'pointer-events:none'},gC);
+    TOPB.slice(0,nb).forEach((o,i)=>{const [x,y]=P(o.x,o.y),g=el('g',{},gB);
+      const n1=el('text',{},g);n1.style.cssText=`font-size:${f1}px;font-weight:800;fill:#FFFFFF;font-family:var(--title)`;n1.textContent=String(i+1);
+      const nb1=n1.getBBox(),sq=Math.max(nb1.width,nb1.height)+f1*.35;const r0=el('rect',{x:0,y:0,width:sq,height:sq,fill:css('--navy')},g);g.insertBefore(r0,n1);
+      n1.setAttribute('x',(sq-nb1.width)/2-nb1.x);n1.setAttribute('y',(sq-nb1.height)/2-nb1.y);
+      const t1=el('text',{},g);t1.style.cssText=`font-size:${f1}px;font-weight:700;fill:var(--navy);font-family:var(--title);paint-order:stroke;stroke:#FFFFFF;stroke-width:${f1*.32}px;stroke-linejoin:round`;t1.textContent=short(o.b,24);
+      const b1=t1.getBBox();t1.setAttribute('x',sq+f1*.3-b1.x);t1.setAttribute('y',-b1.y+(sq-b1.height)/2);
+      const t2=el('text',{},g);t2.style.cssText=`font-size:${f2}px;font-weight:600;fill:var(--navy);font-family:var(--text);paint-order:stroke;stroke:#FFFFFF;stroke-width:${f2*.32}px;stroke-linejoin:round`;
+      t2.textContent=`${fmt(o.Dq)} crianças com perfil`;const b2=t2.getBBox();t2.setAttribute('x',sq+f1*.3-b2.x);t2.setAttribute('y',sq+f2*.1-b2.y);
+      const w=sq+f1*.3+Math.max(b1.width,b2.width),h=sq+f2*.1+b2.height;
+      const cand=[];[0,1,2,3.2].forEach(d=>{const o=d*h;[[x-sq/2,y-sq/2],[x-w+sq/2,y-sq/2],[x-sq/2,y-h-o],[x-sq/2,y+sq*.6+o],[x-w/2,y-h-sq*.6-o],[x-w/2,y+sq*.8+o],[x+sq+o,y-h/2],[x-w-sq-o,y-h/2]].forEach(c=>cand.push([c[0],c[1],d]))});
+      let best=null;cand.forEach(([bx0,by0,d])=>{const box=[bx0,by0,bx0+w,by0+h],s=hit(box)*4+d*w*h*.1+(bx0<-VX||bx0+w>VX||by0<-VY||by0+h>VY?1e9:0);if(!best||s<best[0])best=[s,bx0,by0,box,d]});
+      g.setAttribute('transform',`translate(${best[1]},${best[2]})`);bx.push(best[3]);
+      if(best[4]>0)gB.insertBefore(el('line',{x1:x,y1:y,x2:best[1]+sq/2,y2:best[2]+sq/2,stroke:css('--navy'),'stroke-width':rs*.15},gB),gB.firstChild)});
+    return}
   /* etiquetas: as escolas que mais ganharam e as que mais perderam alunos */
   const NG=mob?3:5,mv=COMP.filter(c=>moveK(c)!=='flat');
   const gains=mv.filter(c=>moveK(c)==='gain').sort((a,b)=>dAl(b)-dAl(a)).slice(0,NG),loss=mv.filter(c=>moveK(c)==='loss').sort((a,b)=>dAl(a)-dAl(b)).slice(0,NG);
@@ -599,16 +621,17 @@ const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN
 function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b>${s.bx?' <span style="opacity:.75">(nome aproximado)</span>':''}<br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
 function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025 · ${pct(c.share)} do mercado do raio<br>a ${kmf(c.km)}${c.big?' · maior que a sua escola':''}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
 /* faixa baixa sem cor; fora do raio e foco Concorrência em cinza neutro */
-const OUTC='#E9EDF3',NEUT='#FFF3C4',HV2=[NEUT,'#FDD27A','#F9A23F','#E8642C','#B8231F'];
-function fill(s){
-  if(st.focus==='conc')return s.km>st.R?'#EEF0F4':'#E3E8EF';
-  if(s.km>st.R)return OUTC;
-  if(st.layer==='opp')return s.band==null?css('--hnull'):HV2[s.band];
-  if(st.layer==='renda'){if(!s.r)return css('--hnull');let i=0;while(i<4&&s.r>=RQ[i+1])i++;return css(BV[i])}
-  const k=st.seg==='all'&&OPP.segs.length>1?1:.33,d=s.D/Math.max(s.ha,.3);let i=0;while(i<4&&d>=DQ[i+1]*k)i++;return css(BV[i])}
+/* mapa-base cinza (setores com borda branca) e, por cima, o calor em manchas suaves de azul, só dentro do raio */
+const OUTC='#EEF0F4',INC='#E3E8EF',HB=['#FFFFFF','#DDE6F3','#B3C5E4','#5B79AD','#1E3A73'],HV2=HB;
+function fill(s){return s.km>st.R?OUTC:INC}
+function heat(s){
+  if(s.km>st.R||st.focus==='conc')return null;
+  if(st.layer==='opp')return s.band==null||s.band===0?null:HB[s.band];
+  if(st.layer==='renda'){if(!s.r)return null;let i=0;while(i<4&&s.r>=RQ[i+1])i++;return i?HB[i]:null}
+  const k=st.seg==='all'&&OPP.segs.length>1?1:.33,d=s.D/Math.max(s.ha,.3);let i=0;while(i<4&&d>=DQ[i+1]*k)i++;return i?HB[i]:null}
 function legendHTML(){
-  if(st.layer==='opp')return `<span class="lab">Índice de oportunidade</span><div class="sw">${HV2.map(v=>`<i style="background:${v};${v===NEUT?'outline:1px solid #DCE3EE;outline-offset:-1px':''}"></i>`).join('')}</div><div class="sl"><span>Baixa</span><span>Muito alta</span></div><p>Quanto mais quente, mais famílias com perfil e menos concorrência por perto.</p><div class="nd"><i></i>Sem dado de renda do IBGE</div>`;
-  const sw=`<div class="sw">${BV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div>`;
+  if(st.layer==='opp')return `<span class="lab">Índice de oportunidade</span><div class="sw">${HB.map((v,i)=>`<i style="background:${v};${i===0?'outline:1px solid #DCE3EE;outline-offset:-1px':''}"></i>`).join('')}</div><div class="sl"><span>Baixa</span><span>Muito alta</span></div><p>Quanto mais escuro o azul, mais famílias com perfil e menos concorrência por perto. Os números marcam os 5 melhores bairros.</p><div class="nd"><i></i>Sem dado de renda do IBGE</div>`;
+  const sw=`<div class="sw">${HB.map((v,i)=>`<i style="background:${v};${i===0?'outline:1px solid #DCE3EE;outline-offset:-1px':''}"></i>`).join('')}</div>`;
   if(st.layer==='renda')return `<span class="lab">Renda média do responsável</span>${sw}<div class="sl"><span>até 1 SM</span><span>2 SM</span><span>5 SM ou mais</span></div><div class="nd"><i></i>Renda sob sigilo do IBGE</div>`;
   const k=st.seg==='all'&&OPP.segs.length>1?1:.33;return `<span class="lab">Crianças por hectare</span>${sw}<div class="sl"><span>menos de ${Math.round(DQ[1]*k)}</span><span>${Math.round(DQ[4]*k)} ou mais</span></div>`}
 const falling=c=>base22(c)>0&&moveK(c)==='loss';const gaining=c=>base22(c)>0&&moveK(c)==='gain';
@@ -616,12 +639,12 @@ function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math
   return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><rect x="${sx(6)-2.6}" y="${sy(v[6])-2.6}" width="5.2" height="5.2" fill="${light?'#FFFFFF':falling(c)?css('--down'):css('--navy')}"/></svg>`}
 const trendTxt=v=>v==null?'nova':(v>=0?'▲ +':'▼ −')+pct(Math.abs(v));
 function renderMap(){
-  VIEW.forEach(s=>{if(!s.el)return;const f=fill(s);s.el.setAttribute('fill',f);s.el.setAttribute('stroke',st.focus==='conc'?'#FFFFFF':f)});
+  VIEW.forEach(s=>{if(!s.el)return;s.el.setAttribute('fill',fill(s));s.el.setAttribute('stroke','#FFFFFF');if(s.hel){const h=heat(s);s.hel.setAttribute('fill',h||'none');s.hel.setAttribute('stroke',h||'none')}});
   ES.forEach(c=>{if(c.el&&c.el.isConnected)c.el.classList.toggle('sel',c.code===st.sel)});
   const g3=(k,txt)=>`<span><b style="color:${TCOL[k]};font-size:14px;line-height:1">${TGLY[k]}</b>${txt}</span>`;
   document.getElementById('legend').innerHTML=st.focus==='conc'
    ?`<span class="lab">Quem ganhou e quem perdeu alunos (2022 → 2025)</span><div class="note2"><span><i style="width:14px;height:12px;background:#1B7A4B"></i><i style="width:14px;height:12px;background:#3FA56B"></i><i style="width:14px;height:12px;background:#9FD8B4"></i>&nbsp;Ganhou alunos</span><span><i style="width:14px;height:12px;background:#B8231F"></i><i style="width:14px;height:12px;background:#DE5A49"></i><i style="width:14px;height:12px;background:#F2A99E"></i>&nbsp;Perdeu alunos</span><span><i style="width:12px;height:12px;background:#AEB7C5;border-radius:50%"></i>Estável</span><span><i style="width:14px;height:14px;border:2px solid #011636;border-radius:50%"></i>Maior que a sua escola</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div><p class="muted" style="font-size:12.5px">Cor mais forte, maior a mudança. Tamanho do círculo = alunos em 2025. As etiquetas mostram as escolas que mais ganharam e as que mais perderam alunos.</p>`
-   :legendHTML()+`<div class="slg"><div class="note2"><span><i style="width:10px;height:10px;background:#4A5872;opacity:.6;border-radius:50%"></i>Escolas privadas. Para ver crescimento, queda e participação, use o foco <b style="color:var(--navy)">Concorrência</b>.</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div></div>`;
+   :legendHTML()+`<div class="slg"><div class="note2"><span><i style="width:10px;height:10px;background:#4A5872;opacity:.6;border-radius:50%"></i><span>Escolas privadas. Para ver crescimento, queda e participação, use o foco <b style="color:var(--navy)">Concorrência</b></span></span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div></div>`;
   document.getElementById('rminV').textContent=brl(st.rmin)+' ('+(st.rmin/SM).toLocaleString('pt-BR',{maximumFractionDigits:2})+' SM)';
   const all=sum(IN,s=>s.D),qq=sum(IN,s=>s.Dq),nm=segLabel();
   const mat=sum(COMP,e=>sum(OPP.segs,i=>e.seg[i]));
@@ -650,12 +673,12 @@ function renderShare(){const box=document.getElementById('mshare');if(!box)retur
     return `<li class="${isMe?'me':''}${x.code===st.sel?' on':''}" data-c="${x.code}" title="${esc(x.nome)}${x.big?' · maior que a sua escola':''}"><span class="n">${RANK.get(x)}. ${esc(short(x.nome,30))}${isMe?' (sua)':''}${x.big?'<i class="mb">maior</i>':''}</span><span class="p">${pct(x.share)}</span><span class="t">${fmt(x.tot)} alunos · ${tr}</span></li>`};
   box.innerHTML=show.length?show.map(row).join('')+(extra.length?`<li class="gap" aria-hidden="true">…</li>`+extra.map(row).join(''):''):`<li class="none">Nenhuma escola do raio com esse nome.</li>`;
   box.querySelectorAll('li[data-c]').forEach(li=>{const c=ESmap[li.dataset.c];if(c&&c!==me)li.onclick=()=>pick(c.code,true)})}
-function selectSector(s){if(st.selS&&st.selS.el)st.selS.el.classList.remove('on');st.selS=s;if(s&&s.el){s.el.classList.add('on');gS.appendChild(s.el)}renderSCard()}
+function selectSector(s){if(gTop)gTop.querySelectorAll('.selo').forEach(x=>x.remove());st.selS=s;if(s&&s.el)el('path',{d:s.d,class:'selo',fill:'none',stroke:css('--navy'),'stroke-width':3,'vector-effect':'non-scaling-stroke'},gTop);renderSCard()}
 function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
   if(!s||!s.el||!s.el.isConnected){box.hidden=true;box.innerHTML='';return}
   const BX=['Renda abaixo do mínimo ou entre os 20% de setores com menos oportunidade no raio','Entre os 40% de setores com menos oportunidade no raio','Na faixa do meio entre os setores do raio','Entre os 40% de setores com mais oportunidade no raio','Entre os 20% de setores com mais oportunidade no raio'];
   const bx=s.band==null?'':(s.band===0&&s.Dq===0?'Renda média abaixo do mínimo escolhido':BX[s.band]);
-  const bd=s.band==null?'':`<span class="bd" style="background:${css(HV[s.band])};color:${s.band>=3?'#FFFFFF':css('--navy')}">${BANDN[s.band]}</span><div class="bx">${bx}</div>`;
+  const bd=s.band==null?'':`<span class="bd" style="background:${HB[s.band]};color:${s.band>=3?'#FFFFFF':css('--navy')};${s.band===0?'outline:1px solid #DCE3EE':''}">${BANDN[s.band]}</span><div class="bx">${bx}</div>`;
   const segs=[0,1,2,3].map(i=>`<dt>${SEGN[i]}${OPP.segs.includes(i)?'':' <span style="font-size:12px">(fora da conta)</span>'}</dt><dd>${fmt(s.seg[i])}</dd>`).join('');
   const nl=s.near.slice(0,4).map(x=>`<li><span>${esc(x.c.nome)}${posTag(x.c)}</span><span>${fmt(x.c.tot)} alunos · ${Math.round(x.d*1000/10)*10} m</span></li>`).join('');
   box.innerHTML=`<div class="hd"><div><span class="lab">Setor censitário${s.km>st.R?' · fora do raio':''}</span><h3 style="margin-top:6px">${esc(s.b||'Sem nome de bairro')}</h3><div class="muted" style="font-size:13.5px">${esc(MUN[s.m]||'')}${s.bx?' · nome aproximado, pelo bairro da escola mais próxima':''}</div>${bd}</div>
@@ -670,7 +693,7 @@ function renderGrow(){const g=document.getElementById('grow'),nm=ageTxt(OPP.segs
   g.innerHTML=GROW.map((o,i)=>{const nc=o.nc===0?'nenhuma escola concorrente a menos de 1 km':(o.nc<=2?'só ':'')+o.nc+(o.nc===1?' escola concorrente':' escolas concorrentes')+' a menos de 1 km';
     return `<button type="button" class="grow-c" data-i="${i}"><div class="rk"><b>${i+1}</b><span>${fmt(100*o.rel)} pontos</span></div>
     <p><b style="font-family:var(--title);font-weight:600">${esc(o.b)}${o.nx>o.n/2?'<span class="ptag" title="O IBGE não tem bairros oficiais aqui; o nome vem do endereço da escola mais próxima">nome aproximado</span>':''}:</b> ${fmt(o.Dq)} ${nm} em setores com renda de ${brl(st.rmin)} ou mais (de ${fmt(o.D)} no bairro), renda média ${o.ren?brl(o.ren):'sob sigilo'} e ${nc}.</p>
-    <div class="ib"><i style="width:${Math.max(4,100*o.rel)}%;background:${css(HV[4-Math.min(i,2)])}"></i></div><span class="go">Ver no mapa</span></button>`}).join('');
+    <div class="ib"><i style="width:${Math.max(4,100*o.rel)}%;background:${HB[4-Math.min(i,2)]}"></i></div><span class="go">Ver no mapa</span></button>`}).join('');
   g.querySelectorAll('.grow-c').forEach(b=>b.onclick=()=>{const o=GROW[+b.dataset.i];selectSector(o.best);document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}
 function pick(code,fromMap){st.sel=st.sel===code?null:code;renderMap();renderTable();if(!fromMap&&st.sel)document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
 function bind(id,cb){const b=document.getElementById(id);b.addEventListener('click',e=>{const x=e.target.closest('button');if(!x)return;b.querySelectorAll('button').forEach(y=>y.setAttribute('aria-pressed',y===x?'true':'false'));cb(x.dataset.v)})}
