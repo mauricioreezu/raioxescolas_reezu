@@ -95,17 +95,17 @@ main.in{display:grid;gap:64px;padding-top:40px;padding-bottom:72px}
 .toggle button[aria-pressed="true"]{background:var(--white);color:var(--navy)}
 input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 @media (max-width:640px){.plate-tools{gap:12px;padding:14px 14px}.tool{min-width:0;max-width:100%}.toggle{flex-wrap:nowrap;overflow-x:auto;max-width:100%;scrollbar-width:none}.toggle::-webkit-scrollbar{display:none}.toggle button{padding:6px 10px;font-size:13.5px;white-space:nowrap}.tool .lab{font-size:11px}}
-.mapcol{min-width:0;background:var(--mist);display:grid}
+.mapcol{min-width:0;background:#E9EDF3;display:grid}
 .map{position:relative;min-width:0;touch-action:manipulation}
 .map svg{display:block;width:100%;height:auto}
-.map path.sp{stroke:var(--white);stroke-width:.5;vector-effect:non-scaling-stroke;cursor:pointer}
-.map path.sp.out{opacity:.38}
+.map path.sp{stroke-width:.6;vector-effect:non-scaling-stroke;cursor:pointer}
 @media (hover:hover){.map path.sp:hover{stroke:var(--navy);stroke-width:1.4}}
+.map.conc path.sp:hover,.map.conc path.sp.on{stroke:transparent}
 .map path.sp.on{stroke:var(--navy);stroke-width:3}
 .map .ring{fill:none;stroke:var(--navy);stroke-width:1.6;stroke-dasharray:6 6;vector-effect:non-scaling-stroke}
-.map .lbl{fill:var(--navy);opacity:.72;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--text);paint-order:stroke;stroke:rgba(255,255,255,.75);stroke-linejoin:round}
-.map circle.sc{stroke:var(--white);cursor:pointer}
-.map circle.sc.sel{stroke:var(--navy);stroke-width:3px!important}
+.map .lbl{fill:var(--muted);opacity:.85;font-weight:600;pointer-events:none;text-anchor:middle;font-family:var(--text);paint-order:stroke;stroke:rgba(255,255,255,.75);stroke-linejoin:round}
+.map .sc{stroke:var(--white);cursor:pointer}
+.map .sc.sel{stroke:var(--navy);stroke-width:3px!important}
 .tip{position:absolute;pointer-events:none;background:var(--navy);color:var(--white);font-size:13px;padding:9px 11px;max-width:250px;line-height:1.45;z-index:3;box-shadow:0 6px 18px rgba(1,22,54,.3)}
 .tip b{font-family:var(--title);font-weight:600}
 .legend{position:static;border:0;border-top:1px solid var(--rule);background:var(--white);padding:10px 12px;display:grid;gap:7px;color:var(--navy);font-size:12.5px;line-height:1.4}
@@ -268,7 +268,10 @@ footer .logo img{width:110px}
       <p>Cada forma é um setor censitário do IBGE. A cor junta três coisas: quantas crianças moram ali na idade dos segmentos da escola, se a renda do bairro comporta a mensalidade e quantas escolas concorrentes estão por perto. Toque num setor para ver os números.</p></div>
     <div class="plate dark">
       <div class="plate-tools">
-        <div class="tool"><span class="lab">Camada</span><div class="toggle" id="layerSeg">
+        <div class="tool"><span class="lab">Foco do mapa</span><div class="toggle" id="focusSeg">
+          <button type="button" data-v="fam" aria-pressed="true">Onde estão as famílias</button>
+          <button type="button" data-v="conc" aria-pressed="false">Concorrência</button></div></div>
+        <div class="tool" id="layerTool"><span class="lab">Camada</span><div class="toggle" id="layerSeg">
           <button type="button" data-v="opp" aria-pressed="true">Oportunidade</button>
           <button type="button" data-v="dens" aria-pressed="false">Crianças por hectare</button>
           <button type="button" data-v="renda" aria-pressed="false">Renda média</button></div></div>
@@ -374,7 +377,7 @@ const posTag=e=>isApprox(e)?'<span class="approx" title="Posição aproximada">�
 /* concorrente: tem aluno em 2025 e oferece segmento regular (sem unidades só técnicas ou EJA) */
 /* tendência desde 2022: cresceu, perdeu, estável ou nova */
 const trendK=c=>c.v22==null?'new':c.v22>=.05?'up':c.v22<=-.05?'down':'flat';
-const TCOL={up:'#5B79AD',new:'#5B79AD',down:'#B8231F',flat:'#011636'};
+const TCOL={up:'#5B79AD',new:'#5B79AD',down:'#B8231F',flat:'#011636'},TGLY={up:'▲',new:'▲',down:'▼',flat:'●'};
 const isRegular=e=>e.lat!=null&&e.tot>0&&e.seg.some(x=>x>0);
 
 /* ---------- dados por estado ---------- */
@@ -399,7 +402,7 @@ async function loadView(c,R){const S=STATES.find(s=>s.uf===c.uf),uf=c.uf;
   return keys.flatMap(k=>TC[k])}
 let SS=[],active=[];
 
-const st={ms:'size',mq:'',center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
+const st={focus:'fam',ms:'size',mq:'',center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
 let MKT=0,LABELED=[],IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
 
 /* ---------- busca ---------- */
@@ -524,7 +527,9 @@ const DQ=[0,10,25,45,70],RQ=[0,1,2,3,5].map(x=>x*SM),BV=['--b1','--b2','--b3','-
 function buildMap(){
   if(msvg)msvg.remove();const {lat,lon}=st.center,R=st.R,cosL=Math.cos(lat*Math.PI/180),P=(x,y)=>[(x-lon)*cosL*1000,-(y-lat)*1000],RR=R/111.32*1000;
   msvg=el('svg',{viewBox:`${-RR*1.3} ${-RR*1.16} ${RR*2.6} ${RR*2.32}`,role:'img','aria-label':`Mapa de oportunidade por setor censitário num raio de ${R} km`});mapEl.insertBefore(msvg,mapEl.firstChild);
-  gS=el('g',{},msvg);gTop=el('g',{},msvg);const gL=el('g',{},msvg),gR=el('g',{},msvg);gC=el('g',{},msvg);
+  gS=el('g',{},msvg);gTop=el('g',{},msvg);
+  mapEl.classList.toggle('conc',st.focus==='conc');
+  if(st.focus==='conc')el('circle',{cx:0,cy:0,r:R/111.32*1000,fill:'#FFFFFF','pointer-events':'none'},gS);const gL=el('g',{},msvg),gR=el('g',{},msvg);gC=el('g',{},msvg);
   VIEW.forEach(s=>{if(!s.poly)s.poly=decode(s.enc);const d=s.poly.map(r=>'M'+r.map(c=>{const p=P(c[0],c[1]);return p[0].toFixed(2)+','+p[1].toFixed(2)}).join('L')+'Z').join('');
     s.el=el('path',{d,class:'sp'+(s.km>R?' out':'')},gS);
     s.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipS(e,s)});s.el.addEventListener('pointerleave',hide);
@@ -532,20 +537,25 @@ function buildMap(){
   el('circle',{cx:0,cy:0,r:RR,class:'ring'},gR);const fs=RR/18;
   const rl=el('text',{x:RR*.74,y:RR*.76},gR);rl.textContent=R+' km';rl.style.cssText=`font-size:${fs*.85}px;fill:var(--navy);font-weight:600;font-family:var(--text);paint-order:stroke;stroke:#fff;stroke-width:${fs*.25}px`;
   const lab={};VIEW.forEach(s=>{if(!s.b)return;const k=s.b,w=s.a[0]+s.a[1]+s.a[2]+1;(lab[k]=lab[k]||{x:0,y:0,w:0}).x+=s.x*w;lab[k].y+=s.y*w;lab[k].w+=w});
-  Object.entries(lab).forEach(([n,v])=>{if(v.w<200)return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*1.2)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.66)+'px';t.style.strokeWidth=(fs*.2)+'px'});
+  Object.entries(lab).forEach(([n,v])=>{if(v.w<400)return;const p=P(v.x/v.w,v.y/v.w);if(Math.hypot(p[0],p[1])>RR*.95)return;const t=el('text',{x:p[0],y:p[1],class:'lbl'},gL);t.textContent=n;t.style.fontSize=(fs*.56)+'px';t.style.strokeWidth=(fs*.2)+'px'});
   const mx=Math.max(...COMP.map(c=>c.tot),1),rs=RR/36;RS=rs;
   const me=st.center.school,meT=me?me.tot:0;
-  NEAR.filter(c=>c.km<=R*1.45).sort((a,b)=>b.tot-a.tot).forEach(c=>{const p=P(c.lon,c.lat),r=rs*(.35+1.6*Math.sqrt(c.tot/mx)),inR=c.km<=R;c.mr=r;c.mp=p;
-    c.big=!!(me&&inR&&c.tot>meT);
-    if(c.big)el('circle',{cx:p[0],cy:p[1],r:r+rs*.5,fill:'none',stroke:css('--navy'),'stroke-width':rs*.28,opacity:.9,'pointer-events':'none'},gC);
-    c.el=el('circle',{cx:p[0],cy:p[1],r,class:'sc',fill:TCOL[trendK(c)]},gC);c.el.style.strokeWidth=rs*(c.big?.3:.24);c.el.style.opacity=inR?.95:.35;
+  const conc=st.focus==='conc';NEAR.forEach(c=>{c.mp=null;c.el=null});
+  /* ▲ cresceu ou nova (azul-aço), ▼ perdeu alunos (vermelho), ● estável (marinho); no foco Famílias, pontos cinza discretos */
+  const shape=(k,x,y,r)=>k==='flat'?el('circle',{cx:x,cy:y,r},gC):el('path',{d:(k==='down'?[[x,y+r*1.3],[x+r*1.15,y-r*.7],[x-r*1.15,y-r*.7]]:[[x,y-r*1.3],[x+r*1.15,y+r*.7],[x-r*1.15,y+r*.7]]).map((q,i)=>(i?'L':'M')+q[0].toFixed(2)+','+q[1].toFixed(2)).join('')+'Z','stroke-linejoin':'round'},gC);
+  COMP.slice().sort((a,b)=>b.tot-a.tot).forEach(c=>{const p=P(c.lon,c.lat),k=trendK(c);c.mp=p;c.big=!!(me&&c.tot>meT);
+    if(conc){const r=rs*(.45+1.7*Math.sqrt(c.tot/mx));c.mr=r*1.15;
+      if(c.big)el('circle',{cx:p[0],cy:p[1],r:r*1.75,fill:'none',stroke:css('--navy'),'stroke-width':rs*.26,'pointer-events':'none'},gC);
+      c.el=shape(k,p[0],p[1],r);c.el.setAttribute('class','sc');c.el.setAttribute('fill',TCOL[k]);c.el.style.strokeWidth=rs*.28}
+    else{const r=rs*(.3+.9*Math.sqrt(c.tot/mx));c.mr=r;c.el=el('circle',{cx:p[0],cy:p[1],r,class:'sc',fill:'#4A5872'},gC);c.el.style.opacity=.55;c.el.style.strokeWidth=rs*.12}
     c.el.addEventListener('pointermove',e=>{if(e.pointerType==='mouse')tipC(e,c)});c.el.addEventListener('pointerleave',hide);c.el.addEventListener('click',ev=>{ev.stopPropagation();hide();pick(c.code,true)})});
   /* escola analisada: quadrado branco com borda azul-aço, maior que os pontos */
   const fg=el('g',{},gC),q=rs*1.6;el('rect',{x:-q,y:-q,width:q*2,height:q*2,fill:'#FFFFFF',stroke:css('--steel'),'stroke-width':rs*.5},fg);el('rect',{x:-q*.45,y:-q*.45,width:q*.9,height:q*.9,fill:css('--steel')},fg);
   const fsMe=Math.max(fs,13.5/((mapEl.clientWidth||600)/(RR*2.6)));const ft=el('text',{x:q+rs*.8,y:-rs*.1},fg);ft.style.cssText=`font-size:${fsMe}px;font-weight:700;fill:var(--navy);font-family:var(--title);paint-order:stroke;stroke:#FFFFFF;stroke-width:${fs*.3}px;stroke-linejoin:round;pointer-events:none`;
   ft.textContent=st.center.name;if(me){const t2=el('tspan',{x:q+rs*.8,dy:fsMe*1.05},ft);t2.textContent=`${fmt(meT)} alunos · ${pct(me.share)} do mercado`;t2.style.fontSize=(fsMe*.72)+'px';t2.style.fontFamily='var(--text)';t2.style.fontWeight='600'}
   /* nomes no mapa: concorrentes maiores que a escola, quem mais cresceu e quem mais perdeu */
-  const ppu=(mapEl.clientWidth||600)/(RR*2.6),mob=(mapEl.clientWidth||600)<560,NL=mob?4:7;
+  if(!conc){LABELED=[];return}
+  const ppu=(mapEl.clientWidth||600)/(RR*2.6),mob=(mapEl.clientWidth||600)<560,NL=5;
   const inR=COMP.filter(c=>c.mp),bySize=inR.slice().sort((a,b)=>b.tot-a.tot),pool=(me?bySize.filter(c=>c.big):[]).slice(0,NL);
   for(const c of bySize){if(pool.length>=Math.min(NL,5))break;if(!pool.includes(c))pool.push(c)}
   const base=inR.filter(c=>c.serie[3]>=100&&c.v22!=null),gw=base.slice().sort((a,b)=>b.v22-a.v22)[0],fl=base.slice().sort((a,b)=>a.v22-b.v22)[0];
@@ -573,12 +583,16 @@ function hide(){tip.hidden=true}
 const segLabel=()=>st.seg==='all'?ageTxt(OPP.segs):'crianças na idade do '+SEGN[+st.seg];
 function tipS(e,s){place(e,`<b>${esc(s.b||MUN[s.m])}</b>${s.bx?' <span style="opacity:.75">(nome aproximado)</span>':''}<br>${st.layer==='opp'?(s.idx==null?'Sem dado de renda':'Índice '+fmt(s.idx)+' · '+BANDN[s.band])+'<br>':''}${fmt(s.D)} ${segLabel()}<br>${s.r?'Renda média '+brl(s.r):'Renda sob sigilo do IBGE'}<br>${s.near.length} concorrente${s.near.length===1?'':'s'} a menos de 1 km${s.km>st.R?'<br>Fora do raio':''}<br><span style="opacity:.8">Clique para ver detalhes</span>`)}
 function tipC(e,c){place(e,`<b>${esc(c.nome)}</b><br>${fmt(c.tot)} alunos em 2025 · ${pct(c.share)} do mercado do raio<br>a ${kmf(c.km)}${c.big?' · maior que a sua escola':''}<br>${c.v22==null?'Sem alunos em 2022':(c.v22>=0?'+':'')+pct(c.v22)+' desde 2022'}${isApprox(c)?'<br>Posição aproximada':c.fonte==='c'?'<br>Posição pelo endereço':''}`)}
+/* faixa baixa sem cor; fora do raio e foco Concorrência em cinza neutro */
+const OUTC='#E9EDF3',NEUT='#F4F6F9',HV2=[NEUT,'#FDD27A','#F9A23F','#E8642C','#B8231F'];
 function fill(s){
-  if(st.layer==='opp')return s.band==null?css('--hnull'):css(HV[s.band]);
+  if(st.focus==='conc')return 'transparent';
+  if(s.km>st.R)return OUTC;
+  if(st.layer==='opp')return s.band==null?css('--hnull'):HV2[s.band];
   if(st.layer==='renda'){if(!s.r)return css('--hnull');let i=0;while(i<4&&s.r>=RQ[i+1])i++;return css(BV[i])}
   const k=st.seg==='all'&&OPP.segs.length>1?1:.33,d=s.D/Math.max(s.ha,.3);let i=0;while(i<4&&d>=DQ[i+1]*k)i++;return css(BV[i])}
 function legendHTML(){
-  if(st.layer==='opp')return `<span class="lab">Índice de oportunidade</span><div class="sw">${HV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div><div class="sl"><span>Baixa</span><span>Muito alta</span></div><p>Quanto mais quente, mais famílias com perfil e menos concorrência por perto.</p><div class="nd"><i></i>Sem dado de renda do IBGE</div>`;
+  if(st.layer==='opp')return `<span class="lab">Índice de oportunidade</span><div class="sw">${HV2.map(v=>`<i style="background:${v};${v===NEUT?'outline:1px solid #DCE3EE;outline-offset:-1px':''}"></i>`).join('')}</div><div class="sl"><span>Baixa</span><span>Muito alta</span></div><p>Quanto mais quente, mais famílias com perfil e menos concorrência por perto.</p><div class="nd"><i></i>Sem dado de renda do IBGE</div>`;
   const sw=`<div class="sw">${BV.map(v=>`<i style="background:${css(v)}"></i>`).join('')}</div>`;
   if(st.layer==='renda')return `<span class="lab">Renda média do responsável</span>${sw}<div class="sl"><span>até 1 SM</span><span>2 SM</span><span>5 SM ou mais</span></div><div class="nd"><i></i>Renda sob sigilo do IBGE</div>`;
   const k=st.seg==='all'&&OPP.segs.length>1?1:.33;return `<span class="lab">Crianças por hectare</span>${sw}<div class="sl"><span>menos de ${Math.round(DQ[1]*k)}</span><span>${Math.round(DQ[4]*k)} ou mais</span></div>`}
@@ -587,9 +601,12 @@ function spark(c,W=118,H=28,light){const v=c.serie.map(x=>Math.max(0,x)),mx=Math
   return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" role="img" aria-label="Alunos de 2019 a 2025: ${v.join(', ')}"><polyline points="${v.map((x,i)=>sx(i).toFixed(1)+','+sy(x).toFixed(1)).join(' ')}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round"/><rect x="${sx(6)-2.6}" y="${sy(v[6])-2.6}" width="5.2" height="5.2" fill="${light?'#FFFFFF':falling(c)?css('--down'):css('--navy')}"/></svg>`}
 const trendTxt=v=>v==null?'nova':(v>=0?'▲ +':'▼ −')+pct(Math.abs(v));
 function renderMap(){
-  VIEW.forEach(s=>s.el&&s.el.setAttribute('fill',fill(s)));
+  VIEW.forEach(s=>{if(!s.el)return;const f=fill(s);s.el.setAttribute('fill',f);s.el.setAttribute('stroke',f)});
   ES.forEach(c=>{if(c.el&&c.el.isConnected)c.el.classList.toggle('sel',c.code===st.sel)});
-  document.getElementById('legend').innerHTML=legendHTML()+`<div class="slg"><span class="lab">Escolas</span><div class="note2"><span class="g2"><span><i style="width:12px;height:12px;background:#5B79AD;border:1.5px solid #fff;border-radius:50%"></i>Cresceu ou nova</span><span><i style="width:12px;height:12px;background:#B8231F;border:1.5px solid #fff;border-radius:50%"></i>Perdeu alunos</span><span><i style="width:12px;height:12px;background:#011636;border:1.5px solid #fff;border-radius:50%"></i>Estável</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></span><span><i style="width:14px;height:14px;border:2.5px solid #fff;border-radius:50%;box-shadow:inset 0 0 0 2px #011636"></i>Contorno: maior que a sua escola. Círculo maior, mais alunos.</span><span>Os setores e escolas apagados ficam fora do raio.</span></div></div>`;
+  const g3=(k,txt)=>`<span><b style="color:${TCOL[k]};font-size:14px;line-height:1">${TGLY[k]}</b>${txt}</span>`;
+  document.getElementById('legend').innerHTML=st.focus==='conc'
+   ?`<span class="lab">Concorrência no raio</span><div class="note2">${g3('up','Cresceu desde 2022 ou é nova')}${g3('down','Perdeu alunos')}${g3('flat','Estável')}<span><i style="width:14px;height:14px;border:2px solid #011636;border-radius:50%"></i>Maior que a sua escola</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div><p class="muted" style="font-size:12.5px">Quanto maior o símbolo, mais alunos em 2025. Os nomes mostram as maiores escolas, quem mais cresceu e quem mais perdeu.</p>`
+   :legendHTML()+`<div class="slg"><div class="note2"><span><i style="width:10px;height:10px;background:#4A5872;opacity:.6;border-radius:50%"></i>Escolas privadas. Para ver crescimento, queda e participação, use o foco <b style="color:var(--navy)">Concorrência</b>.</span><span><i style="width:12px;height:12px;background:#fff;border:3px solid var(--steel)"></i>${st.center.school?'Sua escola':'Ponto analisado'}</span></div></div>`;
   document.getElementById('rminV').textContent=brl(st.rmin)+' ('+(st.rmin/SM).toLocaleString('pt-BR',{maximumFractionDigits:2})+' SM)';
   const all=sum(IN,s=>s.D),qq=sum(IN,s=>s.Dq),nm=segLabel();
   const mat=sum(COMP,e=>sum(OPP.segs,i=>e.seg[i]));
@@ -644,6 +661,7 @@ function pick(code,fromMap){st.sel=st.sel===code?null:code;renderMap();renderTab
 function bind(id,cb){const b=document.getElementById(id);b.addEventListener('click',e=>{const x=e.target.closest('button');if(!x)return;b.querySelectorAll('button').forEach(y=>y.setAttribute('aria-pressed',y===x?'true':'false'));cb(x.dataset.v)})}
 const ready=()=>SS.length&&st.center;
 bind('layerSeg',v=>{st.layer=v;if(ready())renderMap()});
+bind('focusSeg',v=>{st.focus=v;document.getElementById('layerTool').hidden=v==='conc';hide();if(ready()){buildMap();renderMap()}});
 bind('segSeg',v=>{st.seg=v;if(!ready())return;computeOpp();renderMap();renderGrow();renderTable()});
 bind('concFilter',v=>{st.flt=v;if(ready())renderTable()});
 bind('radSeg',v=>{st.R=+v;st.sel=null;st.selS=null;if(!st.center)return;run(false)});
