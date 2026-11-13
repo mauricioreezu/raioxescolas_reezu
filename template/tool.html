@@ -153,36 +153,6 @@ input[type=range]{width:230px;max-width:100%;accent-color:var(--steel)}
 .grow-c .ib{height:6px;background:var(--mist)} .grow-c .ib i{display:block;height:100%}
 .grow-c .go{font-size:13px;font-weight:600;color:var(--navy);text-decoration:underline;text-decoration-color:var(--steel);text-underline-offset:3px;text-decoration-thickness:2px}
 .empty{background:var(--white);border:1px solid var(--rule);padding:18px 20px;color:var(--muted)}
-/* visão geral do raio: mapa esquemático + oportunidades */
-.raio-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px;align-items:start}
-@media (max-width:900px){.raio-grid{grid-template-columns:1fr}}
-.card{background:var(--white);border:1px solid var(--rule);padding:22px;display:grid;gap:14px;min-width:0;align-content:start}
-@media (max-width:640px){.card{padding:16px}}
-.schema{min-width:0}.schema svg{display:block;width:100%;height:auto;overflow:visible}
-.schema text{font-family:var(--text);paint-order:stroke;stroke:#FFFFFF;stroke-width:4px;stroke-linejoin:round}
-.schema .bub,.schema .csq{cursor:pointer}
-.schema .bub:hover{stroke-width:2.5}
-.slegend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted)}
-.slegend span{display:inline-flex;align-items:center;gap:7px}
-.slegend i{display:inline-block;width:13px;height:13px;flex:none}
-.sw-hot{background:rgba(253,210,122,.6);border:1.5px dashed var(--h4);border-radius:50%}
-.sw-b{background:var(--mist);border:1.5px solid var(--steel);border-radius:50%}
-.sw-c{background:var(--navy)} .sw-me{background:var(--steel);outline:2px solid #fff;box-shadow:0 0 0 3px var(--steel)}
-.snote{font-size:12.5px;color:var(--muted)}
-.skey{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px;font-size:14px;color:var(--muted);line-height:1.4}
-.skey li{display:flex;gap:10px;align-items:flex-start;cursor:pointer}.skey b{color:var(--navy);font-weight:600}
-.skey .kb,.skey .kc{flex:none;width:24px;height:24px;display:inline-grid;place-items:center;font-weight:700;font-size:12.5px}
-.skey .kb{border-radius:50%;background:var(--mist);border:1.5px solid var(--steel);color:var(--navy)}
-.skey .kb.hot{background:rgba(253,210,122,.6);border:1.5px dashed var(--h4)}
-.skey .kc{background:var(--navy);color:#fff}
-.opp-t{font-size:24px;font-weight:700;margin-top:-4px}
-.opps{display:grid;gap:10px}
-.opp{all:unset;box-sizing:border-box;display:block;background:var(--mist);padding:15px 18px 15px 40px;position:relative;font-size:15px;line-height:1.55;color:var(--navy)}
-.opp::before{content:"";position:absolute;left:18px;top:23px;width:8px;height:8px;background:var(--steel)}
-.opp.hot::before{background:var(--h4)}
-.opp b{font-weight:600}
-button.opp{cursor:pointer} button.opp:hover{background:#DCE5F3} button.opp:focus-visible{outline:3px solid var(--steel);outline-offset:2px}
-.opp .go{display:block;margin-top:6px;font-size:13px;font-weight:600;text-decoration:underline;text-decoration-color:var(--steel);text-underline-offset:3px;text-decoration-thickness:2px}
 
 /* ---------- frases ---------- */
 .statements{display:grid;border-top:1px solid var(--rule)}
@@ -272,21 +242,9 @@ footer .logo img{width:110px}
     <div class="flag" id="rflag" hidden></div>
   </section>
 
-  <section aria-labelledby="h-raio">
-    <div class="lede"><span class="lab">Visão geral do raio</span>
-      <h2 id="h-raio">Bairros e <span class="hl">concorrentes</span> em volta da escola</h2>
-      <p id="raioLede"></p></div>
-    <div class="raio-grid">
-      <div class="card"><span class="lab">Mapa esquemático</span><div id="schema" class="schema"></div>
-        <div class="slegend"><span><i class="sw-hot"></i>Bairro com mais oportunidade</span><span><i class="sw-b"></i>Outros bairros</span><span><i class="sw-c"></i>Escola concorrente</span><span><i class="sw-me"></i>Sua escola</span></div>
-        <p class="snote" id="snote"></p></div>
-      <div class="card"><span class="lab">Onde investir</span><h3 class="opp-t">Oportunidades</h3><div class="opps" id="opps"></div></div>
-    </div>
-  </section>
-
   <section aria-labelledby="h-mapa">
-    <div class="lede"><span class="lab">Mapa detalhado, setor por setor</span>
-      <h2 id="h-mapa">Onde estão as famílias que a escola pode conquistar</h2>
+    <div class="lede"><span class="lab">Mapa de oportunidade</span>
+      <h2 id="h-mapa">Onde estão as <span class="hl">famílias</span> que a escola pode conquistar</h2>
       <p>Cada forma é um setor censitário do IBGE. A cor junta três coisas: quantas crianças moram ali na idade dos segmentos da escola, se a renda do bairro comporta a mensalidade e quantas escolas concorrentes estão por perto. Toque num setor para ver os números.</p></div>
     <div class="plate dark">
       <div class="plate-tools">
@@ -309,6 +267,12 @@ footer .logo img{width:110px}
       </div>
       <aside class="side" id="side"></aside>
     </div>
+  </section>
+
+  <section aria-labelledby="h-grow">
+    <div class="lede"><span class="lab">Onde crescer</span><h2 id="h-grow">Os três bairros com mais oportunidade no raio</h2>
+      <p id="growLede"></p></div>
+    <div class="grow" id="grow"></div>
   </section>
 
   <section aria-labelledby="h-resumo"><div class="lede"><span class="lab">Resumo</span><h2 id="h-resumo">O que os dados dizem</h2></div><div class="statements" id="statements"></div></section>
@@ -352,7 +316,7 @@ footer .logo img{width:110px}
         <li><b>Concorrência.</b> Alunos de 2025 das escolas concorrentes a até 1 km do setor, nos mesmos segmentos. Cada escola pesa pela distância: colada no setor vale 100% dos alunos, a 500 m vale 50%, a 1 km ou mais não entra. Essa pressão é medida em relação à média do raio.</li>
         <li><b>Índice.</b> Demanda qualificada ÷ (1 + pressão da concorrência ÷ pressão média do raio). Um setor com concorrência igual à média do raio tem a oportunidade cortada pela metade.</li>
       </ol>
-      <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. As oportunidades por bairro somam o índice dos setores de cada bairro. Onde o IBGE não tem bairros oficiais (por exemplo Cotia e Sorocaba), o setor recebe o bairro da escola privada mais próxima, a até 1,5 km, e o nome aparece como aproximado.</p>
+      <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro. Onde o IBGE não tem bairros oficiais (por exemplo Cotia e Sorocaba), o setor recebe o bairro da escola privada mais próxima, a até 1,5 km, e o nome aparece como aproximado.</p>
     </div>
     <div class="src">
       <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP. Quando o Catálogo não traz coordenada, a escola é localizada pelo endereço no OpenStreetMap, e o resultado só é aceito se cair a menos de 2 km do centro do CEP da escola (marca <span class="ptag" style="margin:0">pelo endereço</span>). Se nem isso der certo, ela vai para o centro do CEP, do bairro ou do município; o sinal <span class="approx">≈</span> marca essas posições aproximadas, que podem cair dentro ou fora do raio por engano.</p>
@@ -412,7 +376,7 @@ async function loadView(c,R){const S=STATES.find(s=>s.uf===c.uf),uf=c.uf;
 let SS=[],active=[];
 
 const st={center:null,R:3,layer:'opp',seg:'all',rmin:2*SM,sel:null,selS:null,sk:'tot',sd:-1,flt:'all'};
-let IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[],BAIR=[];
+let IN=[],COMP=[],VIEW=[],NEAR=[],OPP={segs:[0,1,2,3],brk:[],max:1,pbar:1},GROW=[];
 
 /* ---------- busca ---------- */
 const q=document.getElementById('q'),sugg=document.getElementById('sugg');let sIdx=-1,sList=[];
@@ -468,10 +432,10 @@ function computeOpp(){
 function computeGrow(){
   const g={};IN.forEach(s=>{if(!s.b||s.nd)return;const k=s.m+'|'+s.b;const o=g[k]=g[k]||{b:s.b,m:s.m,raw:0,D:0,Dq:0,rw:0,dw:0,x:0,y:0,w:0,best:null,n:0,nx:0};o.n++;o.nx+=s.bx?1:0;
     o.raw+=s.raw;o.D+=s.D;o.Dq+=s.Dq;if(s.r){o.rw+=s.r*s.d;o.dw+=s.d}const w=s.D+1;o.x+=s.x*w;o.y+=s.y*w;o.w+=w;if(!o.best||s.raw>o.best.raw)o.best=s});
-  BAIR=Object.values(g);BAIR.forEach(o=>{o.x/=o.w;o.y/=o.w;o.ren=o.dw?o.rw/o.dw:null;
+  GROW=Object.values(g).filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,3);
+  const top=GROW.length?GROW[0].raw:1;
+  GROW.forEach(o=>{o.x/=o.w;o.y/=o.w;o.ren=o.dw?o.rw/o.dw:null;o.rel=o.raw/top;
     o.nc=NEAR.filter(c=>sum(OPP.segs,i=>c.seg[i])>0&&km(o.y,o.x,c.lat,c.lon)<1).length});
-  GROW=BAIR.filter(o=>o.raw>0).sort((a,b)=>b.raw-a.raw).slice(0,3);
-  const top=GROW.length?GROW[0].raw:1;GROW.forEach(o=>{o.rel=o.raw/top});
 }
 function ageTxt(segs){const a=SEGAGE[Math.min(...segs)][0],b=SEGAGE[Math.max(...segs)][1];return (b>=15?'crianças e jovens':'crianças')+` de ${a} a ${b} anos`}
 const BANDN=['Baixa','Moderada','Média','Alta','Muito alta'],HV=['--h1','--h2','--h3','--h4','--h5'];
@@ -480,7 +444,7 @@ const BANDN=['Baixa','Moderada','Média','Alta','Muito alta'],HV=['--h1','--h2',
 async function run(scroll){try{SS=await loadView(st.center,st.R)}catch(_){alert0();return}
   compute();renderAll();
   if(scroll)document.getElementById('rname').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'})}
-function renderAll(){renderHead();renderSchema();renderOpps();buildMap();renderMap();renderStatements();renderHist();renderSegs();renderTable();renderDig()}
+function renderAll(){renderHead();buildMap();renderMap();renderGrow();renderStatements();renderHist();renderSegs();renderTable();renderDig()}
 function alert0(){const f=document.getElementById('rflag');f.hidden=false;f.innerHTML='<b>Não foi possível carregar o mapa deste estado.</b> Verifique a conexão e busque a escola de novo.'}
 function renderHead(){
   const c=st.center,e=c.school;document.getElementById('rname').textContent=c.name;
@@ -598,95 +562,22 @@ function renderSCard(){const box=document.getElementById('scard'),s=st.selS;
     <div><span class="lab">Escolas concorrentes a menos de 1 km: ${s.near.length}</span>${nl?`<ul style="margin-top:8px">${nl}</ul>`:'<p class="muted" style="font-size:13.5px;margin-top:6px">Nenhuma escola privada regular a menos de 1 km.</p>'}${s.near.length>4?`<p class="muted" style="font-size:13px;margin-top:4px">e mais ${s.near.length-4}.</p>`:''}</div>
     <button type="button" class="x" id="scx">Fechar</button>`;
   box.hidden=false;document.getElementById('scx').onclick=()=>selectSector(null)}
-const goMap=s=>{selectSector(s);document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})};
-const short=(n,k)=>{n=clean(n);return n.length>k?n.slice(0,k-1).trim()+'…':n};
-const ncTxt=n=>n===0?'nenhum concorrente a menos de 1 km':(n<=2?'só ':'')+n+(n===1?' concorrente':' concorrentes')+' a menos de 1 km';
-/* mapa esquemático: bairros como círculos (direção e distância reais), maiores concorrentes como quadrados.
-   Cada marcador anda junto com o seu rótulo (um bloco); os blocos se afastam até não se tocarem. */
-function renderSchema(){
-  const host=document.getElementById('schema');host.innerHTML='';
-  const W=Math.round(Math.max(300,Math.min(760,host.clientWidth||620))),small=W<520,H=Math.round(W*(small?1:.9));
-  const cx=W/2,cy=H/2,Rpx=Math.min(W,H)/2-(small?16:24),R=st.R,{lat,lon}=st.center,cosL=Math.cos(lat*Math.PI/180);
-  const P=(y,x)=>[cx+(x-lon)*111.32*cosL/R*Rpx,cy-(y-lat)*111.32/R*Rpx];
-  const svg=el('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-label':`Mapa esquemático: bairros e escolas concorrentes num raio de ${R} km`},host);
-  const g0=el('g',{},svg),g1=el('g',{},svg),g2=el('g',{},svg),g3=el('g',{},svg);
-  const fs1=small?13:14,fs2=small?11.5:12.5,GAP=6;
-  const measure=(s,fs,fw)=>{const x=el('text',{'font-size':fs,'font-weight':fw||400,x:-999,y:-999},svg);x.textContent=s.replace(/<[^>]+>/g,'');const w=x.getComputedTextLength();x.remove();return w};
-  /* anéis de distância (fixos) */
-  const fixed=[];
-  [...new Set([1,3,5].filter(k=>k<R).concat([R]))].forEach(k=>{const r=k/R*Rpx;el('circle',{cx,cy,r,fill:'none',stroke:css('--rule'),'stroke-width':1.4,'stroke-dasharray':'5 5'},g0);
-    const tx=el('text',{x:cx,y:cy-r+4,'text-anchor':'middle','font-size':11.5,fill:css('--muted')},g0);tx.textContent=k+' km';fixed.push([cx-18,cy-r-8,cx+18,cy-r+8])});
-  COMP.forEach(c=>{const p=P(c.lat,c.lon);el('circle',{cx:p[0],cy:p[1],r:2.4,fill:css('--navy'),opacity:.28},g1)});
-  /* quem entra */
-  const hot=new Set(GROW),NB=small?5:7,NC=small?3:4;
-  const B=[...GROW,...BAIR.filter(o=>!hot.has(o)).sort((a,b)=>(b.Dq-a.Dq)||(b.D-a.D))].slice(0,Math.max(NB,GROW.length));
-  const mx=Math.max(1,...B.map(o=>o.Dq||o.D*.25)),rmin=small?10:12,rmax=small?24:32;
-  const top=COMP.slice().sort((a,b)=>b.tot-a.tot).slice(0,NC),cmx=Math.max(1,...top.map(c=>c.tot));
-  const it=[];
-  B.forEach(o=>{const p=P(o.y,o.x),v=o.Dq||o.D*.25;it.push({k:'b',o,hot:hot.has(o),x:p[0],y:p[1],x0:p[0],y0:p[1],m:rmin+(rmax-rmin)*Math.sqrt(v/mx),
-    l1:short(o.b,small?18:26),l2:o.Dq?`${fmt(o.Dq)} crianças com perfil`:'renda abaixo do mínimo'})});
-  top.forEach(c=>{const p=P(c.lat,c.lon),f=falling(c),gr=c.v22!=null&&c.v22>=.05;it.push({k:'c',c,x:p[0],y:p[1],x0:p[0],y0:p[1],m:(8+7*Math.sqrt(c.tot/cmx))/2,
-    l1:short(c.nome,small?20:28),l2:`${fmt(c.tot)} alunos${f?` <tspan fill="${css('--down')}" font-weight="600">▼ ${pct(Math.abs(c.v22))}</tspan>`:gr?` <tspan fill="${css('--steel')}" font-weight="600">▲ ${pct(c.v22)}</tspan>`:''}`})});
-  /* no celular, o nome vira número (bairro) ou letra (concorrente) e a legenda vai para uma lista abaixo */
-  let nb=0,nc=0;it.forEach(n=>{n.tag=n.k==='b'?String(++nb):String.fromCharCode(64+(++nc));if(small){n.m=n.k==='b'?Math.max(n.m,13):10;n.w=0;n.h=0}});
-  if(!small)it.forEach(n=>{n.w=Math.max(measure(n.l1,fs1,600),measure(n.l2,fs2))+2;n.h=fs1+fs2+5;
-    const roomR=W-2-(n.x0+n.m+GAP+n.w),roomL=(n.x0-n.m-GAP-n.w)-2;n.side=(n.x0>=cx?(roomR>=0?'r':'l'):(roomL>=0?'l':'r'));if(n.side==='r'&&roomR<0&&roomL>roomR)n.side='l';if(n.side==='l'&&roomL<0&&roomR>roomL)n.side='r'});
-  const rect=n=>{const hh=Math.max(n.m,n.h/2);if(small)return[n.x-n.m-2,n.y-n.m-2,n.x+n.m+2,n.y+n.m+2];return n.side==='r'?[n.x-n.m,n.y-hh,n.x+n.m+GAP+n.w,n.y+hh]:[n.x-n.m-GAP-n.w,n.y-hh,n.x+n.m,n.y+hh]};
-  /* escola analisada: fixa no centro, nome logo abaixo */
-  const ms=small?14:16,meName=short(st.center.name,small?22:30),mw=measure(meName,fs1,700);
-  fixed.push([cx-ms/2-4,cy-ms/2-4,cx+ms/2+4,cy+ms/2+4],[cx-mw/2-2,cy+ms/2+3,cx+mw/2+2,cy+ms/2+fs1+7]);
-  /* afasta os blocos */
-  const ov=(a,b)=>[Math.min(a[2],b[2])-Math.max(a[0],b[0]),Math.min(a[3],b[3])-Math.max(a[1],b[1])];
-  for(let s=0;s<260;s++){let moved=0;
-    for(let i=0;i<it.length;i++){const a=it[i];
-      for(let j=i+1;j<it.length;j++){const b=it[j],ra=rect(a),rb=rect(b),[ox,oy]=ov(ra,rb);if(ox>-3&&oy>-3){moved=1;
-        if(ox<oy){const d=(ox+4)/2*((ra[0]+ra[2])<(rb[0]+rb[2])?-1:1);a.x+=d;b.x-=d}else{const d=(oy+4)/2*((ra[1]+ra[3])<(rb[1]+rb[3])?-1:1);a.y+=d;b.y-=d}}}
-      fixed.forEach(f=>{const ra=rect(a),[ox,oy]=ov(ra,f);if(ox>-3&&oy>-3){moved=1;if(ox<oy)a.x+=(ox+4)*((ra[0]+ra[2])<(f[0]+f[2])?-1:1);else a.y+=(oy+4)*((ra[1]+ra[3])<(f[1]+f[3])?-1:1)}});
-      a.x+=(a.x0-a.x)*.02;a.y+=(a.y0-a.y)*.02;
-      const r=rect(a);if(r[0]<2)a.x+=2-r[0];if(r[2]>W-2)a.x-=r[2]-(W-2);if(r[1]<2)a.y+=2-r[1];if(r[3]>H-2)a.y-=r[3]-(H-2)}
-    if(!moved&&s>20)break}
-  /* desenha */
-  it.forEach(n=>{
-    if(Math.hypot(n.x-n.x0,n.y-n.y0)>n.m+4)el('line',{x1:n.x0,y1:n.y0,x2:n.x,y2:n.y,stroke:css('--rule'),'stroke-width':1},g1);
-    let mk;
-    if(n.k==='b'){mk=el('circle',{cx:n.x,cy:n.y,r:n.m,class:'bub',fill:n.hot?'rgba(253,210,122,.6)':css('--mist'),stroke:n.hot?css('--h4'):css('--steel'),'stroke-width':1.6},g2);if(n.hot)mk.setAttribute('stroke-dasharray','5 4');
-      el('title',{},mk).textContent=`${n.o.b}: ${fmt(n.o.Dq)} ${ageTxt(OPP.segs)} em famílias com renda de ${brl(st.rmin)} ou mais. Toque para ver no mapa detalhado.`;mk.addEventListener('click',()=>goMap(n.o.best))}
-    else{const s=n.m*2;mk=el('rect',{x:n.x-n.m,y:n.y-n.m,width:s,height:s,class:'csq',fill:css('--navy'),stroke:'#FFFFFF','stroke-width':1.5},g3);
-      el('title',{},mk).textContent=`${n.c.nome}: ${fmt(n.c.tot)} alunos em 2025, a ${kmf(n.c.km)}`;mk.addEventListener('click',()=>pick(n.c.code,false))}
-    if(small){el('text',{x:n.x,y:n.y+4.5,'text-anchor':'middle','font-size':12.5,'font-weight':700,fill:n.k==='b'?css('--navy'):'#FFFFFF',style:'stroke:none;pointer-events:none'},g3).textContent=n.tag;return}
-    const a=n.side==='r'?'start':'end',tx=n.side==='r'?n.x+n.m+GAP:n.x-n.m-GAP,ty=n.y-n.h/2;
-    el('text',{x:tx,y:ty+fs1*.85,'text-anchor':a,'font-size':fs1,'font-weight':600,fill:css('--navy')},g3).textContent=n.l1;
-    el('text',{x:tx,y:ty+fs1+fs2*.95+3,'text-anchor':a,'font-size':fs2,fill:css('--muted')},g3).innerHTML=n.l2});
-  it.forEach(n=>{n.l2=n.l2.replace(/<tspan fill="([^"]+)" font-weight="600">/g,'<span style="color:$1;font-weight:600">').replace(/<\/tspan>/g,'</span>')});
-  el('rect',{x:cx-ms/2,y:cy-ms/2,width:ms,height:ms,fill:css('--steel'),stroke:'#FFFFFF','stroke-width':3},g3);
-  el('text',{x:cx,y:cy+ms/2+fs1+2,'text-anchor':'middle','font-size':fs1,'font-weight':700,fill:css('--navy')},g3).textContent=meName;
-  if(small){const ol=document.createElement('ol');ol.className='skey';ol.innerHTML=it.map(n=>`<li data-i="${it.indexOf(n)}"><span class="${n.k==='b'?'kb'+(n.hot?' hot':''):'kc'}">${n.tag}</span><span><b>${esc(n.k==='b'?n.o.b:clean(n.c.nome))}</b><br>${n.l2}</span></li>`).join('');
-    ol.querySelectorAll('li').forEach(li=>{const n=it[+li.dataset.i];li.onclick=()=>n.k==='b'?goMap(n.o.best):pick(n.c.code,false)});host.appendChild(ol)}
-  document.getElementById('raioLede').textContent=`Raio de ${R} km em volta da escola. Cada círculo é um bairro: quanto maior, mais crianças de famílias com renda de ${brl(st.rmin)} ou mais. Em laranja, os bairros com mais oportunidade. Os quadrados são as ${top.length} maiores escolas concorrentes; os pontinhos, as outras ${Math.max(0,COMP.length-top.length)}.`;
-  document.getElementById('snote').textContent=small?`Direção e distância aproximadas. Toque num item da lista para vê-lo no mapa detalhado.`:`Direção e distância aproximadas, ajustadas para os nomes não se sobreporem. Toque num bairro para vê-lo no mapa detalhado ou num concorrente para destacá-lo.`;
-}
-if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(ready())renderSchema()});
-/* "Onde investir": frases curtas, do que mais pesa para o que menos pesa */
-function renderOpps(){const box=document.getElementById('opps'),nm=ageTxt(OPP.segs),it=[];
-  GROW.forEach((o,i)=>it.push({hot:1,o,h:`<b>${esc(o.b)}</b>${o.nx>o.n/2?'<span class="ptag" title="O IBGE não tem bairros oficiais aqui; o nome vem do endereço da escola mais próxima">nome aproximado</span>':''} ${i===0?'é o bairro com mais oportunidade do raio':'também é uma boa aposta'}: ${fmt(o.Dq)} crianças de famílias com perfil e ${ncTxt(o.nc)}.${i===0?' Vale concentrar anúncios e ações nesse bairro.':''}`}));
-  const segs=OPP.segs.map(i=>({i,kids:sum(IN,s=>s.seg[i]),mat:sum(COMP,e=>e.seg[i])})).filter(x=>x.kids>50).map(x=>Object.assign(x,{cov:x.mat/x.kids})).sort((a,b)=>a.cov-b.cov);
-  if(segs.length&&segs[0].cov<.6)it.push({h:`No <b>${SEGN[segs[0].i]}</b>, as escolas do raio atendem só ${pct(segs[0].cov)} das crianças da idade. É o segmento com mais espaço.`});
-  const fall=COMP.filter(c=>c.serie[3]>=80&&c.v22!=null&&c.v22<=-.1).sort((a,b)=>a.v22-b.v22)[0];
-  if(fall)it.push({c:fall,h:`<b>${esc(clean(fall.nome))}</b> perdeu ${pct(Math.abs(fall.v22))} dos alunos desde 2022, a ${kmf(fall.km)}. Famílias de lá podem estar procurando outra escola.`});
-  const grow=COMP.filter(c=>c.serie[3]>=80&&c.v22!=null&&c.v22>=.1).sort((a,b)=>b.v22-a.v22)[0];
-  if(grow)it.push({c:grow,h:`<b>${esc(clean(grow.nome))}</b> cresceu ${pct(grow.v22)} desde 2022 e chegou a ${fmt(grow.tot)} alunos, a ${kmf(grow.km)}. É quem mais avança no raio.`});
-  if(!it.length){box.innerHTML=`<div class="opp">Nenhum bairro do raio tem famílias com renda acima do mínimo escolhido. Baixe a renda mínima no mapa detalhado para ver onde está a demanda.</div>`;return}
-  box.innerHTML=it.map((x,k)=>`<button type="button" class="opp${x.hot?' hot':''}" data-k="${k}">${x.h}${x.o?'<span class="go">Ver no mapa</span>':x.c?'<span class="go">Destacar no mapa</span>':''}</button>`).join('');
-  box.querySelectorAll('.opp').forEach(b=>{const x=it[+b.dataset.k];if(x.o)b.onclick=()=>goMap(x.o.best);else if(x.c)b.onclick=()=>pick(x.c.code,false);else{b.disabled=true;b.style.cursor='default'}})}
+function renderGrow(){const g=document.getElementById('grow'),nm=ageTxt(OPP.segs);
+  document.getElementById('growLede').textContent=`Bairros dentro do raio de ${st.R} km com a maior soma do índice de oportunidade: muitas famílias com renda de ${brl(st.rmin)} ou mais e pouca concorrência por perto. Toque num bairro para vê-lo no mapa.`;
+  if(!GROW.length){g.innerHTML=`<div class="empty">Nenhum bairro do raio tem setores com renda acima do mínimo escolhido. Baixe a renda mínima no mapa para ver onde está a demanda.</div>`;return}
+  g.innerHTML=GROW.map((o,i)=>{const nc=o.nc===0?'nenhuma escola concorrente a menos de 1 km':(o.nc<=2?'só ':'')+o.nc+(o.nc===1?' escola concorrente':' escolas concorrentes')+' a menos de 1 km';
+    return `<button type="button" class="grow-c" data-i="${i}"><div class="rk"><b>${i+1}</b><span>${fmt(100*o.rel)} pontos</span></div>
+    <p><b style="font-family:var(--title);font-weight:600">${esc(o.b)}${o.nx>o.n/2?'<span class="ptag" title="O IBGE não tem bairros oficiais aqui; o nome vem do endereço da escola mais próxima">nome aproximado</span>':''}:</b> ${fmt(o.Dq)} ${nm} em setores com renda de ${brl(st.rmin)} ou mais (de ${fmt(o.D)} no bairro), renda média ${o.ren?brl(o.ren):'sob sigilo'} e ${nc}.</p>
+    <div class="ib"><i style="width:${Math.max(4,100*o.rel)}%;background:${css(HV[4-Math.min(i,2)])}"></i></div><span class="go">Ver no mapa</span></button>`}).join('');
+  g.querySelectorAll('.grow-c').forEach(b=>b.onclick=()=>{const o=GROW[+b.dataset.i];selectSector(o.best);document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})})}
 function pick(code,fromMap){st.sel=st.sel===code?null:code;renderMap();renderTable();if(!fromMap&&st.sel)document.getElementById('h-mapa').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})}
 function bind(id,cb){const b=document.getElementById(id);b.addEventListener('click',e=>{const x=e.target.closest('button');if(!x)return;b.querySelectorAll('button').forEach(y=>y.setAttribute('aria-pressed',y===x?'true':'false'));cb(x.dataset.v)})}
 const ready=()=>SS.length&&st.center;
 bind('layerSeg',v=>{st.layer=v;if(ready())renderMap()});
-bind('segSeg',v=>{st.seg=v;if(!ready())return;computeOpp();renderMap();renderSchema();renderOpps();renderTable()});
+bind('segSeg',v=>{st.seg=v;if(!ready())return;computeOpp();renderMap();renderGrow();renderTable()});
 bind('concFilter',v=>{st.flt=v;if(ready())renderTable()});
 bind('radSeg',v=>{st.R=+v;st.sel=null;st.selS=null;if(!st.center)return;run(false)});
-document.getElementById('rmin').addEventListener('input',e=>{st.rmin=+e.target.value*SM;if(!ready())return;computeOpp();renderMap();renderSchema();renderOpps()});
-let rzT;window.addEventListener('resize',()=>{clearTimeout(rzT);rzT=setTimeout(()=>{if(ready())renderSchema()},200)});
+document.getElementById('rmin').addEventListener('input',e=>{st.rmin=+e.target.value*SM;if(!ready())return;computeOpp();renderMap();renderGrow()});
 document.querySelectorAll('#concTbl th button').forEach(b=>b.addEventListener('click',()=>{const k=b.dataset.k;if(st.sk===k)st.sd=-st.sd;else{st.sk=k;st.sd=k==='nome'||k==='km'?1:-1}document.querySelectorAll('#concTbl th button').forEach(x=>x.dataset.on=x===b?'1':'0');if(ready())renderTable()}));
 function renderTable(){let r=COMP.slice();if(st.flt==='200')r=r.filter(c=>c.tot>200);if(st.flt==='seg'&&st.seg!=='all')r=r.filter(c=>c.seg[+st.seg]>0);
   r.sort((a,b)=>{const x=a[st.sk],y=b[st.sk];if(x==null)return 1;if(y==null)return -1;return(typeof x==='string'?x.localeCompare(y):x-y)*st.sd});
