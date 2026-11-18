@@ -92,9 +92,11 @@ for i, e in enumerate(alvo, 1):
             lat, lon, rank = float(res['lat']), float(res['lon']), int(res.get('place_rank', 0))
             if rank < 25 or not inside(m, lat, lon): continue  # 25 = CEP, 26+ = rua/endereço
             d = kmd(lat, lon, rc.lat, rc.lon) if rc is not None else None
-            if d is None or d <= MAXKM: cands.append((d if d is not None else 0, lat, lon, d))
+            if d is None or d <= MAXKM: cands.append((d if d is not None else 0, lat, lon, d, rank))
         if cands:
-            _, lat, lon, d = min(cands); achou = (round(lat, 6), round(lon, 6), nivel, '' if d is None else round(d, 2)); break
+            _, lat, lon, d, rank = min(cands)
+            # rank 30 = o número foi achado; abaixo disso, só a rua (posição aproximada)
+            achou = (round(lat, 6), round(lon, 6), 'endereco' if rank >= 30 else 'rua', '' if d is None else round(d, 2)); break
     if not achou and rc is not None:
         achou = (round(rc.lat, 6), round(rc.lon, 6), 'cep_vizinhos', 0)
     with open(OUT, 'a', newline='') as f:
