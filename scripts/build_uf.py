@@ -54,7 +54,7 @@ gend=gend.dropna(subset=['lat','lon']).drop_duplicates('code',keep='last').set_i
 if len(gend):
     _dup=gend[gend.nivel=='endereco'].duplicated(subset=['lat','lon'],keep=False)
     gend.loc[_dup[_dup].index,'nivel']='rua'
-yrs=[str(y) for y in range(2019,2026)]; out=[]; fc={}
+yrs=[str(y) for y in range(2019,2026)]; out=[]; fc={}; nfora=0
 for code,g in h.groupby('CO_ENTIDADE'):
     last=g.iloc[-1]; mun=int(last.CO_MUNICIPIO)
     serie=[int(g[g.NU_ANO_CENSO==y].QT_MAT_BAS.sum()) if (g.NU_ANO_CENSO==y).any() else -1 for y in yrs]
@@ -73,6 +73,11 @@ for code,g in h.groupby('CO_ENTIDADE'):
         end=cat.loc[code,'Endereço']
         if not bairro:
             parts=[p.strip() for p in end.split('.') if p.strip()]; sg=[p for p in parts if not p[:5].replace('-','').isdigit()]; bairro=sg[-1] if sg else ''
+    # posição pelo endereço a mais de 1,5 km da área do próprio bairro da escola (retângulo dos setores do bairro):
+    # provavelmente rua de mesmo nome em outro bairro (ex.: "Rua B"); descarta e usa o centro do bairro
+    if f in ('c','r','p') and (mun,norm(bairro)) in bc.index:
+        b=bc.loc[(mun,norm(bairro))]; pd_=1.5/111.32; px=pd_/np.cos(np.radians(lat))
+        if not (b.x0-px<=lon<=b.x1+px and b.y0-pd_<=lat<=b.y1+pd_): f='';nfora+=1
     if not f:
         nb=norm(bairro)
         if (mun,nb) in bc.index: b=bc.loc[(mun,nb)]; lat,lon,f=b.y,b.x,'b'
@@ -84,6 +89,7 @@ act=[o for o in out if o[7][-1]>0]
 top=max(act,key=lambda o:o[7][-1])
 bb=[float(st.x.min()),float(st.x.max()),float(st.y.min()),float(st.y.max())]
 json.dump({'uf':UF,'nome':NOME,'top':top[0],'bbox':bb,'n':len(act),'fontes':{k:sum(1 for o in act if o[6]==k) for k in 'iecrpbm'}},open(f'{OUT}/meta.json','w'))
+print(UF,'posições pelo endereço descartadas (a mais de 1,5 km da área do bairro):',nfora)
 print(UF,'setores',len(recs),round(os.path.getsize(f'{OUT}/setores.json')/1e6,2),'MB','| escolas',len(out),'ativas',len(act),{k:sum(1 for o in act if o[6]==k) for k in 'iecrpbm'},'| maior',top[1],top[7][-1])
 # setores sem nome de bairro na malha recebem o bairro da escola mais próxima (nome aproximado)
 import subprocess; subprocess.run([sys.executable, 'scripts/nomear_bairros.py', UF], check=True)

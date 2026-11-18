@@ -345,7 +345,7 @@ footer .logo img{width:110px}
       <p>As cinco cores dividem os setores com índice acima de zero do raio em cinco grupos do mesmo tamanho (quintis), para que o mapa sempre mostre onde está o melhor e o pior do raio. Setores sem renda divulgada pelo IBGE ficam em cinza. O bloco "Onde crescer" soma o índice dos setores de cada bairro. Onde o IBGE não tem bairros oficiais (por exemplo Cotia e Sorocaba), o setor recebe o bairro da escola privada mais próxima, a até 1,5 km, e o nome aparece como aproximado.</p>
     </div>
     <div class="src">
-      <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP. Quando o Catálogo não traz coordenada, a escola é localizada pelo endereço no OpenStreetMap, e o resultado só é aceito se cair a menos de 2 km do centro do CEP da escola (marca <span class="ptag" style="margin:0">pelo endereço</span>). Se nem isso der certo, ela vai para o centro do CEP, do bairro ou do município; o sinal <span class="approx">≈</span> marca essas posições aproximadas, que podem cair dentro ou fora do raio por engano.</p>
+      <p><b>Matrículas.</b> Censo Escolar (INEP) de 2019 a 2025, escolas privadas. A posição vem do Catálogo de Escolas do INEP. Quando o Catálogo não traz coordenada, a escola é localizada pelo endereço no OpenStreetMap, e o resultado só é aceito se cair a menos de 2 km do centro do CEP da escola (marca <span class="ptag" style="margin:0">pelo endereço</span>). Quando o OpenStreetMap acha a rua mas não o número, a escola fica num ponto da rua. Se nem isso der certo, ela vai para o centro do CEP, do bairro ou do município; o sinal <span class="approx">≈</span> marca essas posições aproximadas, que podem cair dentro ou fora do raio por engano.</p>
       <p><b>Concorrentes.</b> Entram só escolas com Educação Infantil, Fundamental ou Médio em 2025. Unidades que oferecem apenas curso técnico ou EJA ficam de fora, porque não disputam as mesmas famílias.</p>
       <p><b>População, idade e renda.</b> Censo Demográfico 2022 por setor censitário. Um setor entra no raio quando o seu ponto representativo está dentro do círculo. Renda é a média mensal do responsável pelo domicílio em valores de 2022 (salário mínimo de R$ 1.212). Idades dos segmentos estimadas pelos grupos de 5 anos do IBGE: Infantil = 0 a 4 anos + 20% de 5 a 9; Fund. I = 80% de 5 a 9 + 20% de 10 a 14; Fund. II = 80% de 10 a 14; Médio = 60% de 15 a 19.</p>
       <p><b>Limites.</b> O Censo Escolar não informa onde mora cada aluno. A população é de 2022 e as matrículas, de 2025.</p>
@@ -373,8 +373,8 @@ const NS='http://www.w3.org/2000/svg';function el(t,a,p){const e=document.create
 const sum=(arr,f)=>arr.reduce((a,x)=>a+f(x),0);
 const km=(la1,lo1,la2,lo2)=>Math.hypot((la1-la2)*111.32,(lo1-lo2)*111.32*Math.cos(la1*Math.PI/180));
 function decode(enc){return enc.map(arr=>{const pts=[];let x=0,y=0;for(let i=0;i<arr.length;i+=2){x+=arr[i];y+=arr[i+1];pts.push([x/1e5,y/1e5])}return pts})}
-const isApprox=e=>e.fonte==='b'||e.fonte==='m'||e.fonte==='p';
-const POSN={b:'no centro do bairro',m:'no centro do município',p:'no centro do CEP'};
+const isApprox=e=>e.fonte==='b'||e.fonte==='m'||e.fonte==='p'||e.fonte==='r';
+const POSN={b:'no centro do bairro',m:'no centro do município',p:'no centro do CEP',r:'na rua do endereço, porque o OpenStreetMap não tem o número'};
 const posTag=e=>isApprox(e)?'<span class="approx" title="Posição aproximada">≈</span>':e.fonte==='c'?'<span class="ptag" title="Posição encontrada pelo endereço no OpenStreetMap e conferida com o CEP">pelo endereço</span>':'';
 /* concorrente: tem aluno em 2025 e oferece segmento regular (sem unidades só técnicas ou EJA) */
 /* variação em alunos de 2022 para 2025 (escola nova: tudo é ganho) */
